@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_get_started">Get Started</string>
+
+    <string name="onboarding_title_1">Scan Everything</string>
+    <string name="onboarding_description_1">High-speed scanning for all types of QR codes and barcodes with auto-zoom support.</string>
+
+    <string name="onboarding_title_2">Create &amp; Share</string>
+    <string name="onboarding_description_2">Generate custom QR codes for WiFi, contacts, URLs, and social media in seconds.</string>
+
+    <string name="onboarding_title_3">AI Beautification</string>
+    <string name="onboarding_description_3">Turn ordinary codes into artistic masterpieces with our built-in AI styling workspace.</string>
+</resources>

@@ -15,7 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.qrscanmax.core.data.datastore.OnboardingPreferences
+import com.qrscanmax.feature.onboarding.OnboardingScreen
 
 /**
  * Main navigation host for the QR Scan Max application.
@@ -46,25 +46,9 @@ fun MainNavHost(
         .collectAsState(initial = true)
 
     if (!isOnboardingComplete) {
-        OnboardingPlaceholder()
+        OnboardingScreen()
     } else {
         MainTabScaffold()
-    }
-}
-
-/**
- * Placeholder for the onboarding flow.
- *
- * Will be replaced by the actual OnboardingScreen composable from
- * `:feature:onboarding` module once task 7.3 is implemented.
- */
-@Composable
-private fun OnboardingPlaceholder() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Onboarding")
     }
 }
 
