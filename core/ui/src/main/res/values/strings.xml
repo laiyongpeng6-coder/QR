@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App name -->
+    <string name="app_name">QR Scan Max</string>
+
+    <!-- Common actions -->
+    <string name="action_save">Save</string>
+    <string name="action_share">Share</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_close">Close</string>
+    <string name="action_open">Open</string>
+    <string name="action_search">Search</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Tab labels -->
+    <string name="tab_history">History</string>
+    <string name="tab_scan">Scan</string>
+    <string name="tab_create">Create</string>
+
+    <!-- Common states -->
+    <string name="state_loading">Loading…</string>
+    <string name="state_error">Something went wrong</string>
+    <string name="state_empty">No items found</string>
+    <string name="state_no_network">No internet connection</string>
+
+    <!-- Common messages -->
+    <string name="msg_copied_to_clipboard">Copied to clipboard</string>
+    <string name="msg_saved_to_gallery">Saved to gallery</string>
+    <string name="msg_share_via">Share via</string>
+    <string name="msg_permission_required">Permission required</string>
+
+    <!-- Content type labels -->
+    <string name="content_type_url">URL</string>
+    <string name="content_type_wifi">WiFi</string>
+    <string name="content_type_vcard">Contact</string>
+    <string name="content_type_phone">Phone</string>
+    <string name="content_type_email">Email</string>
+    <string name="content_type_sms">SMS</string>
+    <string name="content_type_social">Social Media</string>
+    <string name="content_type_geo">Location</string>
+    <string name="content_type_text">Text</string>
+    <string name="content_type_product">Product</string>
+</resources>
