@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="generator_title">Create QR Code</string>
+    <string name="generator_generate">Generate</string>
+    <string name="generator_save">Save</string>
+    <string name="generator_share">Share</string>
+    <string name="generator_beautify">Beautify</string>
+    <string name="generator_new_code">Create New Code</string>
+    <string name="generator_resolution">Resolution</string>
+    <string name="generator_error_empty">Please enter content</string>
+    <string name="generator_error_too_large">Content too large for QR code</string>
+    <string name="generator_type_text">Text</string>
+    <string name="generator_type_url">URL</string>
+    <string name="generator_type_wifi">WiFi</string>
+    <string name="generator_type_contact">Contact</string>
+    <string name="generator_type_phone">Phone</string>
+    <string name="generator_type_social">Social</string>
+</resources>

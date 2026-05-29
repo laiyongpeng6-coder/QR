@@ -1,7 +1,9 @@
 package com.qrscanmax.core.data.di
 
 import com.qrscanmax.core.data.repository.HistoryRepositoryImpl
+import com.qrscanmax.core.data.repository.ProductRepositoryImpl
 import com.qrscanmax.core.domain.repository.HistoryRepository
+import com.qrscanmax.core.domain.repository.ProductRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -9,33 +11,34 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
- * Hilt dependency injection module that binds repository implementations to their interfaces.
+ * Hilt 依赖注入模块：将 Repository 实现类绑定到接口。
  *
- * This module is installed in the [SingletonComponent], ensuring that repository bindings
- * are application-scoped singletons. It uses [Binds] to declare interface-to-implementation
- * mappings without requiring manual instantiation — Hilt resolves the concrete class
- * via its `@Inject` constructor.
+ * ## 给其他 AI 开发者的说明
  *
- * ## Provided Bindings
- * - [HistoryRepository] → [HistoryRepositoryImpl]: Scan/generation history data access.
+ * 本模块使用 @Binds 声明接口到实现的映射关系。
+ * 如果需要添加新的 Repository 绑定，按照相同模式添加即可：
+ * 1. 在 core:domain 中定义接口
+ * 2. 在 core:data 中实现该接口（使用 @Inject 构造函数）
+ * 3. 在本模块中添加 @Binds 方法
  *
  * @see HistoryRepositoryImpl
- * @see HistoryRepository
+ * @see ProductRepositoryImpl
  */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
 
     /**
-     * Binds [HistoryRepositoryImpl] as the concrete implementation of [HistoryRepository].
-     *
-     * The binding is scoped as [Singleton] to ensure a single repository instance
-     * is shared across all consumers (ViewModels, use cases) in the application.
-     *
-     * @param impl The [HistoryRepositoryImpl] instance constructed by Hilt.
-     * @return The [HistoryRepository] interface backed by the Room-based implementation.
+     * 绑定 HistoryRepositoryImpl 为 HistoryRepository 接口的实现。
      */
     @Binds
     @Singleton
     abstract fun bindHistoryRepository(impl: HistoryRepositoryImpl): HistoryRepository
+
+    /**
+     * 绑定 ProductRepositoryImpl 为 ProductRepository 接口的实现。
+     */
+    @Binds
+    @Singleton
+    abstract fun bindProductRepository(impl: ProductRepositoryImpl): ProductRepository
 }

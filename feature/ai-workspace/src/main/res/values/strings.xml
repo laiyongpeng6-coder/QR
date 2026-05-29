@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    给其他 AI 开发者的说明：
+
+    本文件包含 AI Workspace 模块的字符串资源。
+    所有面向用户的文本都应定义在此处，便于国际化（i18n）。
+
+    命名规范：ai_workspace_ 前缀 + 功能描述（snake_case）
+
+    后续开发：
+    - 添加多语言支持时，在 res/values-zh/ 等目录下创建对应翻译文件
+    - Coming Soon 区域的文案在功能上线后需要更新
+-->
+<resources>
+    <!-- 页面标题 -->
+    <string name="ai_workspace_title">QR Style Studio</string>
+
+    <!-- 样式控制面板 -->
+    <string name="ai_workspace_foreground_color">Foreground Color</string>
+    <string name="ai_workspace_background_color">Background Color</string>
+    <string name="ai_workspace_dot_shape">Dot Shape</string>
+    <string name="ai_workspace_shape_square">Square</string>
+    <string name="ai_workspace_shape_circle">Circle</string>
+    <string name="ai_workspace_shape_rounded">Rounded</string>
+
+    <!-- 操作按钮 -->
+    <string name="ai_workspace_save">Save</string>
+    <string name="ai_workspace_share">Share</string>
+
+    <!-- Coming Soon 区域 -->
+    <string name="ai_workspace_coming_soon">Coming Soon</string>
+    <string name="ai_workspace_coming_soon_desc">Gradient fills • AI templates • Custom logos</string>
+
+    <!-- 错误信息 -->
+    <string name="ai_workspace_error_empty_content">Content cannot be empty</string>
+    <string name="ai_workspace_error_generation_failed">QR code generation failed</string>
+
+    <!-- 无障碍描述 -->
+    <string name="ai_workspace_qr_preview">QR Code Preview</string>
+    <string name="ai_workspace_locked">Locked feature</string>
+</resources>

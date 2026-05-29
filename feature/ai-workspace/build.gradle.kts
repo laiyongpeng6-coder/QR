@@ -35,6 +35,9 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:data"))
 
+    // 跨 feature 模块依赖：使用 generator 模块的 QrEncoder
+    implementation(project(":feature:generator"))
+
     // Compose BOM
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
