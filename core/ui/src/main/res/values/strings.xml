@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name -->
-    <string name="app_name">QR Scan Max</string>
+    <string name="app_name">QR Scan Fast</string>
 
     <!-- Common actions -->
     <string name="action_save">Save</string>

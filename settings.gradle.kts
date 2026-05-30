@@ -1,4 +1,4 @@
-pluginManagement {
+﻿pluginManagement {
     repositories {
         gradlePluginPortal()
         google()
@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "QRScanMax"
+rootProject.name = "FastQrScan"
 
 include(":app")
 include(":core:data")

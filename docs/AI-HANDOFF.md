@@ -1,8 +1,8 @@
-# AI 接手指南 (AI Handoff Guide)
+﻿# AI 接手指南 (AI Handoff Guide)
 
 ## 项目概述
 
-QR Scan Max 是一个面向海外 Android 市场的二维码/条形码扫描、生成和 AI 美化工具。
+Fast QR Scan 是一个面向海外 Android 市场的二维码/条形码扫描、生成和 AI 美化工具。
 使用 Kotlin + Jetpack Compose + Hilt + Room + CameraX 技术栈。
 
 ## 项目结构
@@ -81,7 +81,7 @@ QR/
 
 ### 签名发布
 1. 复制 `app/keystore.properties.template` 为 `app/keystore.properties`
-2. 生成 keystore：`keytool -genkey -v -keystore qrscanmax-release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias qrscanmax`
+2. 生成 keystore：`keytool -genkey -v -keystore FastQrScan-release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias FastQrScan`
 3. 填入密码信息
 4. 在 app/build.gradle.kts 中添加 signingConfigs 读取该文件
 

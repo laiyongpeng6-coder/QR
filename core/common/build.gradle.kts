@@ -1,10 +1,10 @@
-plugins {
+﻿plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.qrscanmax.core.common"
+    namespace = "com.qrscanfast.qr.core.common"
     compileSdk = 35
 
     defaultConfig {

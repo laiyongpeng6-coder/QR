@@ -1,8 +1,8 @@
-# Design Document
+﻿# Design Document
 
 ## Overview
 
-QR Scan Max is an Android application targeting the overseas Google Play market. It provides QR/barcode scanning, code generation, and AI art beautification features through a modern Jetpack Compose UI. The app follows a **Clean Architecture** pattern with **MVVM** presentation layer, organized as a multi-module Android project.
+Fast QR Scan is an Android application targeting the overseas Google Play market. It provides QR/barcode scanning, code generation, and AI art beautification features through a modern Jetpack Compose UI. The app follows a **Clean Architecture** pattern with **MVVM** presentation layer, organized as a multi-module Android project.
 
 ### Technology Stack
 
@@ -108,10 +108,10 @@ coil = "2.7.0"
 **Responsibility:** Application entry point, Hilt application class, single Activity host, top-level navigation graph.
 
 **Key Components:**
-- `QRScanMaxApplication` - Hilt application class
+- `FastQrScanApplication` - Hilt application class
 - `MainActivity` - Single activity hosting the Compose navigation
 - `MainNavHost` - Top-level NavHost with tab-based navigation
-- `QRScanMaxTheme` - Material 3 theme definition
+- `FastQrScanTheme` - Material 3 theme definition
 
 ---
 
@@ -237,7 +237,7 @@ fun HistoryScreen(
 **Encryption Strategy:**
 - Room database encrypted using SQLCipher
 - Encryption key generated and stored in Android Keystore
-- Key alias: `qr_scan_max_db_key`
+- Key alias: `fast_qr_scan_db_key`
 - AES-256-GCM encryption for database file
 
 **Swipe Actions:**
@@ -363,7 +363,7 @@ class ProductRepository @Inject constructor(
 **Sub-modules:**
 
 #### `:core:data`
-- Room database definition (`QrScanMaxDatabase`)
+- Room database definition (`FastQrScanDatabase`)
 - SQLCipher integration and key management
 - Base repository interfaces
 - DataStore preferences

@@ -1,4 +1,4 @@
-plugins {
+﻿plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.qrscanmax.feature.productlookup"
+    namespace = "com.qrscanfast.qr.feature.productlookup"
     compileSdk = 35
 
     defaultConfig {

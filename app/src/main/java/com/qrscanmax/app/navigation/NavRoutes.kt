@@ -1,5 +1,7 @@
 package com.qrscanmax.app.navigation
 
+import android.net.Uri
+
 /**
  * Defines all navigation destinations for the QR Scan Max application.
  *
@@ -20,6 +22,13 @@ sealed class NavRoutes(val route: String) {
 
     /** Main content graph entry point (tab-based navigation). */
     data object Main : NavRoutes("main")
+
+    /** 扫描结果详情页，参数为历史记录 ID 或直接传递原始内容 */
+    data object ScanResult : NavRoutes("scan_result/{rawContent}/{format}/{contentType}") {
+        fun createRoute(rawContent: String, format: String, contentType: String): String {
+            return "scan_result/${Uri.encode(rawContent)}/${format}/${contentType}"
+        }
+    }
 
     /**
      * Bottom-navigation tab destinations.

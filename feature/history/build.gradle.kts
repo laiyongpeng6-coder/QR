@@ -1,4 +1,4 @@
-plugins {
+﻿plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.qrscanmax.feature.history"
+    namespace = "com.qrscanfast.qr.feature.history"
     compileSdk = 35
 
     defaultConfig {
@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons.extended)
     debugImplementation(libs.compose.ui.tooling)
 
     // Navigation
