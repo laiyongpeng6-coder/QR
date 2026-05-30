@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name -->
     <string name="app_name">QR Scan Fast</string>
@@ -22,7 +22,7 @@
     <string name="tab_create">Create</string>
 
     <!-- Common states -->
-    <string name="state_loading">Loading…</string>
+    <string name="state_loading">Loading...</string>
     <string name="state_error">Something went wrong</string>
     <string name="state_empty">No items found</string>
     <string name="state_no_network">No internet connection</string>

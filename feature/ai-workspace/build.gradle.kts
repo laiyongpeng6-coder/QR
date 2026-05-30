@@ -7,7 +7,7 @@
 }
 
 android {
-    namespace = "com.qrscanfast.qr.feature.aiworkspace"
+    namespace = "com.qrscanfast.feature.aiworkspace"
     compileSdk = 35
 
     defaultConfig {

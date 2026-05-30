@@ -7,7 +7,7 @@
 }
 
 android {
-    namespace = "com.qrscanfast.qr.feature.history"
+    namespace = "com.qrscanfast.feature.history"
     compileSdk = 35
 
     defaultConfig {

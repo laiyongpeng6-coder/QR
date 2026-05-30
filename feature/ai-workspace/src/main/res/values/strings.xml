@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-    给其他 AI 开发者的说明：
+    缁欏叾浠?AI 寮€鍙戣€呯殑璇存槑锛?
 
-    本文件包含 AI Workspace 模块的字符串资源。
-    所有面向用户的文本都应定义在此处，便于国际化（i18n）。
+    鏈枃浠跺寘鍚?AI Workspace 妯″潡鐨勫瓧绗︿覆璧勬簮銆?
+    鎵€鏈夐潰鍚戠敤鎴风殑鏂囨湰閮藉簲瀹氫箟鍦ㄦ澶勶紝渚夸簬鍥介檯鍖栵紙i18n锛夈€?
 
-    命名规范：ai_workspace_ 前缀 + 功能描述（snake_case）
+    鍛藉悕瑙勮寖锛歛i_workspace_ 鍓嶇紑 + 鍔熻兘鎻忚堪锛坰nake_case锛?
 
-    后续开发：
-    - 添加多语言支持时，在 res/values-zh/ 等目录下创建对应翻译文件
-    - Coming Soon 区域的文案在功能上线后需要更新
+    鍚庣画寮€鍙戯細
+    - 娣诲姞澶氳瑷€鏀寔鏃讹紝鍦?res/values-zh/ 绛夌洰褰曚笅鍒涘缓瀵瑰簲缈昏瘧鏂囦欢
+    - Coming Soon 鍖哄煙鐨勬枃妗堝湪鍔熻兘涓婄嚎鍚庨渶瑕佹洿鏂?
 -->
 <resources>
-    <!-- 页面标题 -->
+    <!-- 椤甸潰鏍囬 -->
     <string name="ai_workspace_title">QR Style Studio</string>
 
-    <!-- 样式控制面板 -->
+    <!-- 鏍峰紡鎺у埗闈㈡澘 -->
     <string name="ai_workspace_foreground_color">Foreground Color</string>
     <string name="ai_workspace_background_color">Background Color</string>
     <string name="ai_workspace_dot_shape">Dot Shape</string>
@@ -23,19 +23,19 @@
     <string name="ai_workspace_shape_circle">Circle</string>
     <string name="ai_workspace_shape_rounded">Rounded</string>
 
-    <!-- 操作按钮 -->
+    <!-- 鎿嶄綔鎸夐挳 -->
     <string name="ai_workspace_save">Save</string>
     <string name="ai_workspace_share">Share</string>
 
-    <!-- Coming Soon 区域 -->
+    <!-- Coming Soon 鍖哄煙 -->
     <string name="ai_workspace_coming_soon">Coming Soon</string>
-    <string name="ai_workspace_coming_soon_desc">Gradient fills • AI templates • Custom logos</string>
+    <string name="ai_workspace_coming_soon_desc">Gradient fills 鈥?AI templates 鈥?Custom logos</string>
 
-    <!-- 错误信息 -->
+    <!-- 閿欒淇℃伅 -->
     <string name="ai_workspace_error_empty_content">Content cannot be empty</string>
     <string name="ai_workspace_error_generation_failed">QR code generation failed</string>
 
-    <!-- 无障碍描述 -->
+    <!-- 鏃犻殰纰嶆弿杩?-->
     <string name="ai_workspace_qr_preview">QR Code Preview</string>
     <string name="ai_workspace_locked">Locked feature</string>
 </resources>

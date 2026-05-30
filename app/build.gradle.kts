@@ -1,4 +1,4 @@
-plugins {
+﻿plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.qrscanmax.app"
+    namespace = "com.qrscanfast.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.qrscanmax.app"
+        applicationId = "com.qrscanfast.qr"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

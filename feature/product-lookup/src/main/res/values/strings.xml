@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="product_loading">Looking up product...</string>
     <string name="product_not_found">Product Not Found</string>

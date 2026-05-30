@@ -7,7 +7,7 @@
 }
 
 android {
-    namespace = "com.qrscanfast.qr.feature.onboarding"
+    namespace = "com.qrscanfast.feature.onboarding"
     compileSdk = 35
 
     defaultConfig {

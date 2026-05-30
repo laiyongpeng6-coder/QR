@@ -4,7 +4,7 @@
 }
 
 android {
-    namespace = "com.qrscanfast.qr.core.common"
+    namespace = "com.qrscanfast.core.common"
     compileSdk = 35
 
     defaultConfig {

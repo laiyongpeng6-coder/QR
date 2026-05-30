@@ -7,7 +7,7 @@
 }
 
 android {
-    namespace = "com.qrscanfast.qr.feature.productlookup"
+    namespace = "com.qrscanfast.feature.productlookup"
     compileSdk = 35
 
     defaultConfig {

@@ -7,7 +7,7 @@
 }
 
 android {
-    namespace = "com.qrscanfast.qr.feature.generator"
+    namespace = "com.qrscanfast.feature.generator"
     compileSdk = 35
 
     defaultConfig {

@@ -1,4 +1,4 @@
-// Top-level build file for QR Scan Max
+﻿// Top-level build file for QR Scan Max
 // Plugins are declared here with `apply false` and applied in individual modules as needed.
 
 plugins {
