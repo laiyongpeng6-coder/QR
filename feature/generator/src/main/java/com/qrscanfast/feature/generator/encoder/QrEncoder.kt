@@ -4,41 +4,24 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
-import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.MultiFormatWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import javax.inject.Inject
 
 /**
- * QR 码编码器 — 使用 ZXing 库将文本内容编码为 QR 码位图。
+ * 码编码器 — 使用 ZXing 库将文本内容编码为 QR 码或条码位图。
  *
- * ## 给其他 AI 开发者的说明
- *
- * 本类封装了 ZXing 的 QRCodeWriter，提供简洁的 API 生成 QR 码 Bitmap。
- * 支持自定义尺寸和纠错等级。
- *
- * ## 使用示例
- * ```kotlin
- * val bitmap = qrEncoder.encode("https://example.com", size = 512)
- * ```
- *
- * ## 纠错等级说明
- * - L (7%) — 适合内容短、环境干净的场景
- * - M (15%) — 默认推荐，平衡容量和容错
- * - Q (25%) — 适合可能被部分遮挡的场景
- * - H (30%) — 最高容错，适合中心放 Logo 的场景
+ * 支持的格式：
+ * - QR Code（二维码）
+ * - EAN-13（商品条码）
+ * - Code 128（通用条码）
+ * - EAN-8（短商品条码）
+ * - UPC-A（北美商品条码）
  */
 class QrEncoder @Inject constructor() {
 
     /**
      * 将文本内容编码为 QR 码位图。
-     *
-     * @param content 要编码的文本内容
-     * @param size 输出位图的宽高（像素）
-     * @param errorCorrection 纠错等级，默认为 M
-     * @param foregroundColor 前景色，默认黑色
-     * @param backgroundColor 背景色，默认白色
-     * @return 生成的 QR 码 Bitmap
-     * @throws com.google.zxing.WriterException 如果内容超出容量限制
      */
     fun encode(
         content: String,
@@ -47,18 +30,53 @@ class QrEncoder @Inject constructor() {
         foregroundColor: Int = Color.BLACK,
         backgroundColor: Int = Color.WHITE
     ): Bitmap {
-        val hints = mapOf(
-            EncodeHintType.ERROR_CORRECTION to errorCorrection,
+        return encodeWithFormat(
+            content = content,
+            format = BarcodeFormat.QR_CODE,
+            width = size,
+            height = size,
+            errorCorrection = errorCorrection,
+            foregroundColor = foregroundColor,
+            backgroundColor = backgroundColor
+        )
+    }
+
+    /**
+     * 将文本内容编码为指定格式的条码/二维码位图。
+     *
+     * @param content 要编码的内容
+     * @param format ZXing 条码格式
+     * @param width 输出宽度（像素）
+     * @param height 输出高度（像素）
+     * @param errorCorrection 纠错等级（仅 QR Code 有效）
+     * @param foregroundColor 前景色
+     * @param backgroundColor 背景色
+     * @return 生成的 Bitmap
+     */
+    fun encodeWithFormat(
+        content: String,
+        format: BarcodeFormat,
+        width: Int = 512,
+        height: Int = 200,
+        errorCorrection: ErrorCorrectionLevel = ErrorCorrectionLevel.M,
+        foregroundColor: Int = Color.BLACK,
+        backgroundColor: Int = Color.WHITE
+    ): Bitmap {
+        val hints = mutableMapOf<EncodeHintType, Any>(
             EncodeHintType.CHARACTER_SET to "UTF-8",
             EncodeHintType.MARGIN to 1
         )
+        // 纠错等级仅对 QR Code 有效
+        if (format == BarcodeFormat.QR_CODE) {
+            hints[EncodeHintType.ERROR_CORRECTION] = errorCorrection
+        }
 
-        val writer = QRCodeWriter()
-        val bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, size, size, hints)
+        val writer = MultiFormatWriter()
+        val bitMatrix = writer.encode(content, format, width, height, hints)
 
-        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-        for (x in 0 until size) {
-            for (y in 0 until size) {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        for (x in 0 until width) {
+            for (y in 0 until height) {
                 bitmap.setPixel(x, y, if (bitMatrix[x, y]) foregroundColor else backgroundColor)
             }
         }
@@ -70,5 +88,33 @@ class QrEncoder @Inject constructor() {
      */
     fun isWithinCapacity(content: String): Boolean {
         return content.toByteArray(Charsets.UTF_8).size <= 2953
+    }
+
+    /**
+     * 验证 EAN-13 格式是否合法（13位纯数字）。
+     */
+    fun isValidEan13(content: String): Boolean {
+        return content.length == 13 && content.all { it.isDigit() }
+    }
+
+    /**
+     * 验证 EAN-8 格式是否合法（8位纯数字）。
+     */
+    fun isValidEan8(content: String): Boolean {
+        return content.length == 8 && content.all { it.isDigit() }
+    }
+
+    /**
+     * 验证 UPC-A 格式是否合法（12位纯数字）。
+     */
+    fun isValidUpcA(content: String): Boolean {
+        return content.length == 12 && content.all { it.isDigit() }
+    }
+
+    /**
+     * 验证 Code 128 格式是否合法（非空 ASCII 字符）。
+     */
+    fun isValidCode128(content: String): Boolean {
+        return content.isNotEmpty() && content.all { it.code in 0..127 }
     }
 }

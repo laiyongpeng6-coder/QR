@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "857617124656",
+    "project_id": "fastqrscan",
+    "storage_bucket": "fastqrscan.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857617124656:android:8afe1971dccd6379454cf5",
+        "android_client_info": {
+          "package_name": "com.qrscanfast.qr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBux0iLTd1LN710AtQf7v4a53rdEef2xOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

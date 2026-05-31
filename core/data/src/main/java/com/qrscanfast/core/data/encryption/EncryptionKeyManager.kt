@@ -88,22 +88,83 @@ class EncryptionKeyManager @Inject constructor(
         val encryptedBase64 = prefs.getString(PREF_ENCRYPTED_PASSPHRASE, null)
         val ivBase64 = prefs.getString(PREF_PASSPHRASE_IV, null)
 
-        return if (encryptedBase64 != null && ivBase64 != null) {
-            // 已有加密的 passphrase，解密后返回
-            val encrypted = android.util.Base64.decode(encryptedBase64, android.util.Base64.NO_WRAP)
-            val iv = android.util.Base64.decode(ivBase64, android.util.Base64.NO_WRAP)
-            decryptPassphrase(encrypted, iv)
-        } else {
-            // 首次运行，生成新的 passphrase 并加密存储
-            val passphrase = generateRandomPassphrase()
-            val (encrypted, iv) = encryptPassphrase(passphrase)
+        if (encryptedBase64 != null && ivBase64 != null) {
+            // 已有加密的 passphrase，尝试解密
+            try {
+                val encrypted = android.util.Base64.decode(encryptedBase64, android.util.Base64.NO_WRAP)
+                val iv = android.util.Base64.decode(ivBase64, android.util.Base64.NO_WRAP)
+                return decryptPassphrase(encrypted, iv)
+            } catch (e: Exception) {
+                // 解密失败（密钥不匹配/数据损坏/旧版本残留）
+                // 容错恢复：清除旧密钥和旧数据库，重新生成 passphrase
+                return recoverFromCorruptedKey(prefs)
+            }
+        }
 
-            prefs.edit()
-                .putString(PREF_ENCRYPTED_PASSPHRASE, android.util.Base64.encodeToString(encrypted, android.util.Base64.NO_WRAP))
-                .putString(PREF_PASSPHRASE_IV, android.util.Base64.encodeToString(iv, android.util.Base64.NO_WRAP))
-                .apply()
+        // 首次运行，生成新的 passphrase 并加密存储
+        return createAndStoreNewPassphrase(prefs)
+    }
 
-            passphrase
+    /**
+     * 容错恢复：当解密失败时调用。
+     *
+     * 清除损坏的 Keystore 密钥、SharedPreferences 中的旧 passphrase，
+     * 并删除无法解密的旧数据库文件，然后生成全新的 passphrase。
+     *
+     * 注意：此操作会导致旧的加密数据无法恢复（因为密钥已丢失，数据本就无法解密）。
+     */
+    private fun recoverFromCorruptedKey(prefs: android.content.SharedPreferences): ByteArray {
+        // 1. 删除 Keystore 中损坏的密钥
+        try {
+            val keyStore = KeyStore.getInstance(ANDROID_KEYSTORE).apply { load(null) }
+            if (keyStore.containsAlias(KEY_ALIAS)) {
+                keyStore.deleteEntry(KEY_ALIAS)
+            }
+        } catch (_: Exception) {
+            // 忽略删除失败
+        }
+
+        // 2. 清除 SharedPreferences 中的旧 passphrase
+        prefs.edit().clear().apply()
+
+        // 3. 删除无法解密的旧数据库文件（包括 WAL/SHM 等附属文件）
+        deleteCorruptedDatabase()
+
+        // 4. 生成全新的 passphrase
+        return createAndStoreNewPassphrase(prefs)
+    }
+
+    /**
+     * 生成新的 passphrase，用 Keystore 密钥加密后存储，并返回原始 passphrase。
+     */
+    private fun createAndStoreNewPassphrase(prefs: android.content.SharedPreferences): ByteArray {
+        val passphrase = generateRandomPassphrase()
+        val (encrypted, iv) = encryptPassphrase(passphrase)
+
+        prefs.edit()
+            .putString(PREF_ENCRYPTED_PASSPHRASE, android.util.Base64.encodeToString(encrypted, android.util.Base64.NO_WRAP))
+            .putString(PREF_PASSPHRASE_IV, android.util.Base64.encodeToString(iv, android.util.Base64.NO_WRAP))
+            .apply()
+
+        return passphrase
+    }
+
+    /**
+     * 删除旧的数据库文件及其附属文件（WAL/SHM/journal）。
+     * 用于密钥丢失后无法解密旧数据库时的清理。
+     */
+    private fun deleteCorruptedDatabase() {
+        val dbName = "fast_qr_scan.db"
+        val suffixes = listOf("", "-wal", "-shm", "-journal")
+        suffixes.forEach { suffix ->
+            try {
+                val dbFile = context.getDatabasePath("$dbName$suffix")
+                if (dbFile.exists()) {
+                    dbFile.delete()
+                }
+            } catch (_: Exception) {
+                // 忽略删除失败
+            }
         }
     }
 

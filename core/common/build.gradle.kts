@@ -36,6 +36,10 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
+    // Firebase Analytics（埋点工具）
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+
     // Testing
     testImplementation(libs.junit5.api)
     testRuntimeOnly(libs.junit5.engine)

@@ -13,6 +13,9 @@ retrofit = "2.11.0"
 okhttp = "4.12.0"
 coil = "2.7.0"
 kotlinx-serialization = "1.7.1"
+firebase-bom = "33.1.0"
+google-services = "4.4.2"
+firebase-crashlytics-plugin = "3.0.2"
 kotlinx-coroutines = "1.8.1"
 datastore = "1.1.1"
 navigation-compose = "2.7.7"
@@ -69,6 +72,9 @@ camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = 
 # ML Kit Barcode Scanning
 mlkit-barcode = { group = "com.google.mlkit", name = "barcode-scanning", version.ref = "mlkit-barcode" }
 
+# Guava / ListenableFuture
+guava-listenablefuture = { group = "com.google.guava", name = "listenablefuture", version = "1.0" }
+
 # ZXing
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
 
@@ -117,6 +123,11 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
+# Firebase
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -125,3 +136,5 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }

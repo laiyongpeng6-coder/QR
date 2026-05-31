@@ -28,6 +28,14 @@ android {
     }
 }
 
+// 强制使用 listenablefuture 1.0 真实库，覆盖 CameraX 引入的 9999.0 空桩库
+// 否则会报 "Cannot access class ListenableFuture"
+configurations.all {
+    resolutionStrategy {
+        force("com.google.guava:listenablefuture:1.0")
+    }
+}
+
 dependencies {
     // Core modules
     implementation(project(":core:domain"))
@@ -60,6 +68,10 @@ dependencies {
     implementation(libs.camerax.camera2)
     implementation(libs.camerax.lifecycle)
     implementation(libs.camerax.view)
+
+    // 提供 ListenableFuture 实际类（CameraX 的 enableTorch 等方法返回此类型，编译时需要访问）
+    // 注意：CameraX 会引入空桩库 listenablefuture:9999.0，需要在下方 configurations 中强制使用 1.0 真实库
+    implementation(libs.guava.listenablefuture)
 
     // ML Kit Barcode Scanning
     implementation(libs.mlkit.barcode)

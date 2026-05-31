@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.*
@@ -20,56 +19,46 @@ import com.qrscanfast.core.common.DateFormatUtils
 import com.qrscanfast.core.domain.model.HistoryRecord
 
 /**
- * 历史记录主界面 — 按日期分组的时间线列表 + 搜索 + 操作按钮。
- *
- * ## 给其他 AI 开发者的说明
- *
- * 本界面包含：
- * 1. 顶部搜索栏
- * 2. 按日期分组的 LazyColumn 列表
- * 3. 每条记录支持点击查看详情、删除、收藏
- *
- * ## 后续开发
- * - 滑动手势需要使用 SwipeToDismiss API（左滑删除、右滑收藏）
- * - 点击记录应导航到 HistoryDetailScreen
- * - TODO [FUTURE-MONETIZATION]: 每 4-5 条记录后插入原生信息流广告
+ * 历史记录主界面 — 顶部 Tab 切换（扫描/生成）+ 搜索 + 按日期分组的列表。
  */
 @Composable
 fun HistoryScreen(
     viewModel: HistoryViewModel = hiltViewModel(),
-    onItemClick: (HistoryRecord) -> Unit = {},
-    onSettingsClick: () -> Unit = {}
+    onItemClick: (HistoryRecord) -> Unit = {}
 ) {
     val records by viewModel.records.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
+    val selectedTab by viewModel.selectedTab.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            // 顶部栏：设置按钮 + 搜索
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onSettingsClick) {
-                    Icon(
-                        imageVector = Icons.Default.Settings,
-                        contentDescription = "设置"
+            // 顶部 Tab：扫描记录 / 生成记录
+            TabRow(selectedTabIndex = selectedTab.ordinal) {
+                HistoryTab.entries.forEach { tab ->
+                    Tab(
+                        selected = selectedTab == tab,
+                        onClick = { viewModel.setSelectedTab(tab) },
+                        text = { Text(tab.label) }
                     )
                 }
-                OutlinedTextField(
-                    value = searchQuery, onValueChange = viewModel::setSearchQuery,
-                    modifier = Modifier.weight(1f),
-                    placeholder = { Text("Search history...") }, singleLine = true
-                )
             }
 
-            // TODO [FUTURE-MONETIZATION]: Pro 会员 Banner 广告位
+            // 搜索栏
+            OutlinedTextField(
+                value = searchQuery, onValueChange = viewModel::setSearchQuery,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                placeholder = { Text("搜索历史记录...") }, singleLine = true
+            )
 
             if (records.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
-                        text = if (searchQuery.isBlank()) "No scan history yet" else "No results found",
+                        text = when {
+                            searchQuery.isNotBlank() -> "未找到匹配结果"
+                            selectedTab == HistoryTab.SCAN -> "暂无扫描记录"
+                            else -> "暂无生成记录"
+                        },
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -115,18 +104,18 @@ private fun HistoryRecordItem(
                 Text(record.displayTitle, style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text("${record.contentType.name} ? ${DateFormatUtils.formatRelativeTime(record.timestamp)}",
+                Text("${record.contentType.name} · ${DateFormatUtils.formatRelativeTime(record.timestamp)}",
                     style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             IconButton(onClick = onToggleFavorite) {
                 Icon(
                     imageVector = if (record.isFavorite) Icons.Filled.Star else Icons.Default.StarBorder,
-                    contentDescription = "Favorite",
+                    contentDescription = "收藏",
                     tint = if (record.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             IconButton(onClick = onDelete) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = MaterialTheme.colorScheme.error)
+                Icon(Icons.Default.Delete, contentDescription = "删除", tint = MaterialTheme.colorScheme.error)
             }
         }
     }

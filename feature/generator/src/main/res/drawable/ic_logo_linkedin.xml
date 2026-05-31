@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- 蓝色圆角方底 -->
+    <path
+        android:fillColor="#0A66C2"
+        android:pathData="M12,12m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
+    <!-- 白色 in 标志 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M8.34,16.84H6.04V9.74h2.3zM7.19,8.74c-0.74,0 -1.33,-0.6 -1.33,-1.33 0,-0.74 0.6,-1.33 1.33,-1.33 0.73,0 1.33,0.6 1.33,1.33 0,0.74 -0.6,1.33 -1.33,1.33zM17.95,16.84h-2.3v-3.46c0,-0.82 -0.01,-1.88 -1.15,-1.88 -1.15,0 -1.32,0.9 -1.32,1.82v3.52h-2.3V9.74h2.2v0.97h0.03c0.31,-0.58 1.06,-1.19 2.17,-1.19 2.32,0 2.75,1.53 2.75,3.52v3.8z" />
+</vector>

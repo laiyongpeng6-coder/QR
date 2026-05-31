@@ -22,7 +22,10 @@ import androidx.navigation.navArgument
 import com.qrscanfast.app.settings.SettingsScreen
 import com.qrscanfast.core.data.datastore.AppSettings
 import com.qrscanfast.core.data.datastore.OnboardingPreferences
+import com.qrscanfast.feature.generator.BarcodeCreateScreen
 import com.qrscanfast.feature.generator.GeneratorScreen
+import com.qrscanfast.feature.generator.QrBeautifyScreen
+import com.qrscanfast.feature.generator.QrCodeCreateScreen
 import com.qrscanfast.feature.history.HistoryScreen
 import com.qrscanfast.feature.onboarding.OnboardingScreen
 import com.qrscanfast.feature.scanner.ScanResultScreen
@@ -108,9 +111,6 @@ private fun MainTabScaffold(appSettings: AppSettings) {
                             contentType = record.contentType.name
                         )
                         navController.navigate(route)
-                    },
-                    onSettingsClick = {
-                        navController.navigate(NavRoutes.Settings.route)
                     }
                 )
             }
@@ -130,9 +130,44 @@ private fun MainTabScaffold(appSettings: AppSettings) {
                     }
                 )
             }
-            // 创建 Tab
+            // 创建 Tab（入口页）
             composable(NavRoutes.Tab.Create.route) {
-                GeneratorScreen()
+                GeneratorScreen(
+                    onCreateQrCode = {
+                        navController.navigate(NavRoutes.CreateQrCode.route)
+                    },
+                    onCreateBarcode = {
+                        navController.navigate(NavRoutes.CreateBarcode.route)
+                    }
+                )
+            }
+            // 二维码创建页
+            composable(NavRoutes.CreateQrCode.route) {
+                QrCodeCreateScreen(
+                    onBack = { navController.popBackStack() },
+                    onBeautify = { content ->
+                        navController.navigate(NavRoutes.QrBeautify.createRoute(content))
+                    }
+                )
+            }
+            // 条码创建页
+            composable(NavRoutes.CreateBarcode.route) {
+                BarcodeCreateScreen(
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            // 二维码美化页
+            composable(
+                route = NavRoutes.QrBeautify.route,
+                arguments = listOf(
+                    navArgument("content") { type = NavType.StringType }
+                )
+            ) { backStackEntry ->
+                val qrContent = Uri.decode(backStackEntry.arguments?.getString("content") ?: "")
+                QrBeautifyScreen(
+                    content = qrContent,
+                    onBack = { navController.popBackStack() }
+                )
             }
             // 设置页
             composable(NavRoutes.Settings.route) {

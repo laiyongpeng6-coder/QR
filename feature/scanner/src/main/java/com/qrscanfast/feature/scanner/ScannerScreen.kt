@@ -4,10 +4,7 @@ import android.Manifest
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
@@ -31,11 +28,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import com.qrscanfast.core.common.AnalyticsHelper
 import com.qrscanfast.core.common.PermissionUtils
 import com.qrscanfast.core.domain.model.BarcodeFormat
 import com.qrscanfast.core.domain.model.ContentType
@@ -54,6 +51,7 @@ fun ScannerScreen(
     onSettingsClick: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val autoOpenUrl by viewModel.autoOpenUrl.collectAsState()
     val context = LocalContext.current
 
     // 权限请求启动器
@@ -81,9 +79,31 @@ fun ScannerScreen(
         is ScannerUiState.ResultDetected -> {
             val result = (uiState as ScannerUiState.ResultDetected).result
             LaunchedEffect(result) {
-                onResultDetected(result.rawValue, result.format, result.contentType)
-                // 导航后恢复扫描状态，以便用户返回时可以继续扫描
-                viewModel.resumeScanning()
+                // 若开启"自动跳转网页"且内容是 URL/社交链接，直接打开浏览器
+                val isWebLink = result.contentType == ContentType.URL ||
+                    result.contentType == ContentType.SOCIAL_MEDIA
+                if (autoOpenUrl && isWebLink) {
+                    try {
+                        val url = if (!result.rawValue.startsWith("http")) {
+                            "https://${result.rawValue}"
+                        } else {
+                            result.rawValue
+                        }
+                        context.startActivity(
+                            android.content.Intent(
+                                android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse(url)
+                            )
+                        )
+                    } catch (_: Exception) {
+                        // 打开失败则回退到结果页
+                        onResultDetected(result.rawValue, result.format, result.contentType)
+                    }
+                    viewModel.resumeScanning()
+                } else {
+                    onResultDetected(result.rawValue, result.format, result.contentType)
+                    viewModel.resumeScanning()
+                }
             }
             CameraPreviewContent(viewModel = viewModel, onResultDetected = onResultDetected, onSettingsClick = onSettingsClick)
         }
@@ -113,8 +133,51 @@ private fun CameraPreviewContent(
     val lifecycleOwner = LocalLifecycleOwner.current
     var isFlashOn by remember { mutableStateOf(false) }
 
-    // 保存 Camera 实例用于控制手电筒
-    var camera by remember { mutableStateOf<androidx.camera.core.Camera?>(null) }
+    // 使用 LifecycleCameraController（封装了 ProcessCameraProvider，无需手动处理 ListenableFuture）
+    val cameraController = remember {
+        LifecycleCameraController(context).apply {
+            cameraSelector = androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
+        }
+    }
+
+    // 配置 ML Kit 条码分析器
+    DisposableEffect(Unit) {
+        val analysisExecutor = Executors.newSingleThreadExecutor()
+        val barcodeScanner = BarcodeScanning.getClient()
+
+        cameraController.setImageAnalysisAnalyzer(analysisExecutor) { imageProxy ->
+            @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
+            val mediaImage = imageProxy.image
+            if (mediaImage != null) {
+                val inputImage = InputImage.fromMediaImage(
+                    mediaImage,
+                    imageProxy.imageInfo.rotationDegrees
+                )
+                barcodeScanner.process(inputImage)
+                    .addOnSuccessListener { barcodes ->
+                        barcodes.firstOrNull()?.let { barcode ->
+                            barcode.rawValue?.let { rawValue ->
+                                val format = mapMlKitFormat(barcode.format)
+                                viewModel.onBarcodeDetected(rawValue, format)
+                            }
+                        }
+                    }
+                    .addOnCompleteListener {
+                        imageProxy.close()
+                    }
+            } else {
+                imageProxy.close()
+            }
+        }
+
+        // 绑定到生命周期
+        cameraController.bindToLifecycle(lifecycleOwner)
+
+        onDispose {
+            cameraController.unbind()
+            analysisExecutor.shutdown()
+        }
+    }
 
     // 相册选择器
     val albumLauncher = rememberLauncherForActivityResult(
@@ -132,8 +195,10 @@ private fun CameraPreviewContent(
                         if (barcode != null && barcode.rawValue != null) {
                             val format = mapMlKitFormat(barcode.format)
                             viewModel.onBarcodeDetected(barcode.rawValue!!, format)
+                            AnalyticsHelper.logAlbumImport(true)
                         } else {
                             Toast.makeText(context, "未在图片中检测到二维码或条形码", Toast.LENGTH_SHORT).show()
+                            AnalyticsHelper.logAlbumImport(false)
                         }
                     }
                     .addOnFailureListener {
@@ -146,72 +211,13 @@ private fun CameraPreviewContent(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // 相机预览（CameraX PreviewView）+ ML Kit 条码扫描
+        // 相机预览（CameraX PreviewView + LifecycleCameraController）
         AndroidView(
             factory = { ctx ->
-                val previewView = PreviewView(ctx).apply {
+                PreviewView(ctx).apply {
                     implementationMode = PreviewView.ImplementationMode.PERFORMANCE
+                    controller = cameraController
                 }
-
-                val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
-                cameraProviderFuture.addListener({
-                    val cameraProvider = cameraProviderFuture.get()
-
-                    // 配置预览
-                    val preview = Preview.Builder()
-                        .build()
-                        .also { it.setSurfaceProvider(previewView.surfaceProvider) }
-
-                    // 配置图像分析（ML Kit 条码扫描）
-                    val imageAnalysis = ImageAnalysis.Builder()
-                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                        .build()
-
-                    val analysisExecutor = Executors.newSingleThreadExecutor()
-                    val barcodeScanner = BarcodeScanning.getClient()
-
-                    imageAnalysis.setAnalyzer(analysisExecutor) { imageProxy ->
-                        @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
-                        val mediaImage = imageProxy.image
-                        if (mediaImage != null) {
-                            val inputImage = InputImage.fromMediaImage(
-                                mediaImage,
-                                imageProxy.imageInfo.rotationDegrees
-                            )
-                            barcodeScanner.process(inputImage)
-                                .addOnSuccessListener { barcodes ->
-                                    barcodes.firstOrNull()?.let { barcode ->
-                                        barcode.rawValue?.let { rawValue ->
-                                            val format = mapMlKitFormat(barcode.format)
-                                            viewModel.onBarcodeDetected(rawValue, format)
-                                        }
-                                    }
-                                }
-                                .addOnCompleteListener {
-                                    imageProxy.close()
-                                }
-                        } else {
-                            imageProxy.close()
-                        }
-                    }
-
-                    // 使用后置摄像头
-                    val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-                    try {
-                        cameraProvider.unbindAll()
-                        camera = cameraProvider.bindToLifecycle(
-                            lifecycleOwner,
-                            cameraSelector,
-                            preview,
-                            imageAnalysis
-                        )
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }, ContextCompat.getMainExecutor(ctx))
-
-                previewView
             },
             modifier = Modifier.fillMaxSize()
         )
@@ -262,7 +268,8 @@ private fun CameraPreviewContent(
         IconButton(
             onClick = {
                 isFlashOn = !isFlashOn
-                camera?.cameraControl?.enableTorch(isFlashOn)
+                cameraController.enableTorch(isFlashOn)
+                AnalyticsHelper.logFlashToggle(isFlashOn)
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)

@@ -3,6 +3,8 @@
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.zxing.BarcodeFormat
+import com.qrscanfast.core.common.AnalyticsHelper
 import com.qrscanfast.core.domain.model.ContentType
 import com.qrscanfast.core.domain.model.HistoryRecord
 import com.qrscanfast.core.domain.model.RecordSource
@@ -17,22 +19,8 @@ import java.time.Instant
 import javax.inject.Inject
 
 /**
- * QR 码生成器的 ViewModel，管理输入状态、验证和生成逻辑。
- *
- * ## 给其他 AI 开发者的说明
- *
- * 本 ViewModel 负责：
- * 1. 管理用户输入的内容和选择的输入类型
- * 2. 验证输入数据的合法性
- * 3. 调用 QrEncoder 生成 QR 码位图
- * 4. 将生成的 QR 码保存到历史记录
- *
- * ## 输入类型
- * 支持 6 种：纯文本、URL、WiFi、联系人、电话、社交媒体
- *
- * ## 状态流转
- * Input → Generating → Generated（显示预览）
- *       → Error（验证失败或容量超出）
+ * 码生成器的 ViewModel，管理输入状态、验证和生成逻辑。
+ * 支持 QR Code 和常见条码格式（EAN-13、Code 128、EAN-8、UPC-A）。
  */
 @HiltViewModel
 class GeneratorViewModel @Inject constructor(
@@ -70,32 +58,60 @@ class GeneratorViewModel @Inject constructor(
     }
 
     /**
-     * 生成 QR 码。验证 → 编码 → 保存历史。
+     * 生成码。验证 → 编码 → 保存历史。
      */
     fun generate() {
         val currentContent = _content.value.trim()
+        val type = _inputType.value
 
         if (currentContent.isEmpty()) {
-            _uiState.value = GeneratorUiState.Error("Please enter content")
+            _uiState.value = GeneratorUiState.Error("请输入内容")
             return
         }
 
-        val encodedContent = formatContent(currentContent, _inputType.value)
+        // 根据类型验证内容格式
+        val validationError = validateContent(currentContent, type)
+        if (validationError != null) {
+            _uiState.value = GeneratorUiState.Error(validationError)
+            return
+        }
 
-        if (!qrEncoder.isWithinCapacity(encodedContent)) {
-            _uiState.value = GeneratorUiState.Error("Content too large for QR code")
+        val encodedContent = formatContent(currentContent, type)
+
+        // QR Code 容量检查
+        if (type.isQrCode && !qrEncoder.isWithinCapacity(encodedContent)) {
+            _uiState.value = GeneratorUiState.Error("内容超出 QR 码容量限制")
             return
         }
 
         _uiState.value = GeneratorUiState.Generating
         try {
-            val bitmap = qrEncoder.encode(content = encodedContent, size = _selectedResolution.value)
+            val bitmap = if (type.isQrCode) {
+                qrEncoder.encode(content = encodedContent, size = _selectedResolution.value)
+            } else {
+                // 条码：宽度用分辨率，高度为宽度的 40%
+                val width = _selectedResolution.value
+                val height = (width * 0.4f).toInt()
+                qrEncoder.encodeWithFormat(
+                    content = encodedContent,
+                    format = type.toBarcodeFormat(),
+                    width = width,
+                    height = height
+                )
+            }
             _uiState.value = GeneratorUiState.Generated(bitmap, encodedContent)
+
+            // 埋点：生成码
+            if (type.isQrCode) {
+                AnalyticsHelper.logQrCodeGenerate(type.name)
+            } else {
+                AnalyticsHelper.logBarcodeGenerate(type.name)
+            }
 
             viewModelScope.launch {
                 historyRepository.insert(
                     HistoryRecord(
-                        contentType = mapInputTypeToContentType(_inputType.value),
+                        contentType = mapInputTypeToContentType(type),
                         rawContent = encodedContent,
                         displayTitle = currentContent.take(50),
                         timestamp = Instant.now(),
@@ -104,12 +120,34 @@ class GeneratorViewModel @Inject constructor(
                 )
             }
         } catch (e: Exception) {
-            _uiState.value = GeneratorUiState.Error("Generation failed: ${e.message}")
+            _uiState.value = GeneratorUiState.Error("生成失败: ${e.message}")
         }
     }
 
     fun resetToInput() {
         _uiState.value = GeneratorUiState.Input
+    }
+
+    /**
+     * 验证内容格式是否符合所选类型要求。
+     * @return 错误信息，null 表示验证通过
+     */
+    private fun validateContent(content: String, type: GeneratorInputType): String? {
+        return when (type) {
+            GeneratorInputType.BARCODE_EAN13 -> {
+                if (!qrEncoder.isValidEan13(content)) "EAN-13 需要 13 位纯数字" else null
+            }
+            GeneratorInputType.BARCODE_EAN8 -> {
+                if (!qrEncoder.isValidEan8(content)) "EAN-8 需要 8 位纯数字" else null
+            }
+            GeneratorInputType.BARCODE_UPC_A -> {
+                if (!qrEncoder.isValidUpcA(content)) "UPC-A 需要 12 位纯数字" else null
+            }
+            GeneratorInputType.BARCODE_CODE128 -> {
+                if (!qrEncoder.isValidCode128(content)) "Code 128 仅支持 ASCII 字符" else null
+            }
+            else -> null
+        }
     }
 
     private fun formatContent(content: String, type: GeneratorInputType): String {
@@ -130,6 +168,10 @@ class GeneratorViewModel @Inject constructor(
             GeneratorInputType.CONTACT -> ContentType.VCARD
             GeneratorInputType.PHONE -> ContentType.PHONE
             GeneratorInputType.SOCIAL_MEDIA -> ContentType.SOCIAL_MEDIA
+            GeneratorInputType.BARCODE_EAN13,
+            GeneratorInputType.BARCODE_EAN8,
+            GeneratorInputType.BARCODE_UPC_A,
+            GeneratorInputType.BARCODE_CODE128 -> ContentType.PRODUCT
         }
     }
 }
@@ -138,7 +180,22 @@ class GeneratorViewModel @Inject constructor(
  * 生成器支持的输入类型枚举。
  */
 enum class GeneratorInputType {
-    PLAIN_TEXT, URL, WIFI, CONTACT, PHONE, SOCIAL_MEDIA
+    // QR Code 类型
+    PLAIN_TEXT, URL, WIFI, CONTACT, PHONE, SOCIAL_MEDIA,
+    // 条码类型
+    BARCODE_EAN13, BARCODE_EAN8, BARCODE_UPC_A, BARCODE_CODE128;
+
+    /** 是否为 QR Code 类型（非条码） */
+    val isQrCode: Boolean get() = this in listOf(PLAIN_TEXT, URL, WIFI, CONTACT, PHONE, SOCIAL_MEDIA)
+
+    /** 转换为 ZXing BarcodeFormat */
+    fun toBarcodeFormat(): BarcodeFormat = when (this) {
+        BARCODE_EAN13 -> BarcodeFormat.EAN_13
+        BARCODE_EAN8 -> BarcodeFormat.EAN_8
+        BARCODE_UPC_A -> BarcodeFormat.UPC_A
+        BARCODE_CODE128 -> BarcodeFormat.CODE_128
+        else -> BarcodeFormat.QR_CODE
+    }
 }
 
 /**

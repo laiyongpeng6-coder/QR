@@ -1,7 +1,14 @@
 ﻿package com.qrscanfast.feature.scanner
 
+import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.qrscanfast.core.common.AnalyticsHelper
+import com.qrscanfast.core.data.datastore.AppSettings
 import com.qrscanfast.core.domain.model.BarcodeFormat
 import com.qrscanfast.core.domain.model.ContentType
 import com.qrscanfast.core.domain.model.HistoryRecord
@@ -10,9 +17,13 @@ import com.qrscanfast.core.domain.model.ScanResult
 import com.qrscanfast.core.domain.repository.HistoryRepository
 import com.qrscanfast.core.domain.usecase.ResultMapperUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.Instant
 import javax.inject.Inject
@@ -20,50 +31,35 @@ import javax.inject.Inject
 /**
  * 扫描器界面的 ViewModel，管理扫描状态和业务逻辑。
  *
- * ## 给其他 AI 开发者的说明
- *
- * 本 ViewModel 负责：
+ * 负责：
  * 1. 管理 UI 状态（扫描中 / 已检测到结果 / 权限被拒绝）
- * 2. 接收 ML Kit 的扫描结果，通过 ResultMapperUseCase 分类内容类型
- * 3. 自动将扫描结果保存到历史记录
- *
- * ## 状态流转
- * - 初始状态：Scanning（相机预览活跃，等待检测）
- * - 检测到条码：ResultDetected（显示结果面板）
- * - 用户关闭结果：回到 Scanning
- * - 权限被拒绝：PermissionDenied（显示权限说明）
- *
- * ## 与 UI 层的交互
- * ScannerScreen 通过 collectAsState 观察 [uiState]，
- * 并在 ML Kit 回调中调用 [onBarcodeDetected]。
+ * 2. 接收 ML Kit 的扫描结果，分类内容类型
+ * 3. 根据设置触发震动反馈
+ * 4. 自动保存扫描结果到历史记录
+ * 5. 暴露"自动跳转网页"设置状态供 UI 判断
  */
 @HiltViewModel
 class ScannerViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val resultMapper: ResultMapperUseCase,
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository,
+    private val appSettings: AppSettings
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ScannerUiState>(ScannerUiState.Scanning)
-    /** 当前扫描器 UI 状态 */
     val uiState: StateFlow<ScannerUiState> = _uiState.asStateFlow()
+
+    /** 是否启用自动跳转网页（来自设置，供 UI 判断是否直接打开浏览器） */
+    val autoOpenUrl: StateFlow<Boolean> = appSettings.autoOpenUrl
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     /** 是否暂停扫描（检测到结果后暂停，避免重复触发） */
     private var isPaused = false
 
     /**
-     * ML Kit 检测到条码时调用此方法。
-     *
-     * 会自动：
-     * 1. 分类内容类型（URL/WiFi/vCard 等）
-     * 2. 创建 ScanResult 对象
-     * 3. 保存到历史记录
-     * 4. 更新 UI 状态为 ResultDetected
-     *
-     * @param rawValue 条码的原始解码字符串
-     * @param format 条码格式（QR_CODE、EAN_13 等）
+     * ML Kit 检测到条码时调用。
      */
     fun onBarcodeDetected(rawValue: String, format: BarcodeFormat) {
-        // 如果已暂停（正在显示结果），忽略新的检测
         if (isPaused) return
         isPaused = true
 
@@ -75,8 +71,22 @@ class ScannerViewModel @Inject constructor(
             timestamp = Instant.now()
         )
 
-        // 更新 UI 状态
         _uiState.value = ScannerUiState.ResultDetected(scanResult)
+
+        // 埋点：扫描完成
+        AnalyticsHelper.logScanComplete(contentType.name, format.name)
+
+        // 根据设置触发震动反馈
+        viewModelScope.launch {
+            try {
+                val shouldVibrate = appSettings.vibrateOnScan.first()
+                if (shouldVibrate) {
+                    triggerVibration()
+                }
+            } catch (_: Exception) {
+                // 忽略震动失败
+            }
+        }
 
         // 异步保存到历史记录
         viewModelScope.launch {
@@ -92,36 +102,40 @@ class ScannerViewModel @Inject constructor(
     }
 
     /**
-     * 用户关闭结果面板，恢复扫描状态。
+     * 触发一次短促震动（100ms）。
      */
+    private fun triggerVibration() {
+        val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vm = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+            vm?.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+        }
+
+        vibrator?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                it.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
+            } else {
+                @Suppress("DEPRECATION")
+                it.vibrate(100)
+            }
+        }
+    }
+
     fun resumeScanning() {
         isPaused = false
         _uiState.value = ScannerUiState.Scanning
     }
 
-    /**
-     * 相机权限被拒绝时调用。
-     */
     fun onPermissionDenied() {
         _uiState.value = ScannerUiState.PermissionDenied
     }
 
-    /**
-     * 权限被授予后恢复扫描。
-     */
     fun onPermissionGranted() {
         _uiState.value = ScannerUiState.Scanning
     }
 
-    /**
-     * 根据内容类型生成人类可读的显示标题。
-     *
-     * 例如：
-     * - URL → 提取域名 "example.com"
-     * - WiFi → 提取 SSID
-     * - Phone → 显示号码
-     * - 其他 → 截取前 50 个字符
-     */
     private fun generateDisplayTitle(rawValue: String, contentType: ContentType): String {
         return when (contentType) {
             ContentType.URL -> {
@@ -149,17 +163,9 @@ class ScannerViewModel @Inject constructor(
 
 /**
  * 扫描器界面的 UI 状态密封类。
- *
- * ## 给其他 AI 开发者的说明
- * 在 ScannerScreen 中使用 when 表达式匹配这些状态来渲染不同的 UI。
  */
 sealed class ScannerUiState {
-    /** 正在扫描中，相机预览活跃 */
     data object Scanning : ScannerUiState()
-
-    /** 已检测到扫描结果 */
     data class ResultDetected(val result: ScanResult) : ScannerUiState()
-
-    /** 相机权限被拒绝 */
     data object PermissionDenied : ScannerUiState()
 }

@@ -35,6 +35,9 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:data"))
 
+    // AndroidX Core（提供 ContextCompat.getDrawable）
+    implementation(libs.androidx.core.ktx)
+
     // Compose BOM
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

@@ -50,6 +50,15 @@
 # ─── Coil ────────────────────────────────────────────────────────────────────
 -dontwarn coil.**
 
+# ─── Firebase (Analytics + Crashlytics) ──────────────────────────────────────
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.firebase.**
+-dontwarn com.google.android.gms.**
+# 保留崩溃堆栈的行号和源文件名，便于 Crashlytics 还原崩溃位置
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
 # ─── Compose ─────────────────────────────────────────────────────────────────
 -dontwarn androidx.compose.**
 
