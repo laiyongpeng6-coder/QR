@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 启动主题：仅在 Compose 加载前短暂显示 -->
-    <style name="Theme.FastQrScan" parent="android:Theme.Material.Light.NoActionBar">
-        <!-- Edge-to-Edge 支持：让系统栏透明 -->
+    <!-- AppCompat 主题（AppCompatActivity 要求） -->
+    <style name="Theme.FastQrScan" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Edge-to-Edge 支持 -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 </resources>

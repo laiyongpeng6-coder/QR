@@ -1,5 +1,6 @@
 ﻿package com.qrscanfast.feature.generator
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.qrscanfast.core.domain.model.RecordSource
 import com.qrscanfast.core.domain.repository.HistoryRepository
 import com.qrscanfast.feature.generator.encoder.QrEncoder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,6 +26,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class GeneratorViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val qrEncoder: QrEncoder,
     private val historyRepository: HistoryRepository
 ) : ViewModel() {
@@ -65,7 +68,7 @@ class GeneratorViewModel @Inject constructor(
         val type = _inputType.value
 
         if (currentContent.isEmpty()) {
-            _uiState.value = GeneratorUiState.Error("请输入内容")
+            _uiState.value = GeneratorUiState.Error(context.getString(R.string.qr_error_empty))
             return
         }
 
@@ -80,7 +83,7 @@ class GeneratorViewModel @Inject constructor(
 
         // QR Code 容量检查
         if (type.isQrCode && !qrEncoder.isWithinCapacity(encodedContent)) {
-            _uiState.value = GeneratorUiState.Error("内容超出 QR 码容量限制")
+            _uiState.value = GeneratorUiState.Error(context.getString(R.string.qr_error_too_large))
             return
         }
 
@@ -120,7 +123,7 @@ class GeneratorViewModel @Inject constructor(
                 )
             }
         } catch (e: Exception) {
-            _uiState.value = GeneratorUiState.Error("生成失败: ${e.message}")
+            _uiState.value = GeneratorUiState.Error(context.getString(R.string.barcode_error_generate, e.message ?: ""))
         }
     }
 
@@ -135,16 +138,16 @@ class GeneratorViewModel @Inject constructor(
     private fun validateContent(content: String, type: GeneratorInputType): String? {
         return when (type) {
             GeneratorInputType.BARCODE_EAN13 -> {
-                if (!qrEncoder.isValidEan13(content)) "EAN-13 需要 13 位纯数字" else null
+                if (!qrEncoder.isValidEan13(content)) context.getString(R.string.barcode_error_ean13) else null
             }
             GeneratorInputType.BARCODE_EAN8 -> {
-                if (!qrEncoder.isValidEan8(content)) "EAN-8 需要 8 位纯数字" else null
+                if (!qrEncoder.isValidEan8(content)) context.getString(R.string.barcode_error_ean8) else null
             }
             GeneratorInputType.BARCODE_UPC_A -> {
-                if (!qrEncoder.isValidUpcA(content)) "UPC-A 需要 12 位纯数字" else null
+                if (!qrEncoder.isValidUpcA(content)) context.getString(R.string.barcode_error_upca) else null
             }
             GeneratorInputType.BARCODE_CODE128 -> {
-                if (!qrEncoder.isValidCode128(content)) "Code 128 仅支持 ASCII 字符" else null
+                if (!qrEncoder.isValidCode128(content)) context.getString(R.string.barcode_error_empty) else null
             }
             else -> null
         }

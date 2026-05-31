@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,7 @@ fun HistoryScreen(
                     Tab(
                         selected = selectedTab == tab,
                         onClick = { viewModel.setSelectedTab(tab) },
-                        text = { Text(tab.label) }
+                        text = { Text(stringResource(tab.labelRes)) }
                     )
                 }
             }
@@ -48,16 +49,16 @@ fun HistoryScreen(
             OutlinedTextField(
                 value = searchQuery, onValueChange = viewModel::setSearchQuery,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text("搜索历史记录...") }, singleLine = true
+                placeholder = { Text(stringResource(R.string.history_search_hint)) }, singleLine = true
             )
 
             if (records.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
                         text = when {
-                            searchQuery.isNotBlank() -> "未找到匹配结果"
-                            selectedTab == HistoryTab.SCAN -> "暂无扫描记录"
-                            else -> "暂无生成记录"
+                            searchQuery.isNotBlank() -> stringResource(R.string.history_no_results)
+                            selectedTab == HistoryTab.SCAN -> stringResource(R.string.history_empty_scan)
+                            else -> stringResource(R.string.history_empty_generated)
                         },
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -110,12 +111,12 @@ private fun HistoryRecordItem(
             IconButton(onClick = onToggleFavorite) {
                 Icon(
                     imageVector = if (record.isFavorite) Icons.Filled.Star else Icons.Default.StarBorder,
-                    contentDescription = "收藏",
+                    contentDescription = stringResource(R.string.history_favorite),
                     tint = if (record.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             IconButton(onClick = onDelete) {
-                Icon(Icons.Default.Delete, contentDescription = "删除", tint = MaterialTheme.colorScheme.error)
+                Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.history_delete), tint = MaterialTheme.colorScheme.error)
             }
         }
     }

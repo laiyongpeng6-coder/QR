@@ -133,6 +133,11 @@ private fun CameraPreviewContent(
     val lifecycleOwner = LocalLifecycleOwner.current
     var isFlashOn by remember { mutableStateOf(false) }
 
+    // 提前取出本地化文案（回调中无法直接调用 stringResource）
+    val msgNoBarcode = stringResource(R.string.scanner_no_barcode_in_image)
+    val msgParseFailed = stringResource(R.string.scanner_image_parse_failed)
+    val msgReadFailed = stringResource(R.string.scanner_image_read_failed)
+
     // 使用 LifecycleCameraController（封装了 ProcessCameraProvider，无需手动处理 ListenableFuture）
     val cameraController = remember {
         LifecycleCameraController(context).apply {
@@ -197,15 +202,15 @@ private fun CameraPreviewContent(
                             viewModel.onBarcodeDetected(barcode.rawValue!!, format)
                             AnalyticsHelper.logAlbumImport(true)
                         } else {
-                            Toast.makeText(context, "未在图片中检测到二维码或条形码", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, msgNoBarcode, Toast.LENGTH_SHORT).show()
                             AnalyticsHelper.logAlbumImport(false)
                         }
                     }
                     .addOnFailureListener {
-                        Toast.makeText(context, "图片解析失败", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, msgParseFailed, Toast.LENGTH_SHORT).show()
                     }
             } catch (e: Exception) {
-                Toast.makeText(context, "无法读取图片", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, msgReadFailed, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fast QR Scan</string>
+
+    <string name="settings_title">设置</string>
+    <string name="settings_section_scan">扫描设置</string>
+    <string name="settings_section_general">通用</string>
+    <string name="settings_section_support">支持</string>
+    <string name="settings_section_legal">法律</string>
+    <string name="settings_section_about">关于</string>
+
+    <string name="settings_auto_open_url">自动跳转网站</string>
+    <string name="settings_auto_open_url_desc">扫描到网址时自动在浏览器中打开</string>
+    <string name="settings_vibrate">扫描震动</string>
+    <string name="settings_vibrate_desc">扫描成功时触发震动反馈</string>
+
+    <string name="settings_language">语言</string>
+    <string name="settings_language_desc">选择应用语言</string>
+
+    <string name="settings_feedback">问题反馈</string>
+    <string name="settings_feedback_desc">遇到问题？给我们发邮件</string>
+    <string name="settings_feedback_subject">Fast QR Scan 问题反馈</string>
+    <string name="settings_feedback_body">请描述您遇到的问题：\n\n</string>
+    <string name="settings_feedback_chooser">发送反馈</string>
+
+    <string name="settings_privacy">隐私政策</string>
+    <string name="settings_privacy_desc">查看我们的隐私政策</string>
+    <string name="settings_terms">服务条款</string>
+    <string name="settings_terms_desc">查看用户服务条款</string>
+
+    <string name="settings_app_full_name">Fast QR Scan: Barcode Reader</string>
+    <string name="settings_version">v1.0.0</string>
+
+    <string name="action_back">返回</string>
+
+    <string name="language_dialog_title">选择语言</string>
+    <string name="language_system">跟随系统</string>
+    <string name="language_cancel">取消</string>
+</resources>

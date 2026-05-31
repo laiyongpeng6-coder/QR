@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_tab_scan">Scan-Verlauf</string>
+    <string name="history_tab_generated">Erstellt-Verlauf</string>
+    <string name="history_search_hint">Verlauf durchsuchen...</string>
+    <string name="history_empty_scan">Noch kein Scan-Verlauf</string>
+    <string name="history_empty_generated">Noch kein Erstellt-Verlauf</string>
+    <string name="history_no_results">Keine Ergebnisse gefunden</string>
+    <string name="history_favorite">Favorit</string>
+    <string name="history_delete">Löschen</string>
+</resources>

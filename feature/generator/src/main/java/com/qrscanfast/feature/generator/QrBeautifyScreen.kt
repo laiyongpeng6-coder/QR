@@ -35,6 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
@@ -46,12 +48,12 @@ import java.io.File
 import java.io.FileOutputStream
 
 /**
- * 二维码点形状。
+ * 二维码点形状。label 改用资源 ID 渲染。
  */
-enum class DotShape(val label: String) {
-    SQUARE("方形"),
-    CIRCLE("圆形"),
-    ROUNDED("圆角")
+enum class DotShape(val labelRes: Int) {
+    SQUARE(R.string.beautify_shape_square),
+    CIRCLE(R.string.beautify_shape_circle),
+    ROUNDED(R.string.beautify_shape_rounded)
 }
 
 /**
@@ -105,7 +107,7 @@ fun QrBeautifyScreen(
                 selectedSocialLogo = null // 清除社交 Logo 选择
                 inputStream?.close()
             } catch (_: Exception) {
-                Toast.makeText(context, "无法加载图片", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.beautify_logo_load_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -131,10 +133,10 @@ fun QrBeautifyScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("美化二维码") },
+                title = { Text(stringResource(R.string.beautify_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.action_back))
                     }
                 }
             )
@@ -156,7 +158,7 @@ fun QrBeautifyScreen(
                 beautifiedBitmap?.let { bmp ->
                     Image(
                         bitmap = bmp.asImageBitmap(),
-                        contentDescription = "美化后的二维码",
+                        contentDescription = stringResource(R.string.beautify_title),
                         modifier = Modifier.fillMaxSize().padding(12.dp)
                     )
                 }
@@ -165,7 +167,7 @@ fun QrBeautifyScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             // 前景色
-            StyleSection(title = "前景色") {
+            StyleSection(title = stringResource(R.string.beautify_foreground)) {
                 ColorPalette(
                     selectedColor = foregroundColor,
                     onColorSelected = { foregroundColor = it },
@@ -176,7 +178,7 @@ fun QrBeautifyScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // 背景色
-            StyleSection(title = "背景色") {
+            StyleSection(title = stringResource(R.string.beautify_background)) {
                 ColorPalette(
                     selectedColor = backgroundColor,
                     onColorSelected = { backgroundColor = it },
@@ -187,13 +189,13 @@ fun QrBeautifyScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // 点形状
-            StyleSection(title = "点形状") {
+            StyleSection(title = stringResource(R.string.beautify_dot_shape)) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     DotShape.entries.forEach { shape ->
                         FilterChip(
                             selected = dotShape == shape,
                             onClick = { dotShape = shape },
-                            label = { Text(shape.label) }
+                            label = { Text(stringResource(shape.labelRes)) }
                         )
                     }
                 }
@@ -202,7 +204,7 @@ fun QrBeautifyScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // 中心 Logo — 预设社交 Logo
-            StyleSection(title = "中心 Logo") {
+            StyleSection(title = stringResource(R.string.beautify_logo)) {
                 Column {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         // 无 Logo 选项
@@ -214,7 +216,7 @@ fun QrBeautifyScreen(
                                     logoBitmap = null
                                 }
                             ) {
-                                Icon(Icons.Default.Close, contentDescription = "无", modifier = Modifier.size(20.dp))
+                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.beautify_logo_none), modifier = Modifier.size(20.dp))
                             }
                         }
                         // 自定义上传选项
@@ -223,7 +225,7 @@ fun QrBeautifyScreen(
                                 isSelected = logoBitmap != null,
                                 onClick = { logoLauncher.launch("image/*") }
                             ) {
-                                Icon(Icons.Default.AddPhotoAlternate, contentDescription = "上传", modifier = Modifier.size(20.dp))
+                                Icon(Icons.Default.AddPhotoAlternate, contentDescription = stringResource(R.string.beautify_logo_upload), modifier = Modifier.size(20.dp))
                             }
                         }
                         // 预设社交 Logo
@@ -237,7 +239,7 @@ fun QrBeautifyScreen(
                                 backgroundColor = Color.White
                             ) {
                                 Image(
-                                    painter = androidx.compose.ui.res.painterResource(id = social.drawableRes),
+                                    painter = painterResource(id = social.drawableRes),
                                     contentDescription = social.label,
                                     modifier = Modifier.size(36.dp)
                                 )
@@ -250,7 +252,7 @@ fun QrBeautifyScreen(
             // Logo 大小滑块（仅在有 Logo 时显示）
             if (effectiveLogo != null) {
                 Spacer(modifier = Modifier.height(16.dp))
-                StyleSection(title = "Logo 大小：${(logoSizeRatio * 100).toInt()}%") {
+                StyleSection(title = stringResource(R.string.beautify_logo_size, (logoSizeRatio * 100).toInt())) {
                     Slider(
                         value = logoSizeRatio,
                         onValueChange = { logoSizeRatio = it },
@@ -269,10 +271,10 @@ fun QrBeautifyScreen(
                         saveToGallery(context, it)
                         com.qrscanfast.core.common.AnalyticsHelper.logBeautifySave()
                     }
-                }) { Text("保存") }
+                }) { Text(stringResource(R.string.action_save)) }
                 OutlinedButton(onClick = {
                     beautifiedBitmap?.let { shareImage(context, it) }
-                }) { Text("分享") }
+                }) { Text(stringResource(R.string.action_share)) }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -543,10 +545,10 @@ private fun saveToGallery(context: Context, bitmap: Bitmap) {
                 contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
                 resolver.update(it, contentValues, null, null)
             }
-            Toast.makeText(context, "已保存到相册", Toast.LENGTH_SHORT).show()
-        } ?: Toast.makeText(context, "保存失败", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.toast_saved_to_gallery), Toast.LENGTH_SHORT).show()
+        } ?: Toast.makeText(context, context.getString(R.string.toast_save_failed), Toast.LENGTH_SHORT).show()
     } catch (e: Exception) {
-        Toast.makeText(context, "保存失败: ${e.message}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.toast_save_failed_reason, e.message ?: ""), Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -562,8 +564,8 @@ private fun shareImage(context: Context, bitmap: Bitmap) {
             putExtra(Intent.EXTRA_STREAM, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        context.startActivity(Intent.createChooser(intent, "分享美化二维码"))
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_chooser_beautified)))
     } catch (e: Exception) {
-        Toast.makeText(context, "分享失败: ${e.message}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.toast_share_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
     }
 }

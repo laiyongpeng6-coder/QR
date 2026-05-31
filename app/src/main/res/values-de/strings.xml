@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fast QR Scan</string>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_section_scan">Scan-Einstellungen</string>
+    <string name="settings_section_general">Allgemein</string>
+    <string name="settings_section_support">Support</string>
+    <string name="settings_section_legal">Rechtliches</string>
+    <string name="settings_section_about">Über</string>
+
+    <string name="settings_auto_open_url">Webseite automatisch öffnen</string>
+    <string name="settings_auto_open_url_desc">Browser automatisch öffnen, wenn eine URL gescannt wird</string>
+    <string name="settings_vibrate">Vibration beim Scannen</string>
+    <string name="settings_vibrate_desc">Vibrieren, wenn ein Scan erfolgreich ist</string>
+
+    <string name="settings_language">Sprache</string>
+    <string name="settings_language_desc">App-Sprache auswählen</string>
+
+    <string name="settings_feedback">Feedback</string>
+    <string name="settings_feedback_desc">Ein Problem? Schreib uns eine E-Mail</string>
+    <string name="settings_feedback_subject">Fast QR Scan Feedback</string>
+    <string name="settings_feedback_body">Bitte beschreibe das aufgetretene Problem:\n\n</string>
+    <string name="settings_feedback_chooser">Feedback senden</string>
+
+    <string name="settings_privacy">Datenschutzrichtlinie</string>
+    <string name="settings_privacy_desc">Unsere Datenschutzrichtlinie ansehen</string>
+    <string name="settings_terms">Nutzungsbedingungen</string>
+    <string name="settings_terms_desc">Nutzungsbedingungen ansehen</string>
+
+    <string name="settings_app_full_name">Fast QR Scan: Barcode Reader</string>
+    <string name="settings_version">v1.0.0</string>
+
+    <string name="action_back">Zurück</string>
+
+    <string name="language_dialog_title">Sprache auswählen</string>
+    <string name="language_system">Systemstandard</string>
+    <string name="language_cancel">Abbrechen</string>
+</resources>

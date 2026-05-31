@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="history_tab_scan">Scan History</string>
+    <string name="history_tab_generated">Created History</string>
     <string name="history_search_hint">Search history...</string>
-    <string name="history_empty">No scan history yet</string>
+    <string name="history_empty_scan">No scan history yet</string>
+    <string name="history_empty_generated">No created history yet</string>
     <string name="history_no_results">No results found</string>
-    <string name="history_deleted">Record deleted</string>
-    <string name="history_undo">Undo</string>
+    <string name="history_favorite">Favorite</string>
+    <string name="history_delete">Delete</string>
 </resources>

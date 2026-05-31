@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_title">创建</string>
+    <string name="create_qrcode_title">创建二维码</string>
+    <string name="create_qrcode_desc">支持文本、网址、WiFi、联系人、电话等类型</string>
+    <string name="create_barcode_title">创建条码</string>
+    <string name="create_barcode_desc">支持 EAN-13、EAN-8、UPC-A、Code 128 格式</string>
+
+    <string name="action_back">返回</string>
+    <string name="action_save">保存</string>
+    <string name="action_share">分享</string>
+    <string name="action_beautify">美化</string>
+    <string name="generating">生成中...</string>
+    <string name="resolution">分辨率</string>
+
+    <string name="qr_generate">生成二维码</string>
+    <string name="qr_result_title">生成的二维码</string>
+    <string name="qr_create_new">创建新二维码</string>
+    <string name="qr_type_text">文本</string>
+    <string name="qr_type_url">网址</string>
+    <string name="qr_type_wifi">WiFi</string>
+    <string name="qr_type_contact">联系人</string>
+    <string name="qr_type_phone">电话</string>
+    <string name="qr_type_social">社交</string>
+    <string name="qr_hint_text">输入文本内容</string>
+    <string name="qr_hint_url">输入网址 (如 example.com)</string>
+    <string name="qr_hint_wifi">WIFI:S:网络名;T:WPA;P:密码;;</string>
+    <string name="qr_hint_contact">BEGIN:VCARD...</string>
+    <string name="qr_hint_phone">输入电话号码</string>
+    <string name="qr_hint_social">输入社交媒体链接</string>
+    <string name="qr_error_empty">请输入内容</string>
+    <string name="qr_error_too_large">内容超出 QR 码容量限制</string>
+
+    <string name="barcode_generate">生成条码</string>
+    <string name="barcode_result_title">生成的条码</string>
+    <string name="barcode_create_new">创建新条码</string>
+    <string name="barcode_hint_ean13">输入 12 位数字（校验位自动计算）</string>
+    <string name="barcode_hint_ean8">输入 7 位数字（校验位自动计算）</string>
+    <string name="barcode_hint_upca">输入 11 位数字（校验位自动计算）</string>
+    <string name="barcode_hint_code128">输入 ASCII 文本</string>
+    <string name="barcode_digit_count">%1$d / %2$d 位</string>
+    <string name="barcode_error_empty">请输入内容</string>
+    <string name="barcode_error_ean13">EAN-13 需要输入 12 位数字</string>
+    <string name="barcode_error_ean8">EAN-8 需要输入 7 位数字</string>
+    <string name="barcode_error_upca">UPC-A 需要输入 11 位数字</string>
+    <string name="barcode_error_generate">生成失败：%1$s</string>
+
+    <string name="beautify_title">美化二维码</string>
+    <string name="beautify_foreground">前景色</string>
+    <string name="beautify_background">背景色</string>
+    <string name="beautify_dot_shape">点形状</string>
+    <string name="beautify_shape_square">方形</string>
+    <string name="beautify_shape_circle">圆形</string>
+    <string name="beautify_shape_rounded">圆角</string>
+    <string name="beautify_logo">中心 Logo</string>
+    <string name="beautify_logo_none">无</string>
+    <string name="beautify_logo_upload">上传</string>
+    <string name="beautify_logo_size">Logo 大小：%1$d%%</string>
+    <string name="beautify_logo_load_failed">无法加载图片</string>
+
+    <string name="toast_saved_to_gallery">已保存到相册</string>
+    <string name="toast_save_failed">保存失败</string>
+    <string name="toast_save_failed_reason">保存失败：%1$s</string>
+    <string name="toast_share_failed">分享失败：%1$s</string>
+    <string name="share_chooser_qr">分享二维码</string>
+    <string name="share_chooser_barcode">分享条码</string>
+    <string name="share_chooser_beautified">分享美化二维码</string>
+</resources>

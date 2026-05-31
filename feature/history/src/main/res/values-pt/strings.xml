@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_tab_scan">Histórico de escaneamento</string>
+    <string name="history_tab_generated">Histórico de criação</string>
+    <string name="history_search_hint">Pesquisar no histórico...</string>
+    <string name="history_empty_scan">Ainda não há histórico de escaneamento</string>
+    <string name="history_empty_generated">Ainda não há histórico de criação</string>
+    <string name="history_no_results">Nenhum resultado encontrado</string>
+    <string name="history_favorite">Favorito</string>
+    <string name="history_delete">Excluir</string>
+</resources>

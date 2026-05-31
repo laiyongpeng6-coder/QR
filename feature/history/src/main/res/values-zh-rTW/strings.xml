@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_tab_scan">掃描記錄</string>
+    <string name="history_tab_generated">產生記錄</string>
+    <string name="history_search_hint">搜尋歷史記錄...</string>
+    <string name="history_empty_scan">尚無掃描記錄</string>
+    <string name="history_empty_generated">尚無產生記錄</string>
+    <string name="history_no_results">找不到符合的結果</string>
+    <string name="history_favorite">收藏</string>
+    <string name="history_delete">刪除</string>
+</resources>

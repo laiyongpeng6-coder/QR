@@ -22,11 +22,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.qrscanfast.core.domain.model.BarcodeFormat
 import com.qrscanfast.core.domain.model.ContentType
 import java.time.Instant
 import java.time.ZoneId
@@ -36,13 +36,7 @@ import java.time.format.DateTimeFormatter
  * 扫描结果全屏详情页。
  *
  * 根据不同的内容类型展示结构化信息和对应的操作按钮。
- * 支持：复制、分享、收藏、以及类型相关的主操作（打开链接、拨打电话、连接WiFi等）。
- *
- * @param rawContent 扫描到的原始内容
- * @param format 条码格式名称
- * @param contentType 内容类型名称
- * @param onBack 返回上一页回调
- * @param onContinueScan 继续扫描回调
+ * 所有文案均使用 stringResource 支持多语言。
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,15 +54,15 @@ fun ScanResultScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("扫描结果") },
+                title = { Text(stringResource(R.string.result_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.action_back))
                     }
                 },
                 actions = {
                     TextButton(onClick = onContinueScan) {
-                        Text("继续扫描")
+                        Text(stringResource(R.string.result_continue_scan))
                     }
                 }
             )
@@ -82,40 +76,24 @@ fun ScanResultScreen(
                 .padding(horizontal = 20.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // 内容类型图标和标签
             ContentTypeHeader(type = type)
-
             Spacer(modifier = Modifier.height(24.dp))
-
-            // 结构化内容展示区
-            ContentDisplayCard(rawContent = rawContent, type = type, context = context)
-
+            ContentDisplayCard(rawContent = rawContent, type = type)
             Spacer(modifier = Modifier.height(24.dp))
-
-            // 通用操作按钮行
             CommonActionButtons(rawContent = rawContent, context = context)
-
             Spacer(modifier = Modifier.height(16.dp))
-
-            // 类型相关的主操作按钮
             PrimaryActionButton(rawContent = rawContent, type = type, context = context)
-
             Spacer(modifier = Modifier.height(24.dp))
-
-            // 元信息
             MetaInfoSection(format = format, scanTime = scanTime)
-
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
-/**
- * 内容类型图标和标签头部。
- */
 @Composable
 private fun ContentTypeHeader(type: ContentType) {
-    val (icon, label) = getTypeIconAndLabel(type)
+    val icon = getTypeIcon(type)
+    val label = stringResource(getTypeLabelRes(type))
 
     Surface(
         shape = MaterialTheme.shapes.large,
@@ -142,11 +120,8 @@ private fun ContentTypeHeader(type: ContentType) {
     )
 }
 
-/**
- * 结构化内容展示卡片 — 根据内容类型展示不同布局。
- */
 @Composable
-private fun ContentDisplayCard(rawContent: String, type: ContentType, context: Context) {
+private fun ContentDisplayCard(rawContent: String, type: ContentType) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -167,7 +142,7 @@ private fun ContentDisplayCard(rawContent: String, type: ContentType, context: C
 
 @Composable
 private fun UrlContent(rawContent: String) {
-    Text("链接地址", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Text(stringResource(R.string.result_label_link), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     Spacer(modifier = Modifier.height(8.dp))
     Text(
         text = rawContent,
@@ -180,22 +155,23 @@ private fun UrlContent(rawContent: String) {
 
 @Composable
 private fun WifiContent(rawContent: String) {
-    val ssid = Regex("S:([^;]*)").find(rawContent)?.groupValues?.get(1) ?: "未知"
-    val security = Regex("T:([^;]*)").find(rawContent)?.groupValues?.get(1) ?: "无"
+    val unknown = stringResource(R.string.result_unknown)
+    val ssid = Regex("S:([^;]*)").find(rawContent)?.groupValues?.get(1)?.ifBlank { unknown } ?: unknown
+    val security = Regex("T:([^;]*)").find(rawContent)?.groupValues?.get(1)?.ifBlank { unknown } ?: unknown
     val password = Regex("P:([^;]*)").find(rawContent)?.groupValues?.get(1) ?: ""
     var showPassword by remember { mutableStateOf(false) }
 
-    InfoRow(label = "网络名称", value = ssid)
+    InfoRow(label = stringResource(R.string.result_label_network_name), value = ssid)
     Spacer(modifier = Modifier.height(12.dp))
-    InfoRow(label = "加密方式", value = security)
+    InfoRow(label = stringResource(R.string.result_label_security), value = security)
     Spacer(modifier = Modifier.height(12.dp))
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column(modifier = Modifier.weight(1f)) {
-            Text("密码", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.result_label_password), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = if (showPassword) password else "????????",
+                text = if (showPassword) password else "••••••••",
                 style = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
                 fontWeight = FontWeight.Medium
             )
@@ -203,7 +179,9 @@ private fun WifiContent(rawContent: String) {
         IconButton(onClick = { showPassword = !showPassword }) {
             Icon(
                 imageVector = if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                contentDescription = if (showPassword) "隐藏密码" else "显示密码"
+                contentDescription = stringResource(
+                    if (showPassword) R.string.action_hide_password else R.string.action_show_password
+                )
             )
         }
     }
@@ -212,7 +190,7 @@ private fun WifiContent(rawContent: String) {
 @Composable
 private fun PhoneContent(rawContent: String) {
     val phone = rawContent.removePrefix("tel:").removePrefix("TEL:")
-    Text("电话号码", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Text(stringResource(R.string.result_label_phone), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     Spacer(modifier = Modifier.height(8.dp))
     Text(text = phone, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
 }
@@ -222,16 +200,16 @@ private fun EmailContent(rawContent: String) {
     val email = rawContent.removePrefix("mailto:").removePrefix("MAILTO:").substringBefore("?")
     val subject = Regex("[?&]subject=([^&]*)").find(rawContent)?.groupValues?.get(1) ?: ""
 
-    InfoRow(label = "邮箱地址", value = email)
+    InfoRow(label = stringResource(R.string.result_label_email), value = email)
     if (subject.isNotBlank()) {
         Spacer(modifier = Modifier.height(12.dp))
-        InfoRow(label = "主题", value = subject)
+        InfoRow(label = stringResource(R.string.result_label_subject), value = subject)
     }
 }
 
 @Composable
 private fun VCardContent(rawContent: String) {
-    val name = Regex("FN:(.+)").find(rawContent)?.groupValues?.get(1) ?: "未知联系人"
+    val name = Regex("FN:(.+)").find(rawContent)?.groupValues?.get(1) ?: stringResource(R.string.result_unknown_contact)
     val phone = Regex("TEL[^:]*:(.+)").find(rawContent)?.groupValues?.get(1)
     val email = Regex("EMAIL[^:]*:(.+)").find(rawContent)?.groupValues?.get(1)
     val org = Regex("ORG:(.+)").find(rawContent)?.groupValues?.get(1)
@@ -240,32 +218,33 @@ private fun VCardContent(rawContent: String) {
     Spacer(modifier = Modifier.height(12.dp))
 
     if (org != null) {
-        InfoRow(label = "公司", value = org)
+        InfoRow(label = stringResource(R.string.result_label_company), value = org)
         Spacer(modifier = Modifier.height(8.dp))
     }
     if (phone != null) {
-        InfoRow(label = "电话", value = phone)
+        InfoRow(label = stringResource(R.string.result_label_phone), value = phone)
         Spacer(modifier = Modifier.height(8.dp))
     }
     if (email != null) {
-        InfoRow(label = "邮箱", value = email)
+        InfoRow(label = stringResource(R.string.result_label_email), value = email)
     }
 }
 
 @Composable
 private fun GeoContent(rawContent: String) {
+    val unknown = stringResource(R.string.result_unknown)
     val coords = rawContent.removePrefix("geo:").split(",")
-    val lat = coords.getOrNull(0) ?: "未知"
-    val lng = coords.getOrNull(1)?.substringBefore("?") ?: "未知"
+    val lat = coords.getOrNull(0) ?: unknown
+    val lng = coords.getOrNull(1)?.substringBefore("?") ?: unknown
 
-    InfoRow(label = "纬度", value = lat)
+    InfoRow(label = stringResource(R.string.result_label_latitude), value = lat)
     Spacer(modifier = Modifier.height(12.dp))
-    InfoRow(label = "经度", value = lng)
+    InfoRow(label = stringResource(R.string.result_label_longitude), value = lng)
 }
 
 @Composable
 private fun PlainTextContent(rawContent: String) {
-    Text("内容", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Text(stringResource(R.string.result_label_content), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     Spacer(modifier = Modifier.height(8.dp))
     SelectionContainer {
         Text(
@@ -284,40 +263,41 @@ private fun InfoRow(label: String, value: String) {
     Text(value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
 }
 
-/**
- * 通用操作按钮行：复制、分享、收藏。
- */
 @Composable
 private fun CommonActionButtons(rawContent: String, context: Context) {
+    val copiedMsg = stringResource(R.string.toast_copied)
+    val favoritedMsg = stringResource(R.string.toast_favorited)
+    val shareTitle = stringResource(R.string.action_share)
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         ActionChip(
             icon = Icons.Outlined.ContentCopy,
-            label = "复制",
+            label = stringResource(R.string.action_copy),
             onClick = {
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 clipboard.setPrimaryClip(ClipData.newPlainText("QR Content", rawContent))
-                Toast.makeText(context, "已复制到剪贴板", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, copiedMsg, Toast.LENGTH_SHORT).show()
             }
         )
         ActionChip(
             icon = Icons.Outlined.Share,
-            label = "分享",
+            label = stringResource(R.string.action_share),
             onClick = {
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
+                    setType("text/plain")
                     putExtra(Intent.EXTRA_TEXT, rawContent)
                 }
-                context.startActivity(Intent.createChooser(shareIntent, "分享扫描结果"))
+                context.startActivity(Intent.createChooser(shareIntent, shareTitle))
             }
         )
         ActionChip(
             icon = Icons.Outlined.FavoriteBorder,
-            label = "收藏",
+            label = stringResource(R.string.action_favorite),
             onClick = {
-                Toast.makeText(context, "已收藏", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, favoritedMsg, Toast.LENGTH_SHORT).show()
             }
         )
     }
@@ -334,11 +314,9 @@ private fun ActionChip(icon: ImageVector, label: String, onClick: () -> Unit) {
     }
 }
 
-/**
- * 类型相关的主操作按钮。
- */
 @Composable
 private fun PrimaryActionButton(rawContent: String, type: ContentType, context: Context) {
+    val cannotOpenMsg = stringResource(R.string.toast_cannot_open_link)
     when (type) {
         ContentType.URL, ContentType.SOCIAL_MEDIA -> {
             Button(
@@ -347,29 +325,30 @@ private fun PrimaryActionButton(rawContent: String, type: ContentType, context: 
                         val url = if (!rawContent.startsWith("http")) "https://$rawContent" else rawContent
                         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                     } catch (e: Exception) {
-                        Toast.makeText(context, "无法打开链接", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, cannotOpenMsg, Toast.LENGTH_SHORT).show()
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(52.dp)
             ) {
                 Icon(Icons.Default.OpenInBrowser, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("在浏览器中打开", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.action_open_in_browser), style = MaterialTheme.typography.labelLarge)
             }
         }
         ContentType.WIFI -> {
             val password = Regex("P:([^;]*)").find(rawContent)?.groupValues?.get(1) ?: ""
+            val pwdCopiedMsg = stringResource(R.string.toast_password_copied, password)
             Button(
                 onClick = {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     clipboard.setPrimaryClip(ClipData.newPlainText("WiFi Password", password))
-                    Toast.makeText(context, "密码已复制: $password", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, pwdCopiedMsg, Toast.LENGTH_SHORT).show()
                 },
                 modifier = Modifier.fillMaxWidth().height(52.dp)
             ) {
                 Icon(Icons.Default.Wifi, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("复制密码", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.action_copy_password), style = MaterialTheme.typography.labelLarge)
             }
         }
         ContentType.PHONE -> {
@@ -377,25 +356,23 @@ private fun PrimaryActionButton(rawContent: String, type: ContentType, context: 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(
                     onClick = {
-                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-                        context.startActivity(intent)
+                        context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone")))
                     },
                     modifier = Modifier.weight(1f).height(52.dp)
                 ) {
                     Icon(Icons.Default.Phone, contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("拨打电话")
+                    Text(stringResource(R.string.action_call))
                 }
                 OutlinedButton(
                     onClick = {
-                        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:$phone"))
-                        context.startActivity(intent)
+                        context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:$phone")))
                     },
                     modifier = Modifier.weight(1f).height(52.dp)
                 ) {
                     Icon(Icons.Default.Sms, contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("发短信")
+                    Text(stringResource(R.string.action_send_sms))
                 }
             }
         }
@@ -403,14 +380,13 @@ private fun PrimaryActionButton(rawContent: String, type: ContentType, context: 
             val email = rawContent.removePrefix("mailto:").removePrefix("MAILTO:").substringBefore("?")
             Button(
                 onClick = {
-                    val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
-                    context.startActivity(intent)
+                    context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email")))
                 },
                 modifier = Modifier.fillMaxWidth().height(52.dp)
             ) {
                 Icon(Icons.Default.Email, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("发送邮件", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.action_send_email), style = MaterialTheme.typography.labelLarge)
             }
         }
         ContentType.VCARD -> {
@@ -431,20 +407,19 @@ private fun PrimaryActionButton(rawContent: String, type: ContentType, context: 
             ) {
                 Icon(Icons.Default.PersonAdd, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("保存到通讯录", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.action_save_contact), style = MaterialTheme.typography.labelLarge)
             }
         }
         ContentType.GEO -> {
             Button(
                 onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(rawContent))
-                    context.startActivity(intent)
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(rawContent)))
                 },
                 modifier = Modifier.fillMaxWidth().height(52.dp)
             ) {
                 Icon(Icons.Default.Map, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("在地图中打开", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.action_open_in_maps), style = MaterialTheme.typography.labelLarge)
             }
         }
         ContentType.PRODUCT -> {
@@ -457,30 +432,27 @@ private fun PrimaryActionButton(rawContent: String, type: ContentType, context: 
             ) {
                 Icon(Icons.Default.Search, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("搜索商品", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.action_search_product), style = MaterialTheme.typography.labelLarge)
             }
         }
         else -> {
-            // 纯文本 — 复制全文作为主操作
+            val copiedAllMsg = stringResource(R.string.toast_copied)
             Button(
                 onClick = {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     clipboard.setPrimaryClip(ClipData.newPlainText("QR Content", rawContent))
-                    Toast.makeText(context, "已复制全文", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, copiedAllMsg, Toast.LENGTH_SHORT).show()
                 },
                 modifier = Modifier.fillMaxWidth().height(52.dp)
             ) {
                 Icon(Icons.Default.ContentCopy, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("复制全文", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.action_copy_all), style = MaterialTheme.typography.labelLarge)
             }
         }
     }
 }
 
-/**
- * 元信息区域 — 显示扫描时间和条码格式。
- */
 @Composable
 private fun MetaInfoSection(format: String, scanTime: Instant) {
     val formattedTime = remember(scanTime) {
@@ -492,36 +464,54 @@ private fun MetaInfoSection(format: String, scanTime: Instant) {
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Column {
-            Text("扫描时间", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.result_label_scan_time), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(formattedTime, style = MaterialTheme.typography.bodySmall)
         }
         Column(horizontalAlignment = Alignment.End) {
-            Text("条码格式", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.result_label_format), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(formatDisplayName(format), style = MaterialTheme.typography.bodySmall)
         }
     }
 }
 
 /**
- * 获取内容类型对应的图标和中文标签。
+ * 获取内容类型对应的图标。
  */
-private fun getTypeIconAndLabel(type: ContentType): Pair<ImageVector, String> {
+private fun getTypeIcon(type: ContentType): ImageVector {
     return when (type) {
-        ContentType.URL -> Icons.Default.Link to "网址"
-        ContentType.WIFI -> Icons.Default.Wifi to "WiFi 网络"
-        ContentType.VCARD -> Icons.Default.Person to "联系人"
-        ContentType.PHONE -> Icons.Default.Phone to "电话号码"
-        ContentType.EMAIL -> Icons.Default.Email to "邮箱"
-        ContentType.SMS -> Icons.Default.Sms to "短信"
-        ContentType.SOCIAL_MEDIA -> Icons.Default.Public to "社交媒体"
-        ContentType.GEO -> Icons.Default.LocationOn to "地理位置"
-        ContentType.PRODUCT -> Icons.Default.ShoppingCart to "商品条码"
-        ContentType.PLAIN_TEXT -> Icons.Default.TextFields to "文本"
+        ContentType.URL -> Icons.Default.Link
+        ContentType.WIFI -> Icons.Default.Wifi
+        ContentType.VCARD -> Icons.Default.Person
+        ContentType.PHONE -> Icons.Default.Phone
+        ContentType.EMAIL -> Icons.Default.Email
+        ContentType.SMS -> Icons.Default.Sms
+        ContentType.SOCIAL_MEDIA -> Icons.Default.Public
+        ContentType.GEO -> Icons.Default.LocationOn
+        ContentType.PRODUCT -> Icons.Default.ShoppingCart
+        ContentType.PLAIN_TEXT -> Icons.Default.TextFields
     }
 }
 
 /**
- * 格式化条码格式名称用于显示。
+ * 获取内容类型对应的标签资源 ID。
+ */
+private fun getTypeLabelRes(type: ContentType): Int {
+    return when (type) {
+        ContentType.URL -> R.string.content_type_url
+        ContentType.WIFI -> R.string.content_type_wifi
+        ContentType.VCARD -> R.string.content_type_contact
+        ContentType.PHONE -> R.string.content_type_phone
+        ContentType.EMAIL -> R.string.content_type_email
+        ContentType.SMS -> R.string.content_type_sms
+        ContentType.SOCIAL_MEDIA -> R.string.content_type_social
+        ContentType.GEO -> R.string.content_type_geo
+        ContentType.PRODUCT -> R.string.content_type_product
+        ContentType.PLAIN_TEXT -> R.string.content_type_text
+    }
+}
+
+/**
+ * 格式化条码格式名称用于显示（品牌名无需翻译）。
  */
 private fun formatDisplayName(format: String): String {
     return when (format) {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">Omitir</string>
+    <string name="onboarding_next">Siguiente</string>
+    <string name="onboarding_get_started">Comenzar</string>
+
+    <string name="onboarding_title_1">Escanea todo</string>
+    <string name="onboarding_description_1">Escaneo de alta velocidad de todo tipo de códigos QR y de barras con zoom automático.</string>
+
+    <string name="onboarding_title_2">Crea y comparte</string>
+    <string name="onboarding_description_2">Genera códigos QR personalizados para WiFi, contactos, URLs y redes sociales en segundos.</string>
+
+    <string name="onboarding_title_3">Embellece el código QR</string>
+    <string name="onboarding_description_3">Convierte códigos comunes en obras de arte con nuestra herramienta integrada.</string>
+</resources>

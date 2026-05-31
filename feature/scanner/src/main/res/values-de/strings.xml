@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="scanner_permission_title">Kameraberechtigung erforderlich</string>
+    <string name="scanner_permission_message">Fast QR Scan benötigt Kamerazugriff, um QR-Codes und Barcodes zu scannen.</string>
+    <string name="scanner_permission_button">Berechtigung erteilen</string>
+    <string name="scanner_permission_settings">Einstellungen öffnen</string>
+    <string name="scanner_permission_denied">Kameraberechtigung wurde verweigert. Bitte in den Einstellungen aktivieren.</string>
+
+    <string name="scanner_flash_on">Blitz an</string>
+    <string name="scanner_flash_off">Blitz aus</string>
+    <string name="scanner_import_album">Aus Galerie importieren</string>
+    <string name="scanner_scanning">Richte die Kamera auf einen QR-Code oder Barcode</string>
+    <string name="scanner_settings">Einstellungen</string>
+
+    <string name="scanner_no_barcode_in_image">Kein QR-Code oder Barcode im Bild gefunden</string>
+    <string name="scanner_image_parse_failed">Bild konnte nicht analysiert werden</string>
+    <string name="scanner_image_read_failed">Bild konnte nicht gelesen werden</string>
+
+    <string name="result_title">Scan-Ergebnis</string>
+    <string name="result_continue_scan">Weiter scannen</string>
+    <string name="result_label_link">Link</string>
+    <string name="result_label_password">Passwort</string>
+    <string name="result_label_phone">Telefonnummer</string>
+    <string name="result_label_content">Inhalt</string>
+    <string name="result_label_network_name">Netzwerkname</string>
+    <string name="result_label_security">Verschlüsselung</string>
+    <string name="result_label_email">E-Mail-Adresse</string>
+    <string name="result_label_subject">Betreff</string>
+    <string name="result_label_company">Firma</string>
+    <string name="result_label_latitude">Breitengrad</string>
+    <string name="result_label_longitude">Längengrad</string>
+    <string name="result_label_scan_time">Scan-Zeit</string>
+    <string name="result_label_format">Barcode-Format</string>
+    <string name="result_unknown_contact">Unbekannter Kontakt</string>
+    <string name="result_unknown">Unbekannt</string>
+
+    <string name="action_copy">Kopieren</string>
+    <string name="action_share">Teilen</string>
+    <string name="action_favorite">Favorit</string>
+    <string name="action_show_password">Passwort anzeigen</string>
+    <string name="action_hide_password">Passwort verbergen</string>
+    <string name="action_back">Zurück</string>
+
+    <string name="action_open_in_browser">Im Browser öffnen</string>
+    <string name="action_copy_password">Passwort kopieren</string>
+    <string name="action_call">Anrufen</string>
+    <string name="action_send_sms">SMS senden</string>
+    <string name="action_send_email">E-Mail senden</string>
+    <string name="action_save_contact">In Kontakten speichern</string>
+    <string name="action_open_in_maps">In Karten öffnen</string>
+    <string name="action_search_product">Produkt suchen</string>
+    <string name="action_copy_all">Alles kopieren</string>
+
+    <string name="toast_copied">In Zwischenablage kopiert</string>
+    <string name="toast_password_copied">Passwort kopiert: %1$s</string>
+    <string name="toast_cannot_open_link">Link kann nicht geöffnet werden</string>
+    <string name="toast_favorited">Zu Favoriten hinzugefügt</string>
+
+    <string name="content_type_url">Webseite</string>
+    <string name="content_type_wifi">WLAN-Netzwerk</string>
+    <string name="content_type_contact">Kontakt</string>
+    <string name="content_type_phone">Telefonnummer</string>
+    <string name="content_type_email">E-Mail</string>
+    <string name="content_type_sms">SMS</string>
+    <string name="content_type_social">Soziale Medien</string>
+    <string name="content_type_geo">Standort</string>
+    <string name="content_type_product">Produkt</string>
+    <string name="content_type_text">Text</string>
+    <string name="content_type_result">Ergebnis</string>
+</resources>

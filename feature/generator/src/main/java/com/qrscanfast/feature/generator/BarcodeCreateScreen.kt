@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -33,18 +34,22 @@ import java.io.FileOutputStream
 
 /**
  * 条码类型枚举。
+ *
+ * @property label 显示标签（品牌名，无需翻译）
+ * @property format ZXing 条码格式
+ * @property hintRes 输入提示的资源 ID
+ * @property digitCount 要求的数字位数（null 表示不限制，如 Code 128）
  */
-enum class BarcodeType(val label: String, val format: BarcodeFormat, val hint: String, val digitCount: Int?) {
-    EAN_13("EAN-13", BarcodeFormat.EAN_13, "输入 12 位数字（校验位自动计算）", 12),
-    EAN_8("EAN-8", BarcodeFormat.EAN_8, "输入 7 位数字（校验位自动计算）", 7),
-    UPC_A("UPC-A", BarcodeFormat.UPC_A, "输入 11 位数字（校验位自动计算）", 11),
-    CODE_128("Code 128", BarcodeFormat.CODE_128, "输入 ASCII 文本", null)
+enum class BarcodeType(val label: String, val format: BarcodeFormat, val hintRes: Int, val digitCount: Int?) {
+    EAN_13("EAN-13", BarcodeFormat.EAN_13, R.string.barcode_hint_ean13, 12),
+    EAN_8("EAN-8", BarcodeFormat.EAN_8, R.string.barcode_hint_ean8, 7),
+    UPC_A("UPC-A", BarcodeFormat.UPC_A, R.string.barcode_hint_upca, 11),
+    CODE_128("Code 128", BarcodeFormat.CODE_128, R.string.barcode_hint_code128, null)
 }
 
 /**
- * 条码创建页 — 独立全屏页面。
- * 支持 EAN-13、EAN-8、UPC-A、Code 128 格式。
- * 自动计算 EAN/UPC 校验位。
+ * 条码创建页 — 独立全屏页面，全部文案使用 stringResource。
+ * 支持 EAN-13、EAN-8、UPC-A、Code 128，自动计算 EAN/UPC 校验位。
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,13 +62,19 @@ fun BarcodeCreateScreen(onBack: () -> Unit) {
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var generatedBitmap by remember { mutableStateOf<Bitmap?>(null) }
 
+    // 预取错误文案
+    val errEmpty = stringResource(R.string.barcode_error_empty)
+    val errEan13 = stringResource(R.string.barcode_error_ean13)
+    val errEan8 = stringResource(R.string.barcode_error_ean8)
+    val errUpca = stringResource(R.string.barcode_error_upca)
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("创建条码") },
+                title = { Text(stringResource(R.string.create_barcode_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.action_back))
                     }
                 }
             )
@@ -78,7 +89,6 @@ fun BarcodeCreateScreen(onBack: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (generatedBitmap == null) {
-                // 输入界面
                 BarcodeInputContent(
                     selectedType = selectedType,
                     content = content,
@@ -93,17 +103,16 @@ fun BarcodeCreateScreen(onBack: () -> Unit) {
                         errorMessage = null
                     },
                     onGenerate = {
-                        val result = generateBarcode(qrEncoder, content.trim(), selectedType)
+                        val result = generateBarcode(qrEncoder, content.trim(), selectedType, errEmpty, errEan13, errEan8, errUpca)
                         if (result.isSuccess) {
                             generatedBitmap = result.getOrNull()
                             errorMessage = null
                         } else {
-                            errorMessage = result.exceptionOrNull()?.message ?: "生成失败"
+                            errorMessage = result.exceptionOrNull()?.message ?: errEmpty
                         }
                     }
                 )
             } else {
-                // 结果界面
                 BarcodeResultContent(
                     bitmap = generatedBitmap!!,
                     context = context,
@@ -126,10 +135,9 @@ private fun BarcodeInputContent(
     onContentChanged: (String) -> Unit,
     onGenerate: () -> Unit
 ) {
-    // 条码类型选择
     val selectedIndex = BarcodeType.entries.indexOf(selectedType)
     TabRow(selectedTabIndex = selectedIndex, modifier = Modifier.fillMaxWidth()) {
-        BarcodeType.entries.forEachIndexed { _, type ->
+        BarcodeType.entries.forEach { type ->
             Tab(
                 selected = selectedType == type,
                 onClick = { onTypeChanged(type) },
@@ -140,11 +148,13 @@ private fun BarcodeInputContent(
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    // 输入框
+    val digitCountText = if (selectedType.digitCount != null) {
+        stringResource(R.string.barcode_digit_count, content.length, selectedType.digitCount)
+    } else null
+
     OutlinedTextField(
         value = content,
         onValueChange = { newValue ->
-            // EAN/UPC 类型只允许输入数字
             if (selectedType.digitCount != null) {
                 val filtered = newValue.filter { it.isDigit() }
                 if (filtered.length <= selectedType.digitCount) {
@@ -155,13 +165,17 @@ private fun BarcodeInputContent(
             }
         },
         modifier = Modifier.fillMaxWidth(),
-        label = { Text(selectedType.hint) },
+        label = { Text(stringResource(selectedType.hintRes)) },
         isError = errorMessage != null,
-        supportingText = if (errorMessage != null) {
-            { Text(errorMessage, color = MaterialTheme.colorScheme.error) }
-        } else if (selectedType.digitCount != null) {
-            { Text("${content.length} / ${selectedType.digitCount} 位") }
-        } else null,
+        supportingText = when {
+            errorMessage != null -> {
+                { Text(errorMessage, color = MaterialTheme.colorScheme.error) }
+            }
+            digitCountText != null -> {
+                { Text(digitCountText) }
+            }
+            else -> null
+        },
         singleLine = true,
         keyboardOptions = if (selectedType.digitCount != null) {
             KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -173,7 +187,7 @@ private fun BarcodeInputContent(
     Spacer(modifier = Modifier.height(24.dp))
 
     QrMaxPrimaryButton(
-        text = "生成条码",
+        text = stringResource(R.string.barcode_generate),
         onClick = onGenerate,
         enabled = content.isNotBlank()
     )
@@ -181,7 +195,7 @@ private fun BarcodeInputContent(
 
 @Composable
 private fun BarcodeResultContent(bitmap: Bitmap, context: Context, onNewCode: () -> Unit) {
-    Text("生成的条码", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+    Text(stringResource(R.string.barcode_result_title), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
     Spacer(modifier = Modifier.height(24.dp))
 
     Card(
@@ -198,45 +212,53 @@ private fun BarcodeResultContent(bitmap: Bitmap, context: Context, onNewCode: ()
     Spacer(modifier = Modifier.height(24.dp))
 
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        OutlinedButton(onClick = { saveToGallery(context, bitmap) }) { Text("保存") }
-        OutlinedButton(onClick = { shareImage(context, bitmap) }) { Text("分享") }
+        OutlinedButton(onClick = { saveToGallery(context, bitmap) }) { Text(stringResource(R.string.action_save)) }
+        OutlinedButton(onClick = { shareImage(context, bitmap) }) { Text(stringResource(R.string.action_share)) }
     }
 
     Spacer(modifier = Modifier.height(16.dp))
-    TextButton(onClick = onNewCode) { Text("创建新条码") }
+    TextButton(onClick = onNewCode) { Text(stringResource(R.string.barcode_create_new)) }
 }
 
 /**
- * 生成条码，自动计算 EAN/UPC 校验位。
+ * 生成条码，自动计算 EAN/UPC 校验位。错误文案由调用方传入（已本地化）。
  */
-private fun generateBarcode(encoder: QrEncoder, content: String, type: BarcodeType): Result<Bitmap> {
+private fun generateBarcode(
+    encoder: QrEncoder,
+    content: String,
+    type: BarcodeType,
+    errEmpty: String,
+    errEan13: String,
+    errEan8: String,
+    errUpca: String
+): Result<Bitmap> {
     return try {
         if (content.isBlank()) {
-            return Result.failure(IllegalArgumentException("请输入内容"))
+            return Result.failure(IllegalArgumentException(errEmpty))
         }
 
         val finalContent = when (type) {
             BarcodeType.EAN_13 -> {
                 if (content.length != 12 || !content.all { it.isDigit() }) {
-                    return Result.failure(IllegalArgumentException("EAN-13 需要输入 12 位数字"))
+                    return Result.failure(IllegalArgumentException(errEan13))
                 }
                 content + calculateEanCheckDigit(content)
             }
             BarcodeType.EAN_8 -> {
                 if (content.length != 7 || !content.all { it.isDigit() }) {
-                    return Result.failure(IllegalArgumentException("EAN-8 需要输入 7 位数字"))
+                    return Result.failure(IllegalArgumentException(errEan8))
                 }
                 content + calculateEanCheckDigit(content)
             }
             BarcodeType.UPC_A -> {
                 if (content.length != 11 || !content.all { it.isDigit() }) {
-                    return Result.failure(IllegalArgumentException("UPC-A 需要输入 11 位数字"))
+                    return Result.failure(IllegalArgumentException(errUpca))
                 }
                 content + calculateEanCheckDigit(content)
             }
             BarcodeType.CODE_128 -> {
                 if (content.isEmpty()) {
-                    return Result.failure(IllegalArgumentException("请输入内容"))
+                    return Result.failure(IllegalArgumentException(errEmpty))
                 }
                 content
             }
@@ -250,13 +272,12 @@ private fun generateBarcode(encoder: QrEncoder, content: String, type: BarcodeTy
         )
         Result.success(bitmap)
     } catch (e: Exception) {
-        Result.failure(IllegalArgumentException("生成失败: ${e.message}"))
+        Result.failure(IllegalArgumentException(e.message ?: errEmpty))
     }
 }
 
 /**
  * 计算 EAN/UPC 校验位。
- * 算法：奇数位权重1，偶数位权重3（从右往左计数），总和对10取模后用10减。
  */
 private fun calculateEanCheckDigit(digits: String): Char {
     var sum = 0
@@ -289,10 +310,10 @@ private fun saveToGallery(context: Context, bitmap: Bitmap) {
                 contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
                 resolver.update(it, contentValues, null, null)
             }
-            Toast.makeText(context, "已保存到相册", Toast.LENGTH_SHORT).show()
-        } ?: Toast.makeText(context, "保存失败", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.toast_saved_to_gallery), Toast.LENGTH_SHORT).show()
+        } ?: Toast.makeText(context, context.getString(R.string.toast_save_failed), Toast.LENGTH_SHORT).show()
     } catch (e: Exception) {
-        Toast.makeText(context, "保存失败: ${e.message}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.toast_save_failed_reason, e.message ?: ""), Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -308,8 +329,8 @@ private fun shareImage(context: Context, bitmap: Bitmap) {
             putExtra(Intent.EXTRA_STREAM, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        context.startActivity(Intent.createChooser(intent, "分享条码"))
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_chooser_barcode)))
     } catch (e: Exception) {
-        Toast.makeText(context, "分享失败: ${e.message}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.toast_share_failed, e.message ?: ""), Toast.LENGTH_SHORT).show()
     }
 }

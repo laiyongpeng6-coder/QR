@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fast QR Scan</string>
+
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_section_scan">Ajustes de escaneo</string>
+    <string name="settings_section_general">General</string>
+    <string name="settings_section_support">Soporte</string>
+    <string name="settings_section_legal">Legal</string>
+    <string name="settings_section_about">Acerca de</string>
+
+    <string name="settings_auto_open_url">Abrir sitio web automáticamente</string>
+    <string name="settings_auto_open_url_desc">Abrir el navegador automáticamente al escanear una URL</string>
+    <string name="settings_vibrate">Vibrar al escanear</string>
+    <string name="settings_vibrate_desc">Vibrar cuando un escaneo tiene éxito</string>
+
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_desc">Elige el idioma de la app</string>
+
+    <string name="settings_feedback">Comentarios</string>
+    <string name="settings_feedback_desc">¿Algún problema? Envíanos un correo</string>
+    <string name="settings_feedback_subject">Comentarios de Fast QR Scan</string>
+    <string name="settings_feedback_body">Describe el problema que encontraste:\n\n</string>
+    <string name="settings_feedback_chooser">Enviar comentarios</string>
+
+    <string name="settings_privacy">Política de privacidad</string>
+    <string name="settings_privacy_desc">Ver nuestra política de privacidad</string>
+    <string name="settings_terms">Términos de servicio</string>
+    <string name="settings_terms_desc">Ver los términos de servicio</string>
+
+    <string name="settings_app_full_name">Fast QR Scan: Barcode Reader</string>
+    <string name="settings_version">v1.0.0</string>
+
+    <string name="action_back">Atrás</string>
+
+    <string name="language_dialog_title">Seleccionar idioma</string>
+    <string name="language_system">Predeterminado del sistema</string>
+    <string name="language_cancel">Cancelar</string>
+</resources>

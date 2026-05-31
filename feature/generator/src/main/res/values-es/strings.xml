@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_title">Crear</string>
+    <string name="create_qrcode_title">Crear código QR</string>
+    <string name="create_qrcode_desc">Admite texto, URL, WiFi, contacto, teléfono y más</string>
+    <string name="create_barcode_title">Crear código de barras</string>
+    <string name="create_barcode_desc">Admite formatos EAN-13, EAN-8, UPC-A, Code 128</string>
+
+    <string name="action_back">Atrás</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_beautify">Embellecer</string>
+    <string name="generating">Generando...</string>
+    <string name="resolution">Resolución</string>
+
+    <string name="qr_generate">Generar código QR</string>
+    <string name="qr_result_title">Tu código QR</string>
+    <string name="qr_create_new">Crear nuevo código QR</string>
+    <string name="qr_type_text">Texto</string>
+    <string name="qr_type_url">URL</string>
+    <string name="qr_type_wifi">WiFi</string>
+    <string name="qr_type_contact">Contacto</string>
+    <string name="qr_type_phone">Teléfono</string>
+    <string name="qr_type_social">Social</string>
+    <string name="qr_hint_text">Introduce el texto</string>
+    <string name="qr_hint_url">Introduce la URL (p. ej. example.com)</string>
+    <string name="qr_hint_wifi">WIFI:S:NombreRed;T:WPA;P:Contraseña;;</string>
+    <string name="qr_hint_contact">BEGIN:VCARD...</string>
+    <string name="qr_hint_phone">Introduce el número de teléfono</string>
+    <string name="qr_hint_social">Introduce el enlace de redes sociales</string>
+    <string name="qr_error_empty">Introduce contenido</string>
+    <string name="qr_error_too_large">Contenido demasiado grande para el código QR</string>
+
+    <string name="barcode_generate">Generar código de barras</string>
+    <string name="barcode_result_title">Tu código de barras</string>
+    <string name="barcode_create_new">Crear nuevo código de barras</string>
+    <string name="barcode_hint_ean13">Introduce 12 dígitos (dígito de control automático)</string>
+    <string name="barcode_hint_ean8">Introduce 7 dígitos (dígito de control automático)</string>
+    <string name="barcode_hint_upca">Introduce 11 dígitos (dígito de control automático)</string>
+    <string name="barcode_hint_code128">Introduce texto ASCII</string>
+    <string name="barcode_digit_count">%1$d / %2$d dígitos</string>
+    <string name="barcode_error_empty">Introduce contenido</string>
+    <string name="barcode_error_ean13">EAN-13 requiere 12 dígitos</string>
+    <string name="barcode_error_ean8">EAN-8 requiere 7 dígitos</string>
+    <string name="barcode_error_upca">UPC-A requiere 11 dígitos</string>
+    <string name="barcode_error_generate">Error al generar: %1$s</string>
+
+    <string name="beautify_title">Embellecer código QR</string>
+    <string name="beautify_foreground">Color de primer plano</string>
+    <string name="beautify_background">Color de fondo</string>
+    <string name="beautify_dot_shape">Forma del punto</string>
+    <string name="beautify_shape_square">Cuadrado</string>
+    <string name="beautify_shape_circle">Círculo</string>
+    <string name="beautify_shape_rounded">Redondeado</string>
+    <string name="beautify_logo">Logo central</string>
+    <string name="beautify_logo_none">Ninguno</string>
+    <string name="beautify_logo_upload">Subir</string>
+    <string name="beautify_logo_size">Tamaño del logo: %1$d%%</string>
+    <string name="beautify_logo_load_failed">No se puede cargar la imagen</string>
+
+    <string name="toast_saved_to_gallery">Guardado en la galería</string>
+    <string name="toast_save_failed">Error al guardar</string>
+    <string name="toast_save_failed_reason">Error al guardar: %1$s</string>
+    <string name="toast_share_failed">Error al compartir: %1$s</string>
+    <string name="share_chooser_qr">Compartir código QR</string>
+    <string name="share_chooser_barcode">Compartir código de barras</string>
+    <string name="share_chooser_beautified">Compartir código QR embellecido</string>
+</resources>

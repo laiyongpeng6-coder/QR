@@ -11,6 +11,9 @@
 -keep class javax.inject.** { *; }
 -keep class * extends dagger.hilt.android.internal.managers.ViewComponentManager$FragmentContextWrapper { *; }
 -dontwarn dagger.internal.codegen.**
+# 保留所有 @HiltViewModel 注解的 ViewModel 类名（防止混淆后 key 重复）
+-keep @dagger.hilt.android.lifecycle.HiltViewModel class * { *; }
+-keep class * extends androidx.lifecycle.ViewModel { *; }
 
 # ─── Room ────────────────────────────────────────────────────────────────────
 -keep class * extends androidx.room.RoomDatabase { *; }

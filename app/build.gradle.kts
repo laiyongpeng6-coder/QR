@@ -16,8 +16,8 @@ android {
         applicationId = "com.qrscanfast.qr"
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 4
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -78,6 +78,8 @@ dependencies {
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    // AppCompat（提供 per-app 语言切换 AppCompatDelegate.setApplicationLocales）
+    implementation(libs.androidx.appcompat)
 
     // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)

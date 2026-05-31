@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">Pular</string>
+    <string name="onboarding_next">Próximo</string>
+    <string name="onboarding_get_started">Começar</string>
+
+    <string name="onboarding_title_1">Escaneie tudo</string>
+    <string name="onboarding_description_1">Escaneamento de alta velocidade de todos os tipos de códigos QR e de barras com zoom automático.</string>
+
+    <string name="onboarding_title_2">Crie e compartilhe</string>
+    <string name="onboarding_description_2">Gere códigos QR personalizados para WiFi, contatos, URLs e redes sociais em segundos.</string>
+
+    <string name="onboarding_title_3">Embeleze o código QR</string>
+    <string name="onboarding_description_3">Transforme códigos comuns em obras de arte com nossa ferramenta integrada.</string>
+</resources>

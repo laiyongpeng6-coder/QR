@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,7 +30,7 @@ fun GeneratorScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "创建",
+            text = stringResource(R.string.create_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
@@ -39,8 +40,8 @@ fun GeneratorScreen(
         // 创建二维码卡片
         CreateOptionCard(
             icon = Icons.Default.QrCode2,
-            title = "创建二维码",
-            description = "支持文本、网址、WiFi、联系人、电话等类型",
+            title = stringResource(R.string.create_qrcode_title),
+            description = stringResource(R.string.create_qrcode_desc),
             onClick = onCreateQrCode
         )
 
@@ -49,8 +50,8 @@ fun GeneratorScreen(
         // 创建条码卡片
         CreateOptionCard(
             icon = Icons.Default.ViewWeek,
-            title = "创建条码",
-            description = "支持 EAN-13、EAN-8、UPC-A、Code 128 格式",
+            title = stringResource(R.string.create_barcode_title),
+            description = stringResource(R.string.create_barcode_desc),
             onClick = onCreateBarcode
         )
     }

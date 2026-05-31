@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">跳过</string>
+    <string name="onboarding_next">下一步</string>
+    <string name="onboarding_get_started">开始使用</string>
+
+    <string name="onboarding_title_1">扫描一切</string>
+    <string name="onboarding_description_1">高速扫描各类二维码和条形码，支持自动变焦。</string>
+
+    <string name="onboarding_title_2">创建与分享</string>
+    <string name="onboarding_description_2">几秒内为 WiFi、联系人、网址和社交媒体生成自定义二维码。</string>
+
+    <string name="onboarding_title_3">美化二维码</string>
+    <string name="onboarding_description_3">用内置美化工具把普通二维码变成精美艺术作品。</string>
+</resources>

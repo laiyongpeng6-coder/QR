@@ -1,4 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">QR Scan Max</string>
+    <string name="app_name">Fast QR Scan</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_scan">Scan Settings</string>
+    <string name="settings_section_general">General</string>
+    <string name="settings_section_support">Support</string>
+    <string name="settings_section_legal">Legal</string>
+    <string name="settings_section_about">About</string>
+
+    <string name="settings_auto_open_url">Auto-open Website</string>
+    <string name="settings_auto_open_url_desc">Automatically open the browser when a URL is scanned</string>
+    <string name="settings_vibrate">Vibrate on Scan</string>
+    <string name="settings_vibrate_desc">Vibrate when a scan succeeds</string>
+
+    <string name="settings_language">Language</string>
+    <string name="settings_language_desc">Choose the app language</string>
+
+    <string name="settings_feedback">Feedback</string>
+    <string name="settings_feedback_desc">Got a problem? Email us</string>
+    <string name="settings_feedback_subject">Fast QR Scan Feedback</string>
+    <string name="settings_feedback_body">Please describe the problem you encountered:\n\n</string>
+    <string name="settings_feedback_chooser">Send feedback</string>
+
+    <string name="settings_privacy">Privacy Policy</string>
+    <string name="settings_privacy_desc">View our privacy policy</string>
+    <string name="settings_terms">Terms of Service</string>
+    <string name="settings_terms_desc">View the terms of service</string>
+
+    <string name="settings_app_full_name">Fast QR Scan: Barcode Reader</string>
+    <string name="settings_version">v1.0.0</string>
+
+    <string name="action_back">Back</string>
+
+    <!-- Language selection dialog -->
+    <string name="language_dialog_title">Select Language</string>
+    <string name="language_system">System Default</string>
+    <string name="language_cancel">Cancel</string>
 </resources>

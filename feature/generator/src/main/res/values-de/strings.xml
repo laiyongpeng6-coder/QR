@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_title">Erstellen</string>
+    <string name="create_qrcode_title">QR-Code erstellen</string>
+    <string name="create_qrcode_desc">Unterstützt Text, URL, WLAN, Kontakt, Telefon und mehr</string>
+    <string name="create_barcode_title">Barcode erstellen</string>
+    <string name="create_barcode_desc">Unterstützt EAN-13, EAN-8, UPC-A, Code 128</string>
+
+    <string name="action_back">Zurück</string>
+    <string name="action_save">Speichern</string>
+    <string name="action_share">Teilen</string>
+    <string name="action_beautify">Verschönern</string>
+    <string name="generating">Wird erstellt...</string>
+    <string name="resolution">Auflösung</string>
+
+    <string name="qr_generate">QR-Code erstellen</string>
+    <string name="qr_result_title">Dein QR-Code</string>
+    <string name="qr_create_new">Neuen QR-Code erstellen</string>
+    <string name="qr_type_text">Text</string>
+    <string name="qr_type_url">URL</string>
+    <string name="qr_type_wifi">WLAN</string>
+    <string name="qr_type_contact">Kontakt</string>
+    <string name="qr_type_phone">Telefon</string>
+    <string name="qr_type_social">Sozial</string>
+    <string name="qr_hint_text">Textinhalt eingeben</string>
+    <string name="qr_hint_url">URL eingeben (z. B. example.com)</string>
+    <string name="qr_hint_wifi">WIFI:S:Netzwerkname;T:WPA;P:Passwort;;</string>
+    <string name="qr_hint_contact">BEGIN:VCARD...</string>
+    <string name="qr_hint_phone">Telefonnummer eingeben</string>
+    <string name="qr_hint_social">Social-Media-Link eingeben</string>
+    <string name="qr_error_empty">Bitte Inhalt eingeben</string>
+    <string name="qr_error_too_large">Inhalt zu groß für QR-Code</string>
+
+    <string name="barcode_generate">Barcode erstellen</string>
+    <string name="barcode_result_title">Dein Barcode</string>
+    <string name="barcode_create_new">Neuen Barcode erstellen</string>
+    <string name="barcode_hint_ean13">12 Ziffern eingeben (Prüfziffer automatisch)</string>
+    <string name="barcode_hint_ean8">7 Ziffern eingeben (Prüfziffer automatisch)</string>
+    <string name="barcode_hint_upca">11 Ziffern eingeben (Prüfziffer automatisch)</string>
+    <string name="barcode_hint_code128">ASCII-Text eingeben</string>
+    <string name="barcode_digit_count">%1$d / %2$d Ziffern</string>
+    <string name="barcode_error_empty">Bitte Inhalt eingeben</string>
+    <string name="barcode_error_ean13">EAN-13 benötigt 12 Ziffern</string>
+    <string name="barcode_error_ean8">EAN-8 benötigt 7 Ziffern</string>
+    <string name="barcode_error_upca">UPC-A benötigt 11 Ziffern</string>
+    <string name="barcode_error_generate">Erstellung fehlgeschlagen: %1$s</string>
+
+    <string name="beautify_title">QR-Code verschönern</string>
+    <string name="beautify_foreground">Vordergrundfarbe</string>
+    <string name="beautify_background">Hintergrundfarbe</string>
+    <string name="beautify_dot_shape">Punktform</string>
+    <string name="beautify_shape_square">Quadrat</string>
+    <string name="beautify_shape_circle">Kreis</string>
+    <string name="beautify_shape_rounded">Abgerundet</string>
+    <string name="beautify_logo">Zentrales Logo</string>
+    <string name="beautify_logo_none">Keins</string>
+    <string name="beautify_logo_upload">Hochladen</string>
+    <string name="beautify_logo_size">Logo-Größe: %1$d%%</string>
+    <string name="beautify_logo_load_failed">Bild konnte nicht geladen werden</string>
+
+    <string name="toast_saved_to_gallery">In Galerie gespeichert</string>
+    <string name="toast_save_failed">Speichern fehlgeschlagen</string>
+    <string name="toast_save_failed_reason">Speichern fehlgeschlagen: %1$s</string>
+    <string name="toast_share_failed">Teilen fehlgeschlagen: %1$s</string>
+    <string name="share_chooser_qr">QR-Code teilen</string>
+    <string name="share_chooser_barcode">Barcode teilen</string>
+    <string name="share_chooser_beautified">Verschönerten QR-Code teilen</string>
+</resources>

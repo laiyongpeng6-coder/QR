@@ -1,50 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 鎵弿鍣ㄦā鍧楀瓧绗︿覆璧勬簮 -->
+    <!-- Scanner module strings (English base / default) -->
 
-    <!-- 鏉冮檺鐩稿叧 -->
+    <!-- Permission -->
     <string name="scanner_permission_title">Camera Permission Required</string>
-    <string name="scanner_permission_message">QR Scan Max needs camera access to scan QR codes and barcodes.</string>
+    <string name="scanner_permission_message">Fast QR Scan needs camera access to scan QR codes and barcodes.</string>
     <string name="scanner_permission_button">Grant Permission</string>
     <string name="scanner_permission_settings">Open Settings</string>
     <string name="scanner_permission_denied">Camera permission was denied. Please enable it in Settings.</string>
 
-    <!-- 鎵弿鎿嶄綔 -->
+    <!-- Scanning actions -->
     <string name="scanner_flash_on">Flash On</string>
     <string name="scanner_flash_off">Flash Off</string>
     <string name="scanner_import_album">Import from Album</string>
     <string name="scanner_scanning">Point camera at a QR code or barcode</string>
+    <string name="scanner_settings">Settings</string>
 
-    <!-- 鎵弿缁撴灉鎿嶄綔 -->
-    <string name="result_open_url">Open Link</string>
-    <string name="result_copy">Copy</string>
-    <string name="result_share">Share</string>
-    <string name="result_connect_wifi">Connect to WiFi</string>
-    <string name="result_save_contact">Save Contact</string>
-    <string name="result_call">Call</string>
-    <string name="result_send_sms">Send SMS</string>
-    <string name="result_open_app">Open in App</string>
-    <string name="result_open_browser">Open in Browser</string>
-    <string name="result_scan_again">Scan Again</string>
+    <!-- Album import messages -->
+    <string name="scanner_no_barcode_in_image">No QR code or barcode found in this image</string>
+    <string name="scanner_image_parse_failed">Failed to parse image</string>
+    <string name="scanner_image_read_failed">Unable to read image</string>
 
-    <!-- 鍐呭绫诲瀷鏍囩 -->
-    <string name="result_type_url">Website</string>
-    <string name="result_type_wifi">WiFi Network</string>
-    <string name="result_type_contact">Contact</string>
-    <string name="result_type_phone">Phone Number</string>
-    <string name="result_type_email">Email</string>
-    <string name="result_type_sms">SMS</string>
-    <string name="result_type_social">Social Media</string>
-    <string name="result_type_location">Location</string>
-    <string name="result_type_text">Text</string>
-    <string name="result_type_product">Product</string>
+    <!-- Scan result screen -->
+    <string name="result_title">Scan Result</string>
+    <string name="result_continue_scan">Continue Scanning</string>
+    <string name="result_label_link">Link</string>
+    <string name="result_label_password">Password</string>
+    <string name="result_label_phone">Phone Number</string>
+    <string name="result_label_content">Content</string>
+    <string name="result_label_network_name">Network Name</string>
+    <string name="result_label_security">Security</string>
+    <string name="result_label_email">Email</string>
+    <string name="result_label_subject">Subject</string>
+    <string name="result_label_company">Company</string>
+    <string name="result_label_latitude">Latitude</string>
+    <string name="result_label_longitude">Longitude</string>
+    <string name="result_label_scan_time">Scan Time</string>
+    <string name="result_label_format">Barcode Format</string>
+    <string name="result_unknown_contact">Unknown Contact</string>
+    <string name="result_unknown">Unknown</string>
 
-    <!-- WiFi 璇︽儏 -->
-    <string name="wifi_ssid">Network Name</string>
-    <string name="wifi_security">Security</string>
-    <string name="wifi_password">Password</string>
+    <!-- Common actions -->
+    <string name="action_copy">Copy</string>
+    <string name="action_share">Share</string>
+    <string name="action_favorite">Favorite</string>
+    <string name="action_show_password">Show password</string>
+    <string name="action_hide_password">Hide password</string>
+    <string name="action_back">Back</string>
 
-    <!-- 閿欒淇℃伅 -->
-    <string name="scanner_error_camera">Unable to start camera</string>
-    <string name="scanner_error_no_barcode">No QR code or barcode found in this image</string>
+    <!-- Primary actions -->
+    <string name="action_open_in_browser">Open in Browser</string>
+    <string name="action_copy_password">Copy Password</string>
+    <string name="action_call">Call</string>
+    <string name="action_send_sms">Send SMS</string>
+    <string name="action_send_email">Send Email</string>
+    <string name="action_save_contact">Save to Contacts</string>
+    <string name="action_open_in_maps">Open in Maps</string>
+    <string name="action_search_product">Search Product</string>
+    <string name="action_copy_all">Copy All</string>
+
+    <!-- Toasts -->
+    <string name="toast_copied">Copied to clipboard</string>
+    <string name="toast_password_copied">Password copied: %1$s</string>
+    <string name="toast_cannot_open_link">Cannot open link</string>
+    <string name="toast_favorited">Favorited</string>
+
+    <!-- Content type labels -->
+    <string name="content_type_url">Website</string>
+    <string name="content_type_wifi">WiFi Network</string>
+    <string name="content_type_contact">Contact</string>
+    <string name="content_type_phone">Phone Number</string>
+    <string name="content_type_email">Email</string>
+    <string name="content_type_sms">SMS</string>
+    <string name="content_type_social">Social Media</string>
+    <string name="content_type_geo">Location</string>
+    <string name="content_type_product">Product</string>
+    <string name="content_type_text">Text</string>
+    <string name="content_type_result">Result</string>
 </resources>

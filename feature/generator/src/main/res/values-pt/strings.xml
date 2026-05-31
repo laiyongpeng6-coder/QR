@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_title">Criar</string>
+    <string name="create_qrcode_title">Criar código QR</string>
+    <string name="create_qrcode_desc">Suporta texto, URL, WiFi, contato, telefone e mais</string>
+    <string name="create_barcode_title">Criar código de barras</string>
+    <string name="create_barcode_desc">Suporta formatos EAN-13, EAN-8, UPC-A, Code 128</string>
+
+    <string name="action_back">Voltar</string>
+    <string name="action_save">Salvar</string>
+    <string name="action_share">Compartilhar</string>
+    <string name="action_beautify">Embelezar</string>
+    <string name="generating">Gerando...</string>
+    <string name="resolution">Resolução</string>
+
+    <string name="qr_generate">Gerar código QR</string>
+    <string name="qr_result_title">Seu código QR</string>
+    <string name="qr_create_new">Criar novo código QR</string>
+    <string name="qr_type_text">Texto</string>
+    <string name="qr_type_url">URL</string>
+    <string name="qr_type_wifi">WiFi</string>
+    <string name="qr_type_contact">Contato</string>
+    <string name="qr_type_phone">Telefone</string>
+    <string name="qr_type_social">Social</string>
+    <string name="qr_hint_text">Digite o conteúdo de texto</string>
+    <string name="qr_hint_url">Digite a URL (ex.: example.com)</string>
+    <string name="qr_hint_wifi">WIFI:S:NomeDaRede;T:WPA;P:Senha;;</string>
+    <string name="qr_hint_contact">BEGIN:VCARD...</string>
+    <string name="qr_hint_phone">Digite o número de telefone</string>
+    <string name="qr_hint_social">Digite o link da rede social</string>
+    <string name="qr_error_empty">Digite o conteúdo</string>
+    <string name="qr_error_too_large">Conteúdo muito grande para o código QR</string>
+
+    <string name="barcode_generate">Gerar código de barras</string>
+    <string name="barcode_result_title">Seu código de barras</string>
+    <string name="barcode_create_new">Criar novo código de barras</string>
+    <string name="barcode_hint_ean13">Digite 12 dígitos (dígito verificador automático)</string>
+    <string name="barcode_hint_ean8">Digite 7 dígitos (dígito verificador automático)</string>
+    <string name="barcode_hint_upca">Digite 11 dígitos (dígito verificador automático)</string>
+    <string name="barcode_hint_code128">Digite texto ASCII</string>
+    <string name="barcode_digit_count">%1$d / %2$d dígitos</string>
+    <string name="barcode_error_empty">Digite o conteúdo</string>
+    <string name="barcode_error_ean13">EAN-13 requer 12 dígitos</string>
+    <string name="barcode_error_ean8">EAN-8 requer 7 dígitos</string>
+    <string name="barcode_error_upca">UPC-A requer 11 dígitos</string>
+    <string name="barcode_error_generate">Falha na geração: %1$s</string>
+
+    <string name="beautify_title">Embelezar código QR</string>
+    <string name="beautify_foreground">Cor de primeiro plano</string>
+    <string name="beautify_background">Cor de fundo</string>
+    <string name="beautify_dot_shape">Forma do ponto</string>
+    <string name="beautify_shape_square">Quadrado</string>
+    <string name="beautify_shape_circle">Círculo</string>
+    <string name="beautify_shape_rounded">Arredondado</string>
+    <string name="beautify_logo">Logo central</string>
+    <string name="beautify_logo_none">Nenhum</string>
+    <string name="beautify_logo_upload">Enviar</string>
+    <string name="beautify_logo_size">Tamanho do logo: %1$d%%</string>
+    <string name="beautify_logo_load_failed">Não foi possível carregar a imagem</string>
+
+    <string name="toast_saved_to_gallery">Salvo na galeria</string>
+    <string name="toast_save_failed">Falha ao salvar</string>
+    <string name="toast_save_failed_reason">Falha ao salvar: %1$s</string>
+    <string name="toast_share_failed">Falha ao compartilhar: %1$s</string>
+    <string name="share_chooser_qr">Compartilhar código QR</string>
+    <string name="share_chooser_barcode">Compartilhar código de barras</string>
+    <string name="share_chooser_beautified">Compartilhar código QR embelezado</string>
+</resources>

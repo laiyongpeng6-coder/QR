@@ -1,9 +1,9 @@
 ﻿package com.qrscanfast.app
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import com.qrscanfast.app.navigation.MainNavHost
 import com.qrscanfast.core.data.datastore.AppSettings
 import com.qrscanfast.core.data.datastore.OnboardingPreferences
@@ -14,11 +14,10 @@ import javax.inject.Inject
 /**
  * 应用主 Activity。
  *
- * 使用 Hilt 注入依赖，承载 Compose 根内容。
- * 所有界面逻辑在 Composable 和 ViewModel 中实现。
+ * 继承 AppCompatActivity 以支持 per-app 语言切换（AppCompatDelegate.setApplicationLocales）。
  */
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var onboardingPreferences: OnboardingPreferences

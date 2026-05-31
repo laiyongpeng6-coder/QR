@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="scanner_permission_title">Se requiere permiso de cámara</string>
+    <string name="scanner_permission_message">Fast QR Scan necesita acceso a la cámara para escanear códigos QR y de barras.</string>
+    <string name="scanner_permission_button">Conceder permiso</string>
+    <string name="scanner_permission_settings">Abrir ajustes</string>
+    <string name="scanner_permission_denied">Permiso de cámara denegado. Actívalo en los ajustes.</string>
+
+    <string name="scanner_flash_on">Flash activado</string>
+    <string name="scanner_flash_off">Flash desactivado</string>
+    <string name="scanner_import_album">Importar de la galería</string>
+    <string name="scanner_scanning">Apunta la cámara a un código QR o de barras</string>
+    <string name="scanner_settings">Ajustes</string>
+
+    <string name="scanner_no_barcode_in_image">No se encontró ningún código QR o de barras en la imagen</string>
+    <string name="scanner_image_parse_failed">Error al analizar la imagen</string>
+    <string name="scanner_image_read_failed">No se puede leer la imagen</string>
+
+    <string name="result_title">Resultado del escaneo</string>
+    <string name="result_continue_scan">Seguir escaneando</string>
+    <string name="result_label_link">Enlace</string>
+    <string name="result_label_password">Contraseña</string>
+    <string name="result_label_phone">Número de teléfono</string>
+    <string name="result_label_content">Contenido</string>
+    <string name="result_label_network_name">Nombre de la red</string>
+    <string name="result_label_security">Cifrado</string>
+    <string name="result_label_email">Correo electrónico</string>
+    <string name="result_label_subject">Asunto</string>
+    <string name="result_label_company">Empresa</string>
+    <string name="result_label_latitude">Latitud</string>
+    <string name="result_label_longitude">Longitud</string>
+    <string name="result_label_scan_time">Hora del escaneo</string>
+    <string name="result_label_format">Formato del código</string>
+    <string name="result_unknown_contact">Contacto desconocido</string>
+    <string name="result_unknown">Desconocido</string>
+
+    <string name="action_copy">Copiar</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_favorite">Favorito</string>
+    <string name="action_show_password">Mostrar contraseña</string>
+    <string name="action_hide_password">Ocultar contraseña</string>
+    <string name="action_back">Atrás</string>
+
+    <string name="action_open_in_browser">Abrir en el navegador</string>
+    <string name="action_copy_password">Copiar contraseña</string>
+    <string name="action_call">Llamar</string>
+    <string name="action_send_sms">Enviar SMS</string>
+    <string name="action_send_email">Enviar correo</string>
+    <string name="action_save_contact">Guardar en contactos</string>
+    <string name="action_open_in_maps">Abrir en Mapas</string>
+    <string name="action_search_product">Buscar producto</string>
+    <string name="action_copy_all">Copiar todo</string>
+
+    <string name="toast_copied">Copiado al portapapeles</string>
+    <string name="toast_password_copied">Contraseña copiada: %1$s</string>
+    <string name="toast_cannot_open_link">No se puede abrir el enlace</string>
+    <string name="toast_favorited">Añadido a favoritos</string>
+
+    <string name="content_type_url">Sitio web</string>
+    <string name="content_type_wifi">Red WiFi</string>
+    <string name="content_type_contact">Contacto</string>
+    <string name="content_type_phone">Número de teléfono</string>
+    <string name="content_type_email">Correo electrónico</string>
+    <string name="content_type_sms">SMS</string>
+    <string name="content_type_social">Redes sociales</string>
+    <string name="content_type_geo">Ubicación</string>
+    <string name="content_type_product">Producto</string>
+    <string name="content_type_text">Texto</string>
+    <string name="content_type_result">Resultado</string>
+</resources>

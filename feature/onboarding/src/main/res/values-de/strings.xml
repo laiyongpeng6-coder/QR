@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">Überspringen</string>
+    <string name="onboarding_next">Weiter</string>
+    <string name="onboarding_get_started">Loslegen</string>
+
+    <string name="onboarding_title_1">Alles scannen</string>
+    <string name="onboarding_description_1">Schnelles Scannen aller Arten von QR-Codes und Barcodes mit Auto-Zoom.</string>
+
+    <string name="onboarding_title_2">Erstellen &amp; Teilen</string>
+    <string name="onboarding_description_2">Erstelle in Sekunden eigene QR-Codes für WLAN, Kontakte, URLs und soziale Medien.</string>
+
+    <string name="onboarding_title_3">QR-Code verschönern</string>
+    <string name="onboarding_description_3">Verwandle gewöhnliche Codes mit unserem integrierten Tool in kleine Kunstwerke.</string>
+</resources>

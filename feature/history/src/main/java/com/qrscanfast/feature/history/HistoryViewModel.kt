@@ -76,11 +76,11 @@ class HistoryViewModel @Inject constructor(
 }
 
 /**
- * 历史记录 Tab 枚举。
+ * 历史记录 Tab 枚举。labelRes 改用资源 ID 渲染。
  */
-enum class HistoryTab(val label: String) {
-    SCAN("扫描记录"),
-    GENERATED("生成记录");
+enum class HistoryTab(val labelRes: Int) {
+    SCAN(com.qrscanfast.feature.history.R.string.history_tab_scan),
+    GENERATED(com.qrscanfast.feature.history.R.string.history_tab_generated);
 
     fun toRecordSource(): RecordSource = when (this) {
         SCAN -> RecordSource.SCAN

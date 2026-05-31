@@ -28,9 +28,8 @@ android {
     }
 }
 
-// 强制使用 listenablefuture 1.0 真实库，覆盖 CameraX 引入的 9999.0 空桩库
-// 否则会报 "Cannot access class ListenableFuture"
-configurations.all {
+// 强制使用 listenablefuture 1.0 真实库（仅编译类路径），覆盖 CameraX 引入的 9999.0 空桩库
+configurations.matching { it.name.contains("CompileClasspath", ignoreCase = true) }.all {
     resolutionStrategy {
         force("com.google.guava:listenablefuture:1.0")
     }

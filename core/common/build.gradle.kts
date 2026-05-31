@@ -31,6 +31,8 @@ dependencies {
 
     // AndroidX Core KTX
     implementation(libs.androidx.core.ktx)
+    // AppCompat（per-app 语言切换）
+    implementation(libs.androidx.appcompat)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)

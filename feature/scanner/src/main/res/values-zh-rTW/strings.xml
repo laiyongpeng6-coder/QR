@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="scanner_permission_title">需要相機權限</string>
+    <string name="scanner_permission_message">Fast QR Scan 需要相機權限來掃描 QR 碼和條碼。</string>
+    <string name="scanner_permission_button">授予權限</string>
+    <string name="scanner_permission_settings">開啟設定</string>
+    <string name="scanner_permission_denied">相機權限被拒絕，請在設定中開啟。</string>
+
+    <string name="scanner_flash_on">手電筒開</string>
+    <string name="scanner_flash_off">手電筒關</string>
+    <string name="scanner_import_album">從相簿匯入</string>
+    <string name="scanner_scanning">將相機對準 QR 碼或條碼</string>
+    <string name="scanner_settings">設定</string>
+
+    <string name="scanner_no_barcode_in_image">未在圖片中偵測到 QR 碼或條碼</string>
+    <string name="scanner_image_parse_failed">圖片解析失敗</string>
+    <string name="scanner_image_read_failed">無法讀取圖片</string>
+
+    <string name="result_title">掃描結果</string>
+    <string name="result_continue_scan">繼續掃描</string>
+    <string name="result_label_link">連結網址</string>
+    <string name="result_label_password">密碼</string>
+    <string name="result_label_phone">電話號碼</string>
+    <string name="result_label_content">內容</string>
+    <string name="result_label_network_name">網路名稱</string>
+    <string name="result_label_security">加密方式</string>
+    <string name="result_label_email">電子郵件</string>
+    <string name="result_label_subject">主旨</string>
+    <string name="result_label_company">公司</string>
+    <string name="result_label_latitude">緯度</string>
+    <string name="result_label_longitude">經度</string>
+    <string name="result_label_scan_time">掃描時間</string>
+    <string name="result_label_format">條碼格式</string>
+    <string name="result_unknown_contact">未知聯絡人</string>
+    <string name="result_unknown">未知</string>
+
+    <string name="action_copy">複製</string>
+    <string name="action_share">分享</string>
+    <string name="action_favorite">收藏</string>
+    <string name="action_show_password">顯示密碼</string>
+    <string name="action_hide_password">隱藏密碼</string>
+    <string name="action_back">返回</string>
+
+    <string name="action_open_in_browser">在瀏覽器中開啟</string>
+    <string name="action_copy_password">複製密碼</string>
+    <string name="action_call">撥打電話</string>
+    <string name="action_send_sms">傳送簡訊</string>
+    <string name="action_send_email">傳送郵件</string>
+    <string name="action_save_contact">儲存至通訊錄</string>
+    <string name="action_open_in_maps">在地圖中開啟</string>
+    <string name="action_search_product">搜尋商品</string>
+    <string name="action_copy_all">複製全文</string>
+
+    <string name="toast_copied">已複製到剪貼簿</string>
+    <string name="toast_password_copied">密碼已複製：%1$s</string>
+    <string name="toast_cannot_open_link">無法開啟連結</string>
+    <string name="toast_favorited">已收藏</string>
+
+    <string name="content_type_url">網址</string>
+    <string name="content_type_wifi">WiFi 網路</string>
+    <string name="content_type_contact">聯絡人</string>
+    <string name="content_type_phone">電話號碼</string>
+    <string name="content_type_email">電子郵件</string>
+    <string name="content_type_sms">簡訊</string>
+    <string name="content_type_social">社群媒體</string>
+    <string name="content_type_geo">地理位置</string>
+    <string name="content_type_product">商品條碼</string>
+    <string name="content_type_text">文字</string>
+    <string name="content_type_result">掃描結果</string>
+</resources>
