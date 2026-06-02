@@ -12,4 +12,7 @@
 
     <string name="onboarding_title_3">AI Beautification</string>
     <string name="onboarding_description_3">Turn ordinary codes into artistic masterpieces with our built-in AI styling workspace.</string>
+
+    <string name="onboarding_title_4">History &amp; Compare</string>
+    <string name="onboarding_description_4">Automatically save your scan history and compare product prices online.</string>
 </resources>

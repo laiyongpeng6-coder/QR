@@ -12,4 +12,7 @@
 
     <string name="onboarding_title_3">美化二维码</string>
     <string name="onboarding_description_3">用内置美化工具把普通二维码变成精美艺术作品。</string>
+
+    <string name="onboarding_title_4">历史与比价</string>
+    <string name="onboarding_description_4">自动保存您的扫描历史记录，并支持在线查询商品信息进行比价。</string>
 </resources>

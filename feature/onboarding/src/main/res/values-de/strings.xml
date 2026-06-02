@@ -12,4 +12,7 @@
 
     <string name="onboarding_title_3">QR-Code verschönern</string>
     <string name="onboarding_description_3">Verwandle gewöhnliche Codes mit unserem integrierten Tool in kleine Kunstwerke.</string>
+
+    <string name="onboarding_title_4">Verlauf &amp; Preise vergleichen</string>
+    <string name="onboarding_description_4">Speichern Sie Ihren Scan-Verlauf automatisch und vergleichen Sie Produktpreise online.</string>
 </resources>

@@ -12,4 +12,7 @@
 
     <string name="onboarding_title_3">美化 QR 碼</string>
     <string name="onboarding_description_3">用內建美化工具把普通 QR 碼變成精美藝術作品。</string>
+
+    <string name="onboarding_title_4">歷史與比價</string>
+    <string name="onboarding_description_4">自動儲存您的掃描歷史紀錄，並支援線上查詢商品資訊進行比價。</string>
 </resources>

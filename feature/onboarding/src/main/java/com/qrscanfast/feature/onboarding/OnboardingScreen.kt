@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.QrCode
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.qrscanfast.core.ui.theme.FastQrScanTheme
 
 /**
- * Main Onboarding Screen featuring a 3-page introduction.
+ * Main Onboarding Screen featuring a 4-page introduction.
  *
  * Uses [HorizontalPager] for swipe transitions and displays a progress indicator,
  * a "Skip" button, and dynamic navigation buttons ("Next" or "Get Started").
@@ -61,6 +62,11 @@ private fun OnboardingScreenContent(
         OnboardingPage(
             titleRes = R.string.onboarding_title_3,
             descriptionRes = R.string.onboarding_description_3,
+            iconRes = 0
+        ),
+        OnboardingPage(
+            titleRes = R.string.onboarding_title_4,
+            descriptionRes = R.string.onboarding_description_4,
             iconRes = 0
         )
     )
@@ -147,9 +153,10 @@ private fun OnboardingScreenContent(
             OnboardingPageContent(
                 page = pages[pageIndex],
                 icon = when (pageIndex) {
-                    0 -> Icons.Default.Home
-                    1 -> Icons.Default.Add
-                    else -> Icons.Default.Star
+                    0 -> Icons.Default.QrCodeScanner
+                    1 -> Icons.Default.QrCode
+                    2 -> Icons.Default.AutoAwesome
+                    else -> Icons.Default.History
                 }
             )
         }
