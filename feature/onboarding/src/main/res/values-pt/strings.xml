@@ -12,4 +12,7 @@
 
     <string name="onboarding_title_3">Embeleze o código QR</string>
     <string name="onboarding_description_3">Transforme códigos comuns em obras de arte com nossa ferramenta integrada.</string>
+
+    <string name="onboarding_title_4">Histórico e Comparação</string>
+    <string name="onboarding_description_4">Salve automaticamente seu histórico de varredura e compare os preços dos produtos online.</string>
 </resources>
