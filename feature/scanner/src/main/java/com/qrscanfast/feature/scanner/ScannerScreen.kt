@@ -39,10 +39,14 @@ import com.qrscanfast.core.domain.model.ContentType
 import java.util.concurrent.Executors
 
 /**
- * 扫描器主界面 — 全屏相机预览 + 取景框 + 操作按钮 + 结果展示。
+ * 扫描器主页面。
  *
- * 集成 CameraX 预览 + ML Kit 条码扫描，实时检测 QR 码和条形码。
- * 检测到结果后显示底部结果面板，用户可以复制、打开链接、分享或继续扫描。
+ * ## AI 交接
+ * - 职责：承载相机预览、扫描交互、权限分支和结果跳转。
+ * - 当前状态：已集成 CameraX 和 ML Kit，交互路径较完整。
+ * - 依赖：`ScannerViewModel`、相机控制器、相册导入与权限工具。
+ * - 安全修改范围：预览层、遮罩层、按钮区、权限拒绝页。
+ * - 风险 / TODO：性能、重复触发与视觉沉浸感需要持续优化。
  */
 @Composable
 fun ScannerScreen(

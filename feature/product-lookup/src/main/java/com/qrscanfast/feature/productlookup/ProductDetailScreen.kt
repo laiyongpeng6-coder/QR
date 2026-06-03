@@ -12,11 +12,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.qrscanfast.core.ui.components.QrMaxLoadingIndicator
 
 /**
- * 商品详情界面 — 显示产品名称、描述、类别。
+ * 商品详情页面。
  *
- * ## 给其他 AI 开发者的说明
- * 从 ScanResultScreen 导航过来（当条码为 EAN/UPC 产品码时）。
- * TODO [FUTURE-MONETIZATION]: 添加比价面板和 AI 深度分析（Pro 功能）。
+ * ## AI 交接
+ * - 职责：展示商品查询结果，并承接进一步分析入口。
+ * - 当前状态：已能显示基础商品信息，布局仍偏轻量。
+ * - 依赖：`ProductLookupViewModel`、`core/ui` 加载态组件。
+ * - 安全修改范围：结果布局、空态、错误态、Pro 入口。
+ * - 风险 / TODO：比价面板和 AI 深度分析未来需要订阅门控。
  */
 @Composable
 fun ProductDetailScreen(

@@ -3,19 +3,14 @@
 import android.graphics.Color
 
 /**
- * QR 码视觉样式配置数据类。
+ * QR 样式配置模型。
  *
- * ## 给其他 AI 开发者的说明
- *
- * 本数据类定义了 QR 码美化的所有可调参数。
- * AiWorkspaceViewModel 持有一个 QrStyle 实例，每次用户修改样式时
- * 创建新的 copy 并触发 QR 码重新渲染。
- *
- * ## 当前支持的免费样式
- * - 前景色、背景色、点形状、圆角半径
- *
- * ## 后续开发（需要订阅）
- * - 渐变色填充、AI 艺术模板、中心 Logo 嵌入
+ * ## AI 交接
+ * - 职责：集中描述二维码美化参数，供 UI 与编码层共享。
+ * - 当前状态：覆盖基础前景色、背景色、点形状与圆角。
+ * - 依赖：被 `AiWorkspaceViewModel` 持有并复制更新。
+ * - 安全修改范围：新增样式字段、默认值、注释说明。
+ * - 风险 / TODO：渐变、AI 模板和中心 Logo 未来需考虑订阅门控。
  */
 data class QrStyle(
     val foregroundColor: Int = Color.BLACK,

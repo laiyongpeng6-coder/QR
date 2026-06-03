@@ -21,8 +21,14 @@ import java.time.Instant
 import javax.inject.Inject
 
 /**
- * 码生成器的 ViewModel，管理输入状态、验证和生成逻辑。
- * 支持 QR Code 和常见条码格式（EAN-13、Code 128、EAN-8、UPC-A）。
+ * 码生成器的状态与业务编排层。
+ *
+ * ## AI 交接
+ * - 职责：管理输入、校验、生成、历史写入和 UI 状态切换。
+ * - 当前状态：支持 QR Code 与常见条码格式，带基础错误反馈。
+ * - 依赖：`QrEncoder`、`HistoryRepository`、`GeneratorUiState`。
+ * - 安全修改范围：状态机、输入校验、结果处理、埋点。
+ * - 风险 / TODO：后续扩展 vCard、WiFi、社交媒体等输入时要同步资源与校验。
  */
 @HiltViewModel
 class GeneratorViewModel @Inject constructor(

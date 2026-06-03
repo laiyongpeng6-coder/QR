@@ -12,4 +12,16 @@
 
     <string name="onboarding_title_3">AI Beautification</string>
     <string name="onboarding_description_3">Turn ordinary codes into artistic masterpieces with our built-in AI styling workspace.</string>
+
+    <string name="onboarding_brand">Fast QR Scan</string>
+    <string name="onboarding_swipe_hint">Swipe to explore</string>
+    <string name="onboarding_feature_fast">Fast</string>
+    <string name="onboarding_feature_private">Private</string>
+    <string name="onboarding_feature_secure">Secure</string>
+    <string name="onboarding_feature_multi">Multi-format</string>
+    <string name="onboarding_feature_share">Share</string>
+    <string name="onboarding_feature_contacts">Contacts</string>
+    <string name="onboarding_feature_style">Style</string>
+    <string name="onboarding_feature_logo">Logo</string>
+    <string name="onboarding_feature_export">Export</string>
 </resources>

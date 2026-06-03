@@ -15,7 +15,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 /**
- * 创建 Tab 入口页 — 提供"创建二维码"和"创建条码"两个入口。
+ * 创建 Tab 的入口页面。
+ *
+ * ## AI 交接
+ * - 职责：承接“创建二维码 / 创建条码”两个分流入口。
+ * - 当前状态：功能完整，但布局偏基础，需要持续优化视觉层次。
+ * - 依赖：`GeneratorViewModel`、`core/ui` 通用按钮与卡片。
+ * - 安全修改范围：入口布局、卡片样式、引导文案、空状态。
+ * - 风险 / TODO：后续如果加 Pro 能力，入口态需要重排。
  */
 @Composable
 fun GeneratorScreen(

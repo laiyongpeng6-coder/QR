@@ -12,11 +12,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * 商品查询界面的 ViewModel。
+ * 商品查询页面的状态与业务编排层。
  *
- * ## 给其他 AI 开发者的说明
- * 接收条码 → 调用 ProductRepository → 管理查询状态。
- * TODO [FUTURE-MONETIZATION]: 比价功能需要 Pro 订阅。
+ * ## AI 交接
+ * - 职责：接收条码并驱动仓库查询状态。
+ * - 当前状态：支持 Idle / Loading / Found / NotFound。
+ * - 依赖：`ProductRepository`、`ProductInfo`。
+ * - 安全修改范围：查询触发、状态流、错误处理。
+ * - 风险 / TODO：比价与深度分析未来需要订阅判断。
  */
 @HiltViewModel
 class ProductLookupViewModel @Inject constructor(

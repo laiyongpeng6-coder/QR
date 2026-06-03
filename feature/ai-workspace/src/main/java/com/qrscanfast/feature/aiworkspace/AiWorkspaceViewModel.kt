@@ -12,11 +12,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 /**
- * AI 美化工作台的 ViewModel。
+ * AI 美化工作台的状态与业务编排层。
  *
- * ## 给其他 AI 开发者的说明
- * 负责持有样式状态，每次变化时重新渲染 QR 码预览。
- * TODO [FUTURE-MONETIZATION]: 渐变色和 AI 模板需要检查订阅状态。
+ * ## AI 交接
+ * - 职责：维护样式、内容和预览位图的状态同步。
+ * - 当前状态：支持基础配色与点形状实时重渲染。
+ * - 依赖：`QrEncoder`、`QrStyle`、`DotShape`。
+ * - 安全修改范围：状态字段、预览重算逻辑、输入校验。
+ * - 风险 / TODO：渐变、AI 模板和高级样式需要订阅判断。
  */
 @HiltViewModel
 class AiWorkspaceViewModel @Inject constructor(

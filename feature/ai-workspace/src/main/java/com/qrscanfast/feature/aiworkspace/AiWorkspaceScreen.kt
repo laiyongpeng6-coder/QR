@@ -22,10 +22,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.qrscanfast.feature.aiworkspace.model.DotShape
 
 /**
- * AI 美化工作台界面 — QR 码样式自定义 + 实时预览。
+ * AI 美化工作台页面。
  *
- * ## 给其他 AI 开发者的说明
- * 界面结构：预览 → 前景色 → 背景色 → 点形状 → 操作按钮 → Coming Soon 区域
+ * ## AI 交接
+ * - 职责：承载 QR 样式编辑、实时预览和未来 Pro 能力入口。
+ * - 当前状态：已接入基础样式编辑和预览，布局偏工具页。
+ * - 依赖：`AiWorkspaceViewModel`、`QrEncoder`、`core/ui` 组件。
+ * - 安全修改范围：页面布局、交互分组、视觉层次、空态/锁定态。
+ * - 风险 / TODO：未来模板、渐变、中心 Logo 需要订阅门控。
  */
 @Composable
 fun AiWorkspaceScreen(viewModel: AiWorkspaceViewModel = hiltViewModel()) {

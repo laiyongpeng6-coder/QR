@@ -9,14 +9,14 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import javax.inject.Inject
 
 /**
- * 码编码器 — 使用 ZXing 库将文本内容编码为 QR 码或条码位图。
+ * 二维码 / 条码编码器。
  *
- * 支持的格式：
- * - QR Code（二维码）
- * - EAN-13（商品条码）
- * - Code 128（通用条码）
- * - EAN-8（短商品条码）
- * - UPC-A（北美商品条码）
+ * ## AI 交接
+ * - 职责：把文本内容编码成 QR Code 或条码位图。
+ * - 当前状态：已支持常见 QR 与条码格式，适合作为纯逻辑工具复用。
+ * - 依赖：ZXing、Bitmap、格式校验逻辑。
+ * - 安全修改范围：编码参数、容量检查、格式支持。
+ * - 风险 / TODO：扩展新格式时要同步更新 UI 校验与测试。
  */
 class QrEncoder @Inject constructor() {
 

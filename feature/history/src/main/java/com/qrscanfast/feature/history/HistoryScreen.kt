@@ -20,7 +20,14 @@ import com.qrscanfast.core.common.DateFormatUtils
 import com.qrscanfast.core.domain.model.HistoryRecord
 
 /**
- * 历史记录主界面 — 顶部 Tab 切换（扫描/生成）+ 搜索 + 按日期分组的列表。
+ * 历史记录页面。
+ *
+ * ## AI 交接
+ * - 职责：展示扫描与生成历史，支持搜索、删除和收藏。
+ * - 当前状态：功能完整，但列表层级和空态还可以继续优化。
+ * - 依赖：`HistoryViewModel`、`DateFormatUtils`、`core/ui` 组件。
+ * - 安全修改范围：列表布局、搜索区、分组标题、空态与操作反馈。
+ * - 风险 / TODO：删除撤销、分组顺序和性能优化要一起考虑。
  */
 @Composable
 fun HistoryScreen(

@@ -11,13 +11,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * 历史记录界面的 ViewModel。
+ * 历史记录页面的状态与业务编排层。
  *
- * 负责：
- * 1. 从 HistoryRepository 获取历史记录列表（响应式 Flow）
- * 2. 支持搜索过滤
- * 3. 支持按来源 Tab 过滤（扫描记录 / 生成记录）
- * 4. 支持删除和收藏操作
+ * ## AI 交接
+ * - 职责：聚合历史列表、搜索、分组过滤、删除和收藏逻辑。
+ * - 当前状态：已支持响应式查询和按来源切换。
+ * - 依赖：`HistoryRepository`、`HistoryRecord`、`HistoryTab`。
+ * - 安全修改范围：搜索策略、过滤条件、撤销删除、状态流。
+ * - 风险 / TODO：搜索和列表量大时要注意性能与分页。
  */
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
@@ -76,7 +77,13 @@ class HistoryViewModel @Inject constructor(
 }
 
 /**
- * 历史记录 Tab 枚举。labelRes 改用资源 ID 渲染。
+ * 历史记录筛选 Tab。
+ *
+ * ## AI 交接
+ * - 职责：区分扫描历史与生成历史。
+ * - 当前状态：与 `HistoryScreen` 和 `HistoryViewModel` 共同使用。
+ * - 安全修改范围：Tab 文案、映射规则、枚举顺序。
+ * - 风险 / TODO：新增来源类型时要同步 UI 和查询逻辑。
  */
 enum class HistoryTab(val labelRes: Int) {
     SCAN(com.qrscanfast.feature.history.R.string.history_tab_scan),

@@ -3,27 +3,14 @@
 import javax.inject.Inject
 
 /**
- * 闪光灯辅助控制器 — 根据环境光照度自动控制手电筒开关。
+ * 闪光灯辅助控制器。
  *
- * ## 给其他 AI 开发者的说明
- *
- * 这是一个纯逻辑类，不依赖 Android 框架，方便单元测试。
- * 在 CameraX 的 ImageAnalysis 回调中获取帧的平均亮度后，
- * 调用 [shouldEnableFlash] 判断是否需要开启手电筒。
- *
- * ## 迟滞逻辑（Hysteresis）
- * 为了防止在阈值附近频繁开关手电筒（闪烁），采用双阈值设计：
- * - 开启阈值：亮度 < 40（暗环境，需要补光）
- * - 关闭阈值：亮度 > 60（已经足够亮，可以关闭）
- * - 在 40~60 之间时保持当前状态不变
- *
- * ## 使用示例
- * ```kotlin
- * // 在 ImageAnalysis.Analyzer 的 analyze() 方法中：
- * val luminosity = calculateAverageLuminosity(image)
- * val shouldFlash = flashAssistController.shouldEnableFlash(luminosity)
- * cameraManager.enableTorch(shouldFlash)
- * ```
+ * ## AI 交接
+ * - 职责：根据环境亮度返回是否建议开启闪光灯。
+ * - 当前状态：纯逻辑类，带迟滞避免频繁闪烁。
+ * - 依赖：无 Android 框架依赖。
+ * - 安全修改范围：亮度阈值、迟滞规则、重置逻辑。
+ * - 风险 / TODO：阈值变更要同步相机交互和测试。
  */
 class FlashAssistController @Inject constructor() {
 

@@ -29,14 +29,14 @@ import java.time.Instant
 import javax.inject.Inject
 
 /**
- * 扫描器界面的 ViewModel，管理扫描状态和业务逻辑。
+ * 扫描器页面的状态与业务编排层。
  *
- * 负责：
- * 1. 管理 UI 状态（扫描中 / 已检测到结果 / 权限被拒绝）
- * 2. 接收 ML Kit 的扫描结果，分类内容类型
- * 3. 根据设置触发震动反馈
- * 4. 自动保存扫描结果到历史记录
- * 5. 暴露"自动跳转网页"设置状态供 UI 判断
+ * ## AI 交接
+ * - 职责：管理扫描状态、结果分类、震动反馈和历史写入。
+ * - 当前状态：支持扫描中、结果页、权限拒绝三态。
+ * - 依赖：`ResultMapperUseCase`、`HistoryRepository`、`AppSettings`。
+ * - 安全修改范围：扫描暂停/恢复、结果处理、设置联动。
+ * - 风险 / TODO：自动跳转、震动、重复触发都要避免影响主流程。
  */
 @HiltViewModel
 class ScannerViewModel @Inject constructor(

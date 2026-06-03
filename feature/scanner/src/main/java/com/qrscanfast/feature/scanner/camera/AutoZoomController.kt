@@ -3,25 +3,14 @@
 import javax.inject.Inject
 
 /**
- * 自动缩放控制器 — 根据条码在画面中的占比自动调整相机焦距。
+ * 自动缩放控制器。
  *
- * ## 给其他 AI 开发者的说明
- *
- * 这是一个纯逻辑类，不依赖 Android 框架，方便单元测试。
- * 在 ScannerViewModel 或 CameraManager 中调用 [calculateZoomRatio] 方法，
- * 传入 ML Kit 返回的条码边界框面积与帧面积的比值即可。
- *
- * ## 缩放规则（来自 PRD）
- * - 条码占比 < 5%  → 4x 缩放（条码太远太小）
- * - 条码占比 < 15% → 2x 缩放（条码较远）
- * - 条码占比 >= 15% → 1x 不缩放（条码足够大，可正常识别）
- *
- * ## 使用示例
- * ```kotlin
- * val ratio = boundingBox.area() / frameArea.toFloat()
- * val zoom = autoZoomController.calculateZoomRatio(ratio)
- * cameraManager.setZoomRatio(zoom)
- * ```
+ * ## AI 交接
+ * - 职责：根据条码面积占比返回推荐缩放倍率。
+ * - 当前状态：纯逻辑类，适合单测。
+ * - 依赖：无 Android 框架依赖。
+ * - 安全修改范围：阈值、倍率、判定规则。
+ * - 风险 / TODO：调整阈值时要同步相机联动与测试预期。
  */
 class AutoZoomController @Inject constructor() {
 

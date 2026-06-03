@@ -33,10 +33,14 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 /**
- * 扫描结果全屏详情页。
+ * 扫描结果详情页面。
  *
- * 根据不同的内容类型展示结构化信息和对应的操作按钮。
- * 所有文案均使用 stringResource 支持多语言。
+ * ## AI 交接
+ * - 职责：根据内容类型展示结构化信息和下一步操作。
+ * - 当前状态：已支持 URL、WiFi、联系人、电话、邮件、地理位置等分支。
+ * - 依赖：`core/domain` 内容类型模型、系统分享/跳转能力。
+ * - 安全修改范围：内容展示、主操作按钮、辅助操作、元信息。
+ * - 风险 / TODO：新增内容类型时要同步展示逻辑与行动按钮。
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
