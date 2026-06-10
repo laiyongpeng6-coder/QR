@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.camerax.camera2)
     implementation(libs.camerax.lifecycle)
     implementation(libs.camerax.view)
+    implementation(libs.camerax.mlkit.vision)
 
     // 提供 ListenableFuture 实际类（CameraX 的 enableTorch 等方法返回此类型，编译时需要访问）
     // 注意：CameraX 会引入空桩库 listenablefuture:9999.0，需要在下方 configurations 中强制使用 1.0 真实库
