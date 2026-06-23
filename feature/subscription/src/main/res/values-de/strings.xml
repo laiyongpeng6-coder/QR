@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sub_title">STARTE WIE EIN PROFI</string>
+    <string name="sub_subtitle">Alle Funktionen freischalten</string>
+    <string name="sub_pro">PRO</string>
+    <string name="sub_basic">BASIS</string>
+
+    <string name="sub_feature_scan">Jeden Code scannen</string>
+    <string name="sub_feature_create">QR- &amp; Barcodes erstellen</string>
+    <string name="sub_feature_ai">KI QR-Verschönerung</string>
+    <string name="sub_feature_batch">Batch-Scan &amp; Export</string>
+    <string name="sub_feature_history">Unbegrenzter Verlauf</string>
+    <string name="sub_feature_no_ads">Werbung entfernen</string>
+    <string name="sub_feature_wifi">WLAN automatisch verbinden</string>
+    <string name="sub_feature_product">Produktsuche</string>
+
+    <string name="sub_pricing_text">3 Tage kostenlos testen, dann 6,99 $/Woche</string>
+    <string name="sub_cta_button">KOSTENLOS TESTEN</string>
+    <string name="sub_terms_text">Mit der Fortsetzung stimmen Sie unseren Nutzungsbedingungen und Datenschutzrichtlinien zu. Das Abo wird nach Ablauf der Testphase berechnet und verlängert sich automatisch. Kündigen Sie jederzeit vor Ablauf der Testphase.</string>
+    <string name="sub_restore">Käufe wiederherstellen</string>
+
+    <string name="sub_no_purchase_found">Keine früheren Käufe gefunden</string>
+    <string name="sub_purchase_failed">Kauf fehlgeschlagen, bitte erneut versuchen</string>
+</resources>

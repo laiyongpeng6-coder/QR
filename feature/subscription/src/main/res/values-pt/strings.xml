@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sub_title">COMECE COMO UM PRO</string>
+    <string name="sub_subtitle">Desbloqueie todos os recursos</string>
+    <string name="sub_pro">PRO</string>
+    <string name="sub_basic">BÁSICO</string>
+
+    <string name="sub_feature_scan">Escanear qualquer código</string>
+    <string name="sub_feature_create">Criar QR e códigos de barras</string>
+    <string name="sub_feature_ai">Embelezamento QR com IA</string>
+    <string name="sub_feature_batch">Escaneamento e exportação em lote</string>
+    <string name="sub_feature_history">Histórico ilimitado</string>
+    <string name="sub_feature_no_ads">Remover anúncios</string>
+    <string name="sub_feature_wifi">Conexão Wi-Fi automática</string>
+    <string name="sub_feature_product">Pesquisa de produtos</string>
+
+    <string name="sub_pricing_text">Teste gratuito de 3 dias, depois $6.99/semana</string>
+    <string name="sub_cta_button">INICIAR TESTE GRÁTIS</string>
+    <string name="sub_terms_text">Ao continuar, você concorda com nossos Termos e Políticas de privacidade. A assinatura é cobrada após o término do teste e será renovada automaticamente. Cancele a qualquer momento antes do fim do teste.</string>
+    <string name="sub_restore">Restaurar compras</string>
+
+    <string name="sub_no_purchase_found">Nenhuma compra anterior encontrada</string>
+    <string name="sub_purchase_failed">Falha na compra, tente novamente</string>
+</resources>

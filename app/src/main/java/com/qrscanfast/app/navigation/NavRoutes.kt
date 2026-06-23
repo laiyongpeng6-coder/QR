@@ -17,6 +17,9 @@ sealed class NavRoutes(val route: String) {
         }
     }
 
+    /** 订阅页（启动流程中展示） */
+    data object Subscription : NavRoutes("subscription")
+
     /** 设置页 */
     data object Settings : NavRoutes("settings")
 

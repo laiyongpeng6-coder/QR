@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sub_title">像專業人士一樣開始</string>
+    <string name="sub_subtitle">解鎖全部功能</string>
+    <string name="sub_pro">PRO</string>
+    <string name="sub_basic">基礎版</string>
+
+    <string name="sub_feature_scan">掃描任意碼</string>
+    <string name="sub_feature_create">生成 QR 碼和條碼</string>
+    <string name="sub_feature_ai">AI 二維碼美化</string>
+    <string name="sub_feature_batch">批量掃描與匯出</string>
+    <string name="sub_feature_history">無限歷史記錄</string>
+    <string name="sub_feature_no_ads">移除所有廣告</string>
+    <string name="sub_feature_wifi">自動連接 Wi-Fi</string>
+    <string name="sub_feature_product">商品資訊查詢</string>
+
+    <string name="sub_pricing_text">3天免費試用，之後 $6.99/週</string>
+    <string name="sub_cta_button">開始免費試用</string>
+    <string name="sub_terms_text">繼續即表示您同意我們的條款和隱私政策。試用結束後將自動扣費並續訂，在試用結束前隨時取消可避免扣費。</string>
+    <string name="sub_restore">恢復購買</string>
+
+    <string name="sub_no_purchase_found">未找到歷史購買記錄</string>
+    <string name="sub_purchase_failed">購買失敗，請稍後重試</string>
+</resources>

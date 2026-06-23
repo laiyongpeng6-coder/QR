@@ -1,5 +1,6 @@
 package com.qrscanfast.feature.generator
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -27,8 +28,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.google.zxing.BarcodeFormat
+import com.qrscanfast.core.ads.AdGatekeeper
+import com.qrscanfast.core.domain.model.AdPlacement
 import com.qrscanfast.core.ui.components.QrMaxPrimaryButton
 import com.qrscanfast.feature.generator.encoder.QrEncoder
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
@@ -53,9 +57,15 @@ enum class BarcodeType(val label: String, val format: BarcodeFormat, val hintRes
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BarcodeCreateScreen(onBack: () -> Unit) {
+fun BarcodeCreateScreen(
+    onBack: () -> Unit,
+    adGatekeeper: AdGatekeeper,
+    onShowSubscriptionScreen: suspend () -> Boolean = { false }
+) {
     val context = LocalContext.current
+    val activity = context as Activity
     val qrEncoder = remember { QrEncoder() }
+    val coroutineScope = rememberCoroutineScope()
 
     var selectedType by remember { mutableStateOf(BarcodeType.EAN_13) }
     var content by remember { mutableStateOf("") }
@@ -103,12 +113,21 @@ fun BarcodeCreateScreen(onBack: () -> Unit) {
                         errorMessage = null
                     },
                     onGenerate = {
-                        val result = generateBarcode(qrEncoder, content.trim(), selectedType, errEmpty, errEan13, errEan8, errUpca)
-                        if (result.isSuccess) {
-                            generatedBitmap = result.getOrNull()
-                            errorMessage = null
-                        } else {
-                            errorMessage = result.exceptionOrNull()?.message ?: errEmpty
+                        coroutineScope.launch {
+                            // 在生成前调用 AdGatekeeper 拦截
+                            adGatekeeper.gate(
+                                activity = activity,
+                                placement = AdPlacement.INTERSTITIAL_GENERATE,
+                                showSubscriptionScreen = onShowSubscriptionScreen
+                            )
+                            // gate 完成后执行实际生成逻辑
+                            val result = generateBarcode(qrEncoder, content.trim(), selectedType, errEmpty, errEan13, errEan8, errUpca)
+                            if (result.isSuccess) {
+                                generatedBitmap = result.getOrNull()
+                                errorMessage = null
+                            } else {
+                                errorMessage = result.exceptionOrNull()?.message ?: errEmpty
+                            }
                         }
                     }
                 )

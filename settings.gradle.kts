@@ -17,13 +17,16 @@ dependencyResolutionManagement {
 rootProject.name = "FastQrScan"
 
 include(":app")
+include(":core:billing")
 include(":core:data")
 include(":core:domain")
 include(":core:ui")
 include(":core:common")
+include(":core:ads")
 include(":feature:scanner")
 include(":feature:generator")
 include(":feature:history")
 include(":feature:ai-workspace")
 include(":feature:onboarding")
 include(":feature:product-lookup")
+include(":feature:subscription")

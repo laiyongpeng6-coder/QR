@@ -2,9 +2,12 @@
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.qrscanfast.core.domain.ads.ListAdInserter
+import com.qrscanfast.core.domain.ads.ListItem
 import com.qrscanfast.core.domain.model.HistoryRecord
 import com.qrscanfast.core.domain.model.RecordSource
 import com.qrscanfast.core.domain.repository.HistoryRepository
+import com.qrscanfast.core.domain.repository.SubscriptionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -15,15 +18,21 @@ import javax.inject.Inject
  *
  * ## AI 交接
  * - 职责：聚合历史列表、搜索、分组过滤、删除和收藏逻辑。
- * - 当前状态：已支持响应式查询和按来源切换。
- * - 依赖：`HistoryRepository`、`HistoryRecord`、`HistoryTab`。
+ * - 当前状态：已支持响应式查询和按来源切换，已集成广告插入。
+ * - 依赖：`HistoryRepository`、`SubscriptionRepository`、`ListAdInserter`、`HistoryRecord`、`HistoryTab`。
  * - 安全修改范围：搜索策略、过滤条件、撤销删除、状态流。
  * - 风险 / TODO：搜索和列表量大时要注意性能与分页。
  */
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository,
+    private val subscriptionRepository: SubscriptionRepository
 ) : ViewModel() {
+
+    companion object {
+        /** Number of content items between each ad slot in the history list. */
+        private const val AD_INTERVAL = 5
+    }
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
@@ -52,6 +61,23 @@ class HistoryViewModel @Inject constructor(
             }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    /**
+     * 混合列表 — 在非 Premium 用户的历史记录中按间隔插入广告位。
+     * Premium 用户直接获取纯内容列表（无 AdSlot）。
+     */
+    val mixedItems: StateFlow<List<ListItem<HistoryRecord>>> = combine(
+        records,
+        subscriptionRepository.isPremium
+    ) { recordList, isPremium ->
+        if (isPremium) {
+            // Premium users: no ads, just wrap in Content
+            recordList.map { ListItem.Content(it) }
+        } else {
+            // Free users: insert ad slots at regular intervals
+            ListAdInserter.insertAds(recordList, AD_INTERVAL)
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private var lastDeletedRecord: HistoryRecord? = null
 

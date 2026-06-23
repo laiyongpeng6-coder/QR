@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.0.0"
-agp = "8.5.0"
+agp = "8.5.2"
 compose-bom = "2024.06.00"
 compose-compiler = "1.5.14"
 hilt = "2.51.1"
@@ -25,6 +25,8 @@ junit5 = "5.10.3"
 mockk = "1.13.11"
 kotest = "5.9.1"
 turbine = "1.1.0"
+play-services-ads = "23.1.0"
+billing = "7.0.0"
 core-ktx = "1.13.1"
 activity-compose = "1.9.0"
 desugar-jdk-libs = "2.0.4"
@@ -125,10 +127,17 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
+# Google Play Billing
+billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
+
+# Google AdMob
+play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "play-services-ads" }
+
 # Firebase
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

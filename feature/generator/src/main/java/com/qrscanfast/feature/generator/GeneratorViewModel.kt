@@ -1,11 +1,14 @@
 ﻿package com.qrscanfast.feature.generator
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.zxing.BarcodeFormat
+import com.qrscanfast.core.ads.AdGatekeeper
 import com.qrscanfast.core.common.AnalyticsHelper
+import com.qrscanfast.core.domain.model.AdPlacement
 import com.qrscanfast.core.domain.model.ContentType
 import com.qrscanfast.core.domain.model.HistoryRecord
 import com.qrscanfast.core.domain.model.RecordSource
@@ -34,7 +37,8 @@ import javax.inject.Inject
 class GeneratorViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val qrEncoder: QrEncoder,
-    private val historyRepository: HistoryRepository
+    private val historyRepository: HistoryRepository,
+    private val adGatekeeper: AdGatekeeper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<GeneratorUiState>(GeneratorUiState.Input)
@@ -64,6 +68,31 @@ class GeneratorViewModel @Inject constructor(
 
     fun setResolution(resolution: Int) {
         _selectedResolution.value = resolution
+    }
+
+    /**
+     * 带广告拦截的生成入口。
+     *
+     * 在实际生成操作前调用 [AdGatekeeper.gate]：
+     * - Premium 用户直接执行生成
+     * - 免费用户先展示订阅页，关闭后按频率控制展示插屏广告，完成后再执行生成
+     *
+     * @param activity 展示全屏广告所需的 Activity 上下文
+     * @param showSubscriptionScreen 展示订阅页的挂起回调，返回 true 表示用户完成购买
+     */
+    fun generateWithGate(
+        activity: Activity,
+        showSubscriptionScreen: suspend () -> Boolean
+    ) {
+        viewModelScope.launch {
+            val result = adGatekeeper.gate(
+                activity = activity,
+                placement = AdPlacement.INTERSTITIAL_GENERATE,
+                showSubscriptionScreen = showSubscriptionScreen
+            )
+            // 无论 gate 结果如何（Proceed 或 SubscriptionPurchased），都执行生成
+            generate()
+        }
     }
 
     /**

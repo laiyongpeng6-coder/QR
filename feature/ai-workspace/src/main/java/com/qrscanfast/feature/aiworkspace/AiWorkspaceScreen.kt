@@ -1,5 +1,6 @@
 ﻿package com.qrscanfast.feature.aiworkspace
 
+import android.app.Activity
 import android.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,9 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.qrscanfast.core.ads.AdvancedFeatureUnlockDialog
 import com.qrscanfast.feature.aiworkspace.model.DotShape
 
 /**
@@ -26,15 +29,23 @@ import com.qrscanfast.feature.aiworkspace.model.DotShape
  *
  * ## AI 交接
  * - 职责：承载 QR 样式编辑、实时预览和未来 Pro 能力入口。
- * - 当前状态：已接入基础样式编辑和预览，布局偏工具页。
- * - 依赖：`AiWorkspaceViewModel`、`QrEncoder`、`core/ui` 组件。
+ * - 当前状态：已接入基础样式编辑和预览，布局偏工具页。支持高级功能广告解锁。
+ * - 依赖：`AiWorkspaceViewModel`、`QrEncoder`、`core/ui` 组件、`core/ads` 解锁流程。
  * - 安全修改范围：页面布局、交互分组、视觉层次、空态/锁定态。
- * - 风险 / TODO：未来模板、渐变、中心 Logo 需要订阅门控。
+ * - 风险 / TODO：未来模板、渐变需要具体 UI 实现。
  */
 @Composable
 fun AiWorkspaceScreen(viewModel: AiWorkspaceViewModel = hiltViewModel()) {
     val previewBitmap by viewModel.previewBitmap.collectAsState()
     val style by viewModel.style.collectAsState()
+    val isPremium by viewModel.isPremium.collectAsState()
+
+    // State for the advanced feature unlock dialog
+    var showUnlockDialog by remember { mutableStateOf(false) }
+    var unlockTargetFeature by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+    val activity = context as? Activity
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text("Beautify QR Code", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
@@ -82,15 +93,66 @@ fun AiWorkspaceScreen(viewModel: AiWorkspaceViewModel = hiltViewModel()) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // TODO [FUTURE-MONETIZATION]: Coming Soon 锁定区域
-        Card(modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))) {
-            Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("\uD83D\uDD12 Gradient & AI Templates", fontWeight = FontWeight.Medium)
-                Text("Coming Soon with Pro", style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+        // Advanced feature area — locked for free users, unlockable via ad
+        if (isPremium) {
+            // Premium users see the feature directly accessible
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("🎨 Gradient & AI Templates", fontWeight = FontWeight.Medium)
+                    Text(
+                        "Premium Unlocked",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+            }
+        } else {
+            // Free users see the locked state with unlock option
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        unlockTargetFeature = "Gradient & AI Templates"
+                        showUnlockDialog = true
+                    },
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                )
+            ) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("\uD83D\uDD12 Gradient & AI Templates", fontWeight = FontWeight.Medium)
+                    Text(
+                        "Watch an ad to unlock",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
+    }
+
+    // Advanced Feature Unlock Dialog
+    if (showUnlockDialog && activity != null) {
+        AdvancedFeatureUnlockDialog(
+            activity = activity,
+            unlockManager = viewModel.unlockManager,
+            featureName = unlockTargetFeature,
+            onUnlocked = {
+                showUnlockDialog = false
+                // Feature unlocked — in a full implementation this would navigate
+                // to the gradient/template editor or enable the feature.
+                // For now, the UI will re-compose and show the unlocked state temporarily.
+            },
+            onCancelled = {
+                showUnlockDialog = false
+                // Feature remains locked — no action needed.
+            }
+        )
     }
 }
 

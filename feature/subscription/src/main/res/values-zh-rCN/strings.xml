@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sub_title">像专业人士一样开始</string>
+    <string name="sub_subtitle">解锁全部功能</string>
+    <string name="sub_pro">PRO</string>
+    <string name="sub_basic">基础版</string>
+
+    <string name="sub_feature_scan">扫描任意码</string>
+    <string name="sub_feature_create">生成二维码和条码</string>
+    <string name="sub_feature_ai">AI 二维码美化</string>
+    <string name="sub_feature_batch">批量扫描与导出</string>
+    <string name="sub_feature_history">无限历史记录</string>
+    <string name="sub_feature_no_ads">移除所有广告</string>
+    <string name="sub_feature_wifi">自动连接 Wi-Fi</string>
+    <string name="sub_feature_product">商品信息查询</string>
+
+    <string name="sub_pricing_text">3天免费试用，之后 $6.99/周</string>
+    <string name="sub_cta_button">开始免费试用</string>
+    <string name="sub_terms_text">继续即表示您同意我们的条款和隐私政策。试用结束后将自动扣费并续订，在试用结束前随时取消可避免扣费。</string>
+    <string name="sub_restore">恢复购买</string>
+
+    <string name="sub_no_purchase_found">未找到历史购买记录</string>
+    <string name="sub_purchase_failed">购买失败，请稍后重试</string>
+</resources>

@@ -2,6 +2,8 @@
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
+import com.qrscanfast.core.ads.AdvancedFeatureUnlockManager
+import com.qrscanfast.core.domain.repository.SubscriptionRepository
 import com.qrscanfast.feature.aiworkspace.model.DotShape
 import com.qrscanfast.feature.aiworkspace.model.QrStyle
 import com.qrscanfast.feature.generator.encoder.QrEncoder
@@ -17,14 +19,19 @@ import javax.inject.Inject
  * ## AI 交接
  * - 职责：维护样式、内容和预览位图的状态同步。
  * - 当前状态：支持基础配色与点形状实时重渲染。
- * - 依赖：`QrEncoder`、`QrStyle`、`DotShape`。
+ * - 依赖：`QrEncoder`、`QrStyle`、`DotShape`、`AdvancedFeatureUnlockManager`。
  * - 安全修改范围：状态字段、预览重算逻辑、输入校验。
  * - 风险 / TODO：渐变、AI 模板和高级样式需要订阅判断。
  */
 @HiltViewModel
 class AiWorkspaceViewModel @Inject constructor(
-    private val qrEncoder: QrEncoder
+    private val qrEncoder: QrEncoder,
+    val unlockManager: AdvancedFeatureUnlockManager,
+    subscriptionRepository: SubscriptionRepository
 ) : ViewModel() {
+
+    /** Whether the user is a premium subscriber (used to show/hide lock states). */
+    val isPremium: StateFlow<Boolean> = subscriptionRepository.isPremium
 
     private val _style = MutableStateFlow(QrStyle())
     val style: StateFlow<QrStyle> = _style.asStateFlow()

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Subscription Screen -->
+    <string name="sub_title">START LIKE A PRO</string>
+    <string name="sub_subtitle">Unlock All Features</string>
+    <string name="sub_pro">PRO</string>
+    <string name="sub_basic">BASIC</string>
+
+    <!-- Feature comparison items -->
+    <string name="sub_feature_scan">Scan Any Code</string>
+    <string name="sub_feature_create">Create QR &amp; Barcodes</string>
+    <string name="sub_feature_ai">AI QR Beautify</string>
+    <string name="sub_feature_batch">Batch Scan &amp; Export</string>
+    <string name="sub_feature_history">Unlimited History</string>
+    <string name="sub_feature_no_ads">Remove Ads</string>
+    <string name="sub_feature_wifi">Auto-Connect Wi-Fi</string>
+    <string name="sub_feature_product">Product Lookup</string>
+
+    <!-- Pricing -->
+    <string name="sub_pricing_text">3-day free trial, then $6.99/week</string>
+    <string name="sub_cta_button">START FREE TRIAL</string>
+    <string name="sub_terms_text">By continuing you agree to our Terms and Privacy policies. Subscription is billed after the trial ends and will auto-renew. Cancel anytime before trial ends to avoid charges.</string>
+    <string name="sub_restore">Restore Purchases</string>
+
+    <!-- Purchase states -->
+    <string name="sub_no_purchase_found">No previous purchases found</string>
+    <string name="sub_purchase_failed">Purchase failed, please try again</string>
+</resources>

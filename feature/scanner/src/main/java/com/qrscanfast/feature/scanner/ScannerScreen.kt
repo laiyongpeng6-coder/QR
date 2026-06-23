@@ -1,6 +1,7 @@
 ﻿package com.qrscanfast.feature.scanner
 
 import android.Manifest
+import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.FlashOff
 import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -52,11 +54,23 @@ import java.util.concurrent.Executors
 fun ScannerScreen(
     viewModel: ScannerViewModel = hiltViewModel(),
     onResultDetected: (String, BarcodeFormat, ContentType) -> Unit = { _, _, _ -> },
-    onSettingsClick: () -> Unit = {}
+    onSettingsClick: () -> Unit = {},
+    onVipClick: () -> Unit = {},
+    isPremium: Boolean = false,
+    showSubscriptionScreen: (suspend () -> Boolean) = { false }
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val autoOpenUrl by viewModel.autoOpenUrl.collectAsState()
     val context = LocalContext.current
+    val activity = context as? Activity
+
+    // Observe navigation events from ViewModel (emitted after gate flow completes)
+    LaunchedEffect(Unit) {
+        viewModel.navigateToResult.collect { result ->
+            onResultDetected(result.rawValue, result.format, result.contentType)
+            viewModel.resumeScanning()
+        }
+    }
 
     // 权限请求启动器
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -78,7 +92,7 @@ fun ScannerScreen(
 
     when (uiState) {
         is ScannerUiState.Scanning -> {
-            CameraPreviewContent(viewModel = viewModel, onResultDetected = onResultDetected, onSettingsClick = onSettingsClick)
+            CameraPreviewContent(viewModel = viewModel, onResultDetected = onResultDetected, onSettingsClick = onSettingsClick, onVipClick = onVipClick, isPremium = isPremium)
         }
         is ScannerUiState.ResultDetected -> {
             val result = (uiState as ScannerUiState.ResultDetected).result
@@ -100,16 +114,27 @@ fun ScannerScreen(
                             )
                         )
                     } catch (_: Exception) {
-                        // 打开失败则回退到结果页
-                        onResultDetected(result.rawValue, result.format, result.contentType)
+                        // 打开失败则回退到结果页（仍走 gate 流程）
+                        if (activity != null) {
+                            viewModel.performGateAndNavigate(activity, result, showSubscriptionScreen)
+                        } else {
+                            onResultDetected(result.rawValue, result.format, result.contentType)
+                            viewModel.resumeScanning()
+                        }
                     }
                     viewModel.resumeScanning()
                 } else {
-                    onResultDetected(result.rawValue, result.format, result.contentType)
-                    viewModel.resumeScanning()
+                    // Normal result: go through ad gate before showing result
+                    if (activity != null) {
+                        viewModel.performGateAndNavigate(activity, result, showSubscriptionScreen)
+                    } else {
+                        // Fallback: if Activity is not available, navigate directly
+                        onResultDetected(result.rawValue, result.format, result.contentType)
+                        viewModel.resumeScanning()
+                    }
                 }
             }
-            CameraPreviewContent(viewModel = viewModel, onResultDetected = onResultDetected, onSettingsClick = onSettingsClick)
+            CameraPreviewContent(viewModel = viewModel, onResultDetected = onResultDetected, onSettingsClick = onSettingsClick, onVipClick = onVipClick, isPremium = isPremium)
         }
         is ScannerUiState.PermissionDenied -> {
             PermissionDeniedContent(
@@ -131,7 +156,9 @@ fun ScannerScreen(
 private fun CameraPreviewContent(
     viewModel: ScannerViewModel,
     onResultDetected: (String, BarcodeFormat, ContentType) -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    onVipClick: () -> Unit,
+    isPremium: Boolean
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -245,17 +272,17 @@ private fun CameraPreviewContent(
                 .padding(bottom = 120.dp)
         )
 
-        // 右上角：相册导入按钮
+        // 右上角：VIP 入口
         IconButton(
-            onClick = { albumLauncher.launch("image/*") },
+            onClick = onVipClick,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.PhotoLibrary,
-                contentDescription = stringResource(R.string.scanner_import_album),
-                tint = Color.White
+                imageVector = Icons.Default.Star,
+                contentDescription = "VIP",
+                tint = if (isPremium) Color(0xFF2DB89A) else Color(0xFF888888)
             )
         }
 
@@ -273,27 +300,48 @@ private fun CameraPreviewContent(
             )
         }
 
-        // 底部：手电筒按钮
-        IconButton(
-            onClick = {
-                isFlashOn = !isFlashOn
-                cameraController.enableTorch(isFlashOn)
-                AnalyticsHelper.logFlashToggle(isFlashOn)
-            },
+        // 底部按钮行：左侧相册，中间闪光灯
+        Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 48.dp)
+                .fillMaxWidth()
+                .padding(bottom = 48.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = if (isFlashOn) Icons.Default.FlashOn else Icons.Default.FlashOff,
-                contentDescription = if (isFlashOn) {
-                    stringResource(R.string.scanner_flash_on)
-                } else {
-                    stringResource(R.string.scanner_flash_off)
-                },
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
-            )
+            // 左侧相册导入
+            IconButton(
+                onClick = { albumLauncher.launch("image/*") }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.PhotoLibrary,
+                    contentDescription = stringResource(R.string.scanner_import_album),
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(48.dp))
+
+            // 中间闪光灯
+            IconButton(
+                onClick = {
+                    isFlashOn = !isFlashOn
+                    cameraController.enableTorch(isFlashOn)
+                    AnalyticsHelper.logFlashToggle(isFlashOn)
+                }
+            ) {
+                Icon(
+                    imageVector = if (isFlashOn) Icons.Default.FlashOn else Icons.Default.FlashOff,
+                    contentDescription = if (isFlashOn) {
+                        stringResource(R.string.scanner_flash_on)
+                    } else {
+                        stringResource(R.string.scanner_flash_off)
+                    },
+                    tint = Color.White,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
         }
     }
 }

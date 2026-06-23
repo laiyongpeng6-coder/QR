@@ -43,6 +43,17 @@
         android:theme="@style/Theme.FastQrScan"
         tools:targetApi="34">
 
+        <!-- AdMob App ID (required for Google Mobile Ads SDK initialization) -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${ADMOB_APP_ID}" />
+
+        <!-- Resolve manifest merger conflict between ads-lite and measurement-api -->
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

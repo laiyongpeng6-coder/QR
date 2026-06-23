@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
     implementation(project(":core:data"))
+    implementation(project(":core:ads"))
 
     // AndroidX Core（提供 ContextCompat.getDrawable）
     implementation(libs.androidx.core.ktx)

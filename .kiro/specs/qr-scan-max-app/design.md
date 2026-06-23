@@ -18,6 +18,8 @@ Fast QR Scan is an Android application targeting the overseas Google Play market
 | Image Loading | Coil | Async image loading for Compose |
 | Networking | Retrofit + OkHttp | Product lookup API calls |
 | Serialization | Kotlinx Serialization | JSON parsing |
+| Analytics | Firebase Analytics + Crashlytics | Usage analytics and crash reporting |
+| Localization | AppCompat per-app language | In-app language switching (6 languages) |
 | Testing | JUnit 5 + Turbine + Mockk + Kotest Property | Unit, flow, and property testing |
 
 ### Design Decisions
@@ -71,7 +73,7 @@ NavHost (MainNavHost)
 │       ├── GeneratorPreviewScreen
 │       └── AiWorkspaceScreen
 └── shared_routes
-    └── SettingsScreen (future)
+    └── SettingsScreen (已实现，含语言切换、反馈、隐私政策等)
 ```
 
 ### Build Configuration
@@ -82,8 +84,8 @@ android {
     defaultConfig {
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 4
+        versionName = "1.0.3"
     }
 }
 
@@ -96,9 +98,10 @@ room = "2.6.1"
 camerax = "1.3.4"
 mlkit-barcode = "17.3.0"
 zxing = "3.5.3"
-sqlcipher = "4.5.7"
+sqlcipher = "4.5.4"
 retrofit = "2.11.0"
 coil = "2.7.0"
+firebase-bom = "33.1.0"
 ```
 
 ## Components and Interfaces
@@ -297,7 +300,9 @@ class ScannabilityValidator {
 data class OnboardingPage(
     @StringRes val titleRes: Int,
     @StringRes val descriptionRes: Int,
-    @DrawableRes val illustrationRes: Int
+    val icon: ImageVector,
+    val accentColor: Color,
+    val accentColorSecondary: Color
 )
 
 class OnboardingPreferences @Inject constructor(
@@ -309,9 +314,9 @@ class OnboardingPreferences @Inject constructor(
 ```
 
 **Pages:**
-1. "Scan Anything" - Camera scanning illustration
-2. "Create & Share" - QR generation illustration
-3. "Your History, Secured" - Encrypted history illustration
+1. "Scan Everything" - QrCodeScanner icon, green accent (#0D6B5D)
+2. "Create & Share" - Share icon, blue accent (#2257A6)
+3. "AI Beautification" - AutoFixHigh icon, purple accent (#6A2DD8)
 
 **Navigation Logic:**
 - App launch → check `isOnboardingComplete`

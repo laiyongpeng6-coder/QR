@@ -5,41 +5,61 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.qrscanfast.core.ads.ui.NativeCardAd
 import com.qrscanfast.core.common.DateFormatUtils
+import com.qrscanfast.core.domain.ads.AdManager
+import com.qrscanfast.core.domain.ads.ListItem
+import com.qrscanfast.core.domain.model.AdPlacement
 import com.qrscanfast.core.domain.model.HistoryRecord
 
 /**
  * 历史记录页面。
  *
  * ## AI 交接
- * - 职责：展示扫描与生成历史，支持搜索、删除和收藏。
- * - 当前状态：功能完整，但列表层级和空态还可以继续优化。
- * - 依赖：`HistoryViewModel`、`DateFormatUtils`、`core/ui` 组件。
+ * - 职责：展示扫描与生成历史，支持搜索、删除和收藏，列表中按间隔插入原生广告。
+ * - 当前状态：功能完整，已集成 NATIVE_HISTORY_LIST 场景广告。
+ * - 依赖：`HistoryViewModel`、`DateFormatUtils`、`core/ui` 组件、`core/ads` NativeCardAd。
  * - 安全修改范围：列表布局、搜索区、分组标题、空态与操作反馈。
  * - 风险 / TODO：删除撤销、分组顺序和性能优化要一起考虑。
  */
 @Composable
 fun HistoryScreen(
+    adManager: AdManager,
     viewModel: HistoryViewModel = hiltViewModel(),
-    onItemClick: (HistoryRecord) -> Unit = {}
+    onItemClick: (HistoryRecord) -> Unit = {},
+    onSettingsClick: () -> Unit = {},
+    onVipClick: () -> Unit = {},
+    isPremium: Boolean = false
 ) {
+    val mixedItems by viewModel.mixedItems.collectAsState()
     val records by viewModel.records.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { padding ->
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            HistoryTopBar(
+                onSettingsClick = onSettingsClick,
+                onVipClick = onVipClick,
+                isPremium = isPremium
+            )
+        }
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // 顶部 Tab：扫描记录 / 生成记录
             TabRow(selectedTabIndex = selectedTab.ordinal) {
@@ -72,27 +92,36 @@ fun HistoryScreen(
                     )
                 }
             } else {
-                val groupedRecords = records.groupBy { DateFormatUtils.toLocalDate(it.timestamp) }
-
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                 ) {
-                    groupedRecords.forEach { (_, recordsInGroup) ->
-                        item {
-                            Text(
-                                text = DateFormatUtils.formatDateHeader(recordsInGroup.first().timestamp),
-                                style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.padding(vertical = 8.dp)
-                            )
+                    items(
+                        items = mixedItems,
+                        key = { item ->
+                            when (item) {
+                                is ListItem.Content -> "content_${item.data.id}"
+                                is ListItem.AdSlot -> "ad_${mixedItems.indexOf(item)}"
+                            }
                         }
-                        items(recordsInGroup, key = { it.id }) { record ->
-                            HistoryRecordItem(
-                                record = record, onClick = { onItemClick(record) },
-                                onDelete = { viewModel.deleteRecord(record) },
-                                onToggleFavorite = { viewModel.toggleFavorite(record) }
-                            )
+                    ) { item ->
+                        when (item) {
+                            is ListItem.Content -> {
+                                HistoryRecordItem(
+                                    record = item.data,
+                                    onClick = { onItemClick(item.data) },
+                                    onDelete = { viewModel.deleteRecord(item.data) },
+                                    onToggleFavorite = { viewModel.toggleFavorite(item.data) }
+                                )
+                            }
+                            is ListItem.AdSlot -> {
+                                // Render native ad; hides automatically on failure
+                                NativeCardAd(
+                                    placement = AdPlacement.NATIVE_HISTORY_LIST,
+                                    adManager = adManager,
+                                    modifier = Modifier.padding(vertical = 4.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -127,4 +156,40 @@ private fun HistoryRecordItem(
             }
         }
     }
+}
+
+/**
+ * 历史页顶部栏：左侧设置入口，右侧 VIP 入口。
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun HistoryTopBar(
+    onSettingsClick: () -> Unit,
+    onVipClick: () -> Unit,
+    isPremium: Boolean
+) {
+    TopAppBar(
+        title = { },
+        navigationIcon = {
+            IconButton(onClick = onSettingsClick) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Settings",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        },
+        actions = {
+            IconButton(
+                onClick = { if (!isPremium) onVipClick() },
+                enabled = !isPremium
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = "VIP",
+                    tint = if (isPremium) Color(0xFF2DB89A) else Color(0xFF888888)
+                )
+            }
+        }
+    )
 }

@@ -1,5 +1,6 @@
 package com.qrscanfast.feature.generator
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -39,13 +40,15 @@ import java.io.FileOutputStream
 fun QrCodeCreateScreen(
     viewModel: GeneratorViewModel = hiltViewModel(),
     onBack: () -> Unit,
-    onBeautify: (String) -> Unit = {}
+    onBeautify: (String) -> Unit = {},
+    onShowSubscriptionScreen: suspend () -> Boolean = { false }
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val inputType by viewModel.inputType.collectAsState()
     val content by viewModel.content.collectAsState()
     val resolution by viewModel.selectedResolution.collectAsState()
     val context = LocalContext.current
+    val activity = context as Activity
 
     Scaffold(
         topBar = {
@@ -75,7 +78,12 @@ fun QrCodeCreateScreen(
                         onTypeChanged = viewModel::setInputType,
                         onContentChanged = viewModel::setContent,
                         onResolutionChanged = viewModel::setResolution,
-                        onGenerate = viewModel::generate
+                        onGenerate = {
+                            viewModel.generateWithGate(
+                                activity = activity,
+                                showSubscriptionScreen = onShowSubscriptionScreen
+                            )
+                        }
                     )
                 }
                 is GeneratorUiState.Generating -> {

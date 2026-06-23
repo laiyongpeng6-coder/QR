@@ -12,4 +12,16 @@
 
     <string name="onboarding_title_3">美化二维码</string>
     <string name="onboarding_description_3">用内置美化工具把普通二维码变成精美艺术作品。</string>
+
+    <string name="onboarding_brand">Fast QR Scan</string>
+    <string name="onboarding_swipe_hint">滑动探索</string>
+    <string name="onboarding_feature_fast">极速</string>
+    <string name="onboarding_feature_private">隐私</string>
+    <string name="onboarding_feature_secure">安全</string>
+    <string name="onboarding_feature_multi">多格式</string>
+    <string name="onboarding_feature_share">分享</string>
+    <string name="onboarding_feature_contacts">联系人</string>
+    <string name="onboarding_feature_style">风格</string>
+    <string name="onboarding_feature_logo">Logo</string>
+    <string name="onboarding_feature_export">导出</string>
 </resources>

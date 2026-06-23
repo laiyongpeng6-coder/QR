@@ -27,6 +27,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.qrscanfast.core.ads.ui.NativeCardAd
+import com.qrscanfast.core.domain.ads.AdManager
+import com.qrscanfast.core.domain.model.AdPlacement
 import com.qrscanfast.core.domain.model.ContentType
 import java.time.Instant
 import java.time.ZoneId
@@ -48,6 +51,7 @@ fun ScanResultScreen(
     rawContent: String,
     format: String,
     contentType: String,
+    adManager: AdManager,
     onBack: () -> Unit,
     onContinueScan: () -> Unit
 ) {
@@ -88,6 +92,13 @@ fun ScanResultScreen(
             Spacer(modifier = Modifier.height(16.dp))
             PrimaryActionButton(rawContent = rawContent, type = type, context = context)
             Spacer(modifier = Modifier.height(24.dp))
+            // Native ad - hidden when load fails
+            NativeCardAd(
+                placement = AdPlacement.NATIVE_SCAN_RESULT_DETAIL,
+                adManager = adManager,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
             MetaInfoSection(format = format, scanTime = scanTime)
             Spacer(modifier = Modifier.height(16.dp))
         }

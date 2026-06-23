@@ -259,7 +259,8 @@ UI 要求：
 
 对 Fast QR Scan 来说，比较合适的开发顺序是：
 
-1. 先把 onboarding 和主要 tab 的视觉统一起来。
+1. 先把 onboarding 和主要 tab 的视觉统一起来。（已基本完成，品牌化卡片 + 一致的渐变风格）
 2. 再把 scanner / generator / history 的空状态和错误状态统一起来。
-3. 再做 ai-workspace 和 product-lookup 的高级交互。
-4. 最后才做云端模板、订阅和广告。
+3. 完善待实现功能：相册导入、保存到相册、WiFi连接、vCard保存、分享图片。
+4. 再做 ai-workspace 和 product-lookup 的高级交互（网络层 + 缓存策略）。
+5. 最后才做云端模板、订阅和广告。

@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
     implementation(project(":core:data"))
+    implementation(project(":core:ads"))
 
     // 跨 feature 模块依赖：使用 generator 模块的 QrEncoder
     implementation(project(":feature:generator"))

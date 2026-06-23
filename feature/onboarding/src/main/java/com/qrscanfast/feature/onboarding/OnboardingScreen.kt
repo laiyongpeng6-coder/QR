@@ -47,6 +47,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.qrscanfast.core.ads.ui.NativeCardAd
+import com.qrscanfast.core.domain.ads.AdManager
+import com.qrscanfast.core.domain.model.AdPlacement
 import com.qrscanfast.core.ui.theme.FastQrScanTheme
 import com.qrscanfast.feature.onboarding.model.OnboardingPage
 import kotlinx.coroutines.launch
@@ -58,15 +61,17 @@ import androidx.compose.ui.tooling.preview.Preview
  * ## AI 交接
  * - 职责：展示三页引导内容，并在完成后写入持久化状态。
  * - 当前状态：已改成品牌化卡片布局，适合继续迭代为首启产品页。
- * - 依赖：`OnboardingViewModel`、`OnboardingPage`、`core/ui` 按钮组件。
+ * - 依赖：`OnboardingViewModel`、`OnboardingPage`、`core/ui` 按钮组件、`AdManager` 原生广告。
  * - 安全修改范围：页面结构、视觉层次、引导文案、页内装饰。
  * - 风险 / TODO：如果以后增加页数或首启策略，需要同步底部文案和进度展示。
  */
 @Composable
 fun OnboardingScreen(
+    adManager: AdManager,
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
     OnboardingScreenContent(
+        adManager = adManager,
         onComplete = { viewModel.completeOnboarding() }
     )
 }
@@ -74,6 +79,7 @@ fun OnboardingScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun OnboardingScreenContent(
+    adManager: AdManager? = null,
     onComplete: () -> Unit
 ) {
     val pages = listOf(
@@ -132,17 +138,34 @@ private fun OnboardingScreenContent(
             )
         }
     ) { padding ->
-        HorizontalPager(
-            state = pagerState,
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-        ) { pageIndex ->
-            OnboardingPageContent(
-                page = pages[pageIndex],
-                pageIndex = pageIndex,
-                totalPages = pages.size
-            )
+        ) {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) { pageIndex ->
+                OnboardingPageContent(
+                    page = pages[pageIndex],
+                    pageIndex = pageIndex,
+                    totalPages = pages.size
+                )
+            }
+
+            // Native ad card — only shown when ad is loaded, hidden on failure
+            if (adManager != null) {
+                NativeCardAd(
+                    placement = AdPlacement.NATIVE_ONBOARDING,
+                    adManager = adManager,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                )
+            }
         }
     }
 }

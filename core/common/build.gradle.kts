@@ -38,9 +38,13 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-    // Firebase Analytics（埋点工具）
+    // Firebase Analytics（埋点工具）+ Remote Config
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.config)
+
+    // Hilt（@Inject @Singleton）
+    implementation(libs.hilt.android)
 
     // Testing
     testImplementation(libs.junit5.api)

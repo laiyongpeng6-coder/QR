@@ -30,7 +30,7 @@
     <string name="settings_terms_desc">View the terms of service</string>
 
     <string name="settings_app_full_name">Fast QR Scan: Barcode Reader</string>
-    <string name="settings_version">v1.0.0</string>
+    <string name="settings_version">v1.0.3</string>
 
     <string name="action_back">Back</string>
 
@@ -38,4 +38,7 @@
     <string name="language_dialog_title">Select Language</string>
     <string name="language_system">System Default</string>
     <string name="language_cancel">Cancel</string>
+
+    <!-- Ads -->
+    <string name="ad_icon_description">Ad icon</string>
 </resources>

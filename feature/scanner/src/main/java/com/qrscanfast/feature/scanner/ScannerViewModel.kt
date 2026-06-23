@@ -1,5 +1,6 @@
 ﻿package com.qrscanfast.feature.scanner
 
+import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
@@ -7,8 +8,10 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.qrscanfast.core.ads.AdGatekeeper
 import com.qrscanfast.core.common.AnalyticsHelper
 import com.qrscanfast.core.data.datastore.AppSettings
+import com.qrscanfast.core.domain.model.AdPlacement
 import com.qrscanfast.core.domain.model.BarcodeFormat
 import com.qrscanfast.core.domain.model.ContentType
 import com.qrscanfast.core.domain.model.HistoryRecord
@@ -18,9 +21,11 @@ import com.qrscanfast.core.domain.repository.HistoryRepository
 import com.qrscanfast.core.domain.usecase.ResultMapperUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
@@ -43,11 +48,19 @@ class ScannerViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val resultMapper: ResultMapperUseCase,
     private val historyRepository: HistoryRepository,
-    private val appSettings: AppSettings
+    private val appSettings: AppSettings,
+    private val adGatekeeper: AdGatekeeper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ScannerUiState>(ScannerUiState.Scanning)
     val uiState: StateFlow<ScannerUiState> = _uiState.asStateFlow()
+
+    /**
+     * One-shot event emitted after the ad gate flow completes.
+     * The UI should navigate to the scan result screen upon collecting this event.
+     */
+    private val _navigateToResult = MutableSharedFlow<ScanResult>(extraBufferCapacity = 1)
+    val navigateToResult = _navigateToResult.asSharedFlow()
 
     /** 是否启用自动跳转网页（来自设置，供 UI 判断是否直接打开浏览器） */
     val autoOpenUrl: StateFlow<Boolean> = appSettings.autoOpenUrl
@@ -126,6 +139,34 @@ class ScannerViewModel @Inject constructor(
     fun resumeScanning() {
         isPaused = false
         _uiState.value = ScannerUiState.Scanning
+    }
+
+    /**
+     * Executes the ad gate flow before allowing navigation to the scan result screen.
+     *
+     * For free users: shows the subscription screen first; if dismissed, shows an
+     * interstitial ad (subject to frequency control). For premium users: proceeds immediately.
+     *
+     * @param activity The Activity context required for displaying ads and subscription screen.
+     * @param result The scan result to navigate to after gating completes.
+     * @param showSubscriptionScreen Suspend lambda that displays the subscription screen.
+     *   Returns `true` if the user purchased a subscription, `false` if dismissed.
+     */
+    fun performGateAndNavigate(
+        activity: Activity,
+        result: ScanResult,
+        showSubscriptionScreen: suspend () -> Boolean = { false }
+    ) {
+        viewModelScope.launch {
+            // Call AdGatekeeper — handles premium bypass, subscription screen, frequency control, and ad display
+            adGatekeeper.gate(
+                activity = activity,
+                placement = AdPlacement.INTERSTITIAL_SCAN,
+                showSubscriptionScreen = showSubscriptionScreen
+            )
+            // Regardless of gate result (Proceed or SubscriptionPurchased), navigate to the scan result
+            _navigateToResult.emit(result)
+        }
     }
 
     fun onPermissionDenied() {
