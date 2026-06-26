@@ -5,8 +5,12 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.CameraSelector
+import androidx.camera.mlkit.vision.MlKitAnalyzer
+import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -31,6 +35,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
@@ -38,7 +44,6 @@ import com.qrscanfast.core.common.AnalyticsHelper
 import com.qrscanfast.core.common.PermissionUtils
 import com.qrscanfast.core.domain.model.BarcodeFormat
 import com.qrscanfast.core.domain.model.ContentType
-import java.util.concurrent.Executors
 
 /**
  * 扫描器主页面。
@@ -172,46 +177,47 @@ private fun CameraPreviewContent(
     // 使用 LifecycleCameraController（封装了 ProcessCameraProvider，无需手动处理 ListenableFuture）
     val cameraController = remember {
         LifecycleCameraController(context).apply {
-            cameraSelector = androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
+            cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            // 显式启用图像分析，避免只保留预览而分析器未真正接入。
+            setEnabledUseCases(CameraController.IMAGE_ANALYSIS)
         }
     }
 
-    // 配置 ML Kit 条码分析器
-    DisposableEffect(Unit) {
-        val analysisExecutor = Executors.newSingleThreadExecutor()
-        val barcodeScanner = BarcodeScanning.getClient()
+    val barcodeScannerOptions = remember {
+        BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
+            .build()
+    }
+    val barcodeScanner = remember {
+        BarcodeScanning.getClient(barcodeScannerOptions)
+    }
 
-        cameraController.setImageAnalysisAnalyzer(analysisExecutor) { imageProxy ->
-            @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
-            val mediaImage = imageProxy.image
-            if (mediaImage != null) {
-                val inputImage = InputImage.fromMediaImage(
-                    mediaImage,
-                    imageProxy.imageInfo.rotationDegrees
-                )
-                barcodeScanner.process(inputImage)
-                    .addOnSuccessListener { barcodes ->
-                        barcodes.firstOrNull()?.let { barcode ->
-                            barcode.rawValue?.let { rawValue ->
-                                val format = mapMlKitFormat(barcode.format)
-                                viewModel.onBarcodeDetected(rawValue, format)
-                            }
-                        }
-                    }
-                    .addOnCompleteListener {
-                        imageProxy.close()
-                    }
-            } else {
-                imageProxy.close()
+    // 配置 ML Kit 条码分析器
+    DisposableEffect(lifecycleOwner) {
+        val analyzer = MlKitAnalyzer(
+            listOf(barcodeScanner),
+            CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED,
+            ContextCompat.getMainExecutor(context)
+        ) { result ->
+            val barcodes = result?.getValue(barcodeScanner)
+            val firstBarcode = barcodes?.firstOrNull()
+            val rawValue = firstBarcode?.rawValue
+            if (!rawValue.isNullOrBlank()) {
+                val format = mapMlKitFormat(firstBarcode.format)
+                viewModel.onBarcodeDetected(rawValue, format)
             }
         }
 
-        // 绑定到生命周期
+        cameraController.setImageAnalysisAnalyzer(
+            ContextCompat.getMainExecutor(context),
+            analyzer
+        )
         cameraController.bindToLifecycle(lifecycleOwner)
 
         onDispose {
+            cameraController.clearImageAnalysisAnalyzer()
             cameraController.unbind()
-            analysisExecutor.shutdown()
+            barcodeScanner.close()
         }
     }
 

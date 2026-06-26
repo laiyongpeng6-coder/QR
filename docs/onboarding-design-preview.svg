@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F7FBFA"/>
+      <stop offset="45%" stop-color="#EEF7F5"/>
+      <stop offset="100%" stop-color="#F7F3FF"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.82"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#193A34" flood-opacity="0.12"/>
+    </filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#193A34" flood-opacity="0.10"/>
+    </filter>
+    <linearGradient id="a1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D6B5D"/>
+      <stop offset="100%" stop-color="#7AF8E2"/>
+    </linearGradient>
+    <linearGradient id="a2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2257A6"/>
+      <stop offset="100%" stop-color="#B9D7FF"/>
+    </linearGradient>
+    <linearGradient id="a3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6A2DD8"/>
+      <stop offset="100%" stop-color="#E2C8FF"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F1F5F4"/>
+    </linearGradient>
+    <style>
+      .title { font: 800 38px 'Segoe UI', Arial, sans-serif; fill: #0D1B18; }
+      .subtitle { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #61706C; }
+      .brand { font: 700 14px 'Segoe UI', Arial, sans-serif; letter-spacing: 2px; }
+      .pageTitle { font: 800 28px 'Segoe UI', Arial, sans-serif; fill: #10201D; }
+      .body { font: 500 15px 'Segoe UI', Arial, sans-serif; fill: #5E6E6B; }
+      .chip { font: 700 12px 'Segoe UI', Arial, sans-serif; }
+      .button { font: 700 14px 'Segoe UI', Arial, sans-serif; fill: #FFFFFF; }
+      .small { font: 700 12px 'Segoe UI', Arial, sans-serif; fill: #6B7875; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <circle cx="120" cy="120" r="54" fill="#0D6B5D" opacity="0.10"/>
+  <circle cx="1480" cy="150" r="88" fill="#6A2DD8" opacity="0.08"/>
+  <circle cx="1380" cy="770" r="130" fill="#2257A6" opacity="0.07"/>
+
+  <text x="80" y="86" class="title">Onboarding Redesign Preview</text>
+  <text x="80" y="118" class="subtitle">Three-page first-run flow with stronger hierarchy, gradient atmosphere, and product-style cards.</text>
+
+  <!-- Phone 1 -->
+  <g transform="translate(95,180)" filter="url(#shadow)">
+    <rect x="0" y="0" rx="42" ry="42" width="430" height="640" fill="url(#frame)"/>
+    <rect x="20" y="20" rx="32" ry="32" width="390" height="600" fill="url(#a1)" opacity="0.10"/>
+    <ellipse cx="340" cy="80" rx="120" ry="90" fill="#0D6B5D" opacity="0.12"/>
+    <ellipse cx="80" cy="530" rx="115" ry="95" fill="#7AF8E2" opacity="0.16"/>
+
+    <text x="350" y="50" text-anchor="middle" class="small">1 / 3</text>
+
+    <rect x="112" y="120" rx="18" ry="18" width="206" height="206" fill="#FFFFFF" filter="url(#soft)"/>
+    <circle cx="215" cy="223" r="84" fill="url(#a1)"/>
+    <rect x="175" y="183" width="80" height="80" rx="12" fill="#FFFFFF" opacity="0.16"/>
+    <rect x="188" y="196" width="16" height="16" fill="#FFFFFF"/>
+    <rect x="226" y="196" width="16" height="16" fill="#FFFFFF"/>
+    <rect x="188" y="234" width="16" height="16" fill="#FFFFFF"/>
+    <rect x="226" y="234" width="16" height="16" fill="#FFFFFF"/>
+    <rect x="204" y="214" width="22" height="22" fill="#FFFFFF"/>
+    <text x="215" y="286" text-anchor="middle" style="font: 800 22px 'Segoe UI', Arial, sans-serif; fill:#0D6B5D;">Scan Fast</text>
+
+    <text x="215" y="382" text-anchor="middle" class="pageTitle">Scan anything in one tap</text>
+    <text x="215" y="412" text-anchor="middle" class="body">High-speed scanning with auto-zoom,</text>
+    <text x="215" y="434" text-anchor="middle" class="body">flash assist, and smart result handling.</text>
+
+    <rect x="64" y="474" rx="18" ry="18" width="84" height="30" fill="#0D6B5D" opacity="0.10"/>
+    <rect x="156" y="474" rx="18" ry="18" width="84" height="30" fill="#0D6B5D" opacity="0.10"/>
+    <rect x="248" y="474" rx="18" ry="18" width="104" height="30" fill="#0D6B5D" opacity="0.10"/>
+    <text x="106" y="494" text-anchor="middle" class="chip" fill="#0D6B5D">Fast</text>
+    <text x="198" y="494" text-anchor="middle" class="chip" fill="#0D6B5D">Private</text>
+    <text x="300" y="494" text-anchor="middle" class="chip" fill="#0D6B5D">Secure</text>
+
+    <rect x="38" y="548" rx="20" ry="20" width="354" height="56" fill="#0D6B5D"/>
+    <text x="215" y="583" text-anchor="middle" class="button">Next</text>
+  </g>
+
+  <!-- Phone 2 -->
+  <g transform="translate(585,180)" filter="url(#shadow)">
+    <rect x="0" y="0" rx="42" ry="42" width="430" height="640" fill="url(#frame)"/>
+    <rect x="20" y="20" rx="32" ry="32" width="390" height="600" fill="url(#a2)" opacity="0.10"/>
+    <ellipse cx="355" cy="88" rx="124" ry="92" fill="#2257A6" opacity="0.12"/>
+    <ellipse cx="84" cy="524" rx="120" ry="100" fill="#B9D7FF" opacity="0.16"/>
+
+    <text x="350" y="50" text-anchor="middle" class="small">2 / 3</text>
+
+    <rect x="106" y="120" rx="18" ry="18" width="218" height="206" fill="#FFFFFF" filter="url(#soft)"/>
+    <rect x="134" y="150" rx="18" ry="18" width="162" height="28" fill="#EAF2FF"/>
+    <rect x="134" y="192" rx="16" ry="16" width="162" height="54" fill="#EEF5FF"/>
+    <rect x="134" y="258" rx="16" ry="16" width="98" height="36" fill="#E3EEFF"/>
+    <rect x="238" y="258" rx="16" ry="16" width="58" height="36" fill="#DCEAFF"/>
+    <text x="215" y="232" text-anchor="middle" style="font: 800 18px 'Segoe UI', Arial, sans-serif; fill:#2257A6;">Create &amp; Share</text>
+
+    <text x="215" y="382" text-anchor="middle" class="pageTitle">Build QR codes with context</text>
+    <text x="215" y="412" text-anchor="middle" class="body">Wi-Fi, contacts, links, social profiles,</text>
+    <text x="215" y="434" text-anchor="middle" class="body">and quick export flows designed for speed.</text>
+
+    <rect x="54" y="474" rx="18" ry="18" width="98" height="30" fill="#2257A6" opacity="0.10"/>
+    <rect x="158" y="474" rx="18" ry="18" width="82" height="30" fill="#2257A6" opacity="0.10"/>
+    <rect x="246" y="474" rx="18" ry="18" width="110" height="30" fill="#2257A6" opacity="0.10"/>
+    <text x="103" y="494" text-anchor="middle" class="chip" fill="#2257A6">Multi-format</text>
+    <text x="199" y="494" text-anchor="middle" class="chip" fill="#2257A6">Share</text>
+    <text x="301" y="494" text-anchor="middle" class="chip" fill="#2257A6">Contacts</text>
+
+    <rect x="38" y="548" rx="20" ry="20" width="354" height="56" fill="#2257A6"/>
+    <text x="215" y="583" text-anchor="middle" class="button">Next</text>
+  </g>
+
+  <!-- Phone 3 -->
+  <g transform="translate(1075,180)" filter="url(#shadow)">
+    <rect x="0" y="0" rx="42" ry="42" width="430" height="640" fill="url(#frame)"/>
+    <rect x="20" y="20" rx="32" ry="32" width="390" height="600" fill="url(#a3)" opacity="0.10"/>
+    <ellipse cx="344" cy="84" rx="130" ry="94" fill="#6A2DD8" opacity="0.12"/>
+    <ellipse cx="82" cy="520" rx="125" ry="104" fill="#E2C8FF" opacity="0.18"/>
+
+    <text x="350" y="50" text-anchor="middle" class="small">3 / 3</text>
+
+    <rect x="110" y="114" rx="18" ry="18" width="212" height="212" fill="#FFFFFF" filter="url(#soft)"/>
+    <circle cx="216" cy="220" r="78" fill="url(#a3)"/>
+    <circle cx="216" cy="220" r="32" fill="#FFFFFF" opacity="0.18"/>
+    <text x="216" y="227" text-anchor="middle" style="font: 800 28px 'Segoe UI', Arial, sans-serif; fill:#FFFFFF;">AI</text>
+    <text x="215" y="382" text-anchor="middle" class="pageTitle">Turn plain codes into art</text>
+    <text x="215" y="412" text-anchor="middle" class="body">A focused workspace for styles, logos,</text>
+    <text x="215" y="434" text-anchor="middle" class="body">and export-ready QR beautification.</text>
+
+    <rect x="56" y="474" rx="18" ry="18" width="90" height="30" fill="#6A2DD8" opacity="0.10"/>
+    <rect x="152" y="474" rx="18" ry="18" width="82" height="30" fill="#6A2DD8" opacity="0.10"/>
+    <rect x="240" y="474" rx="18" ry="18" width="102" height="30" fill="#6A2DD8" opacity="0.10"/>
+    <text x="101" y="494" text-anchor="middle" class="chip" fill="#6A2DD8">Style</text>
+    <text x="193" y="494" text-anchor="middle" class="chip" fill="#6A2DD8">Logo</text>
+    <text x="291" y="494" text-anchor="middle" class="chip" fill="#6A2DD8">Export</text>
+
+    <rect x="38" y="548" rx="20" ry="20" width="354" height="56" fill="#6A2DD8"/>
+    <text x="215" y="583" text-anchor="middle" class="button">Get Started</text>
+  </g>
+
+  <text x="80" y="860" class="subtitle">Direction: premium card-first onboarding, richer visual hierarchy, localized copy, no hard-coded text in Composables.</text>
+</svg>

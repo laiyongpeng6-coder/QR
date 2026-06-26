@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10141D"/>
+      <stop offset="45%" stop-color="#171E2A"/>
+      <stop offset="100%" stop-color="#2B1632"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7BE7D2" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#7B82FF" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#F6F7FA" stop-opacity="0.93"/>
+    </linearGradient>
+    <linearGradient id="plainBorder" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D9DEE8"/>
+      <stop offset="100%" stop-color="#AEB7C6"/>
+    </linearGradient>
+    <linearGradient id="blueBorder" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#53B6FF"/>
+      <stop offset="100%" stop-color="#2B6BFF"/>
+    </linearGradient>
+    <linearGradient id="pinkBorder" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF7A9E"/>
+      <stop offset="100%" stop-color="#FFB347"/>
+    </linearGradient>
+    <linearGradient id="greenBorder" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8BE58C"/>
+      <stop offset="100%" stop-color="#2BBC77"/>
+    </linearGradient>
+    <linearGradient id="qrFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#11151D"/>
+      <stop offset="100%" stop-color="#202734"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#06070A" flood-opacity="0.42"/>
+    </filter>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#06070A" flood-opacity="0.25"/>
+    </filter>
+    <filter id="glowShadow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0 0 0 0.37
+                0 1 0 0 0.89
+                0 0 1 0 0.82
+                0 0 0 0.9 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .h1 { font: 800 42px 'Segoe UI', Arial, sans-serif; fill: #F7FBFF; letter-spacing: -0.5px; }
+      .h2 { font: 650 20px 'Segoe UI', Arial, sans-serif; fill: #D3DAE7; }
+      .body { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #A8B3C7; }
+      .mini { font: 700 14px 'Segoe UI', Arial, sans-serif; fill: #D9E0EF; letter-spacing: 1.4px; }
+      .label { font: 700 13px 'Segoe UI', Arial, sans-serif; fill: #647082; letter-spacing: 0.8px; }
+      .chip { font: 700 12px 'Segoe UI', Arial, sans-serif; fill: #FFFFFF; }
+      .cta { font: 800 18px 'Segoe UI', Arial, sans-serif; fill: #FFFFFF; }
+      .dot { fill: #FFFFFF; opacity: 0.22; }
+    </style>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <circle cx="190" cy="175" r="150" fill="#68E6D4" opacity="0.09"/>
+  <circle cx="920" cy="230" r="180" fill="#8A6DFF" opacity="0.11"/>
+  <circle cx="830" cy="1630" r="230" fill="#FF8F7C" opacity="0.09"/>
+  <circle cx="160" cy="1610" r="160" fill="#5AA4FF" opacity="0.08"/>
+
+  <rect x="68" y="80" width="944" height="1760" rx="60" fill="url(#glow)" opacity="0.55"/>
+  <rect x="86" y="100" width="908" height="1720" rx="50" fill="#151C29" opacity="0.80"/>
+
+  <text x="128" y="182" class="mini">03 / 03</text>
+  <circle cx="918" cy="170" r="9" fill="#FFFFFF" opacity="0.15"/>
+  <circle cx="948" cy="170" r="9" fill="#FFFFFF" opacity="0.35"/>
+  <circle cx="978" cy="170" r="9" fill="#FFFFFF" opacity="0.15"/>
+
+  <text x="128" y="262" class="h1">Plain QR first.</text>
+  <text x="128" y="310" class="h1">Then the styles slide in.</text>
+  <text x="128" y="370" class="h2">A carousel-style reveal that starts simple and progressively shows more premium, branded QR variants.</text>
+
+  <rect x="124" y="436" width="832" height="734" rx="44" fill="url(#panel)" filter="url(#softShadow)"/>
+  <rect x="148" y="460" width="784" height="686" rx="36" fill="#F5F7FB"/>
+
+  <g opacity="0.78">
+    <path d="M224 988 C 378 900, 534 896, 848 786" fill="none" stroke="#A8B5CF" stroke-width="5" stroke-linecap="round" stroke-dasharray="18 16"/>
+    <path d="M810 754 L 858 778 L 808 804" fill="none" stroke="#A8B5CF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(166,522)" filter="url(#shadow)">
+    <rect x="0" y="0" width="272" height="272" rx="34" fill="#FFFFFF"/>
+    <rect x="16" y="16" width="240" height="240" rx="26" fill="none" stroke="url(#plainBorder)" stroke-width="5"/>
+    <rect x="34" y="34" width="70" height="70" rx="14" fill="none" stroke="url(#qrFill)" stroke-width="18"/>
+    <rect x="168" y="34" width="70" height="70" rx="14" fill="none" stroke="url(#qrFill)" stroke-width="18"/>
+    <rect x="34" y="168" width="70" height="70" rx="14" fill="none" stroke="url(#qrFill)" stroke-width="18"/>
+    <rect x="126" y="40" width="22" height="22" fill="#181D25"/>
+    <rect x="126" y="72" width="22" height="22" fill="#181D25"/>
+    <rect x="118" y="118" width="20" height="20" fill="#181D25"/>
+    <rect x="148" y="126" width="18" height="18" fill="#181D25"/>
+    <rect x="194" y="126" width="18" height="18" fill="#181D25"/>
+    <rect x="126" y="156" width="22" height="22" fill="#181D25"/>
+    <rect x="184" y="184" width="20" height="20" fill="#181D25"/>
+    <rect x="126" y="188" width="22" height="22" fill="#181D25"/>
+    <rect x="74" y="126" width="22" height="22" fill="#181D25"/>
+    <rect x="74" y="158" width="22" height="22" fill="#181D25"/>
+    <rect x="96" y="206" width="18" height="18" fill="#181D25"/>
+  </g>
+
+  <g transform="translate(362,484) rotate(8 136 136)" filter="url(#shadow)">
+    <rect x="0" y="0" width="272" height="272" rx="34" fill="#FFFFFF"/>
+    <rect x="16" y="16" width="240" height="240" rx="26" fill="none" stroke="url(#blueBorder)" stroke-width="7"/>
+    <rect x="34" y="34" width="70" height="70" rx="14" fill="none" stroke="#111827" stroke-width="18"/>
+    <rect x="168" y="34" width="70" height="70" rx="14" fill="none" stroke="#111827" stroke-width="18"/>
+    <rect x="34" y="168" width="70" height="70" rx="14" fill="none" stroke="#111827" stroke-width="18"/>
+    <circle cx="136" cy="136" r="40" fill="#2B6BFF"/>
+    <path d="M114 124 L158 124 L158 148 L114 148 Z" fill="#FFFFFF"/>
+    <path d="M126 112 L146 136 L126 160" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="124" y="36" width="18" height="18" fill="#111827"/>
+    <rect x="124" y="72" width="18" height="18" fill="#111827"/>
+    <rect x="124" y="104" width="18" height="18" fill="#111827"/>
+    <rect x="104" y="178" width="18" height="18" fill="#111827"/>
+    <rect x="154" y="172" width="18" height="18" fill="#111827"/>
+    <rect x="194" y="128" width="18" height="18" fill="#111827"/>
+    <rect x="188" y="160" width="18" height="18" fill="#111827"/>
+  </g>
+
+  <g transform="translate(604,522) rotate(14 136 136)" filter="url(#shadow)">
+    <rect x="0" y="0" width="272" height="272" rx="34" fill="#FFFFFF"/>
+    <rect x="16" y="16" width="240" height="240" rx="26" fill="none" stroke="url(#pinkBorder)" stroke-width="7"/>
+    <rect x="34" y="34" width="70" height="70" rx="14" fill="none" stroke="#111827" stroke-width="18"/>
+    <rect x="168" y="34" width="70" height="70" rx="14" fill="none" stroke="#111827" stroke-width="18"/>
+    <rect x="34" y="168" width="70" height="70" rx="14" fill="none" stroke="#111827" stroke-width="18"/>
+    <circle cx="136" cy="136" r="44" fill="#FF5A8E"/>
+    <circle cx="136" cy="136" r="28" fill="#FFFFFF" opacity="0.18"/>
+    <circle cx="136" cy="136" r="14" fill="#FFFFFF"/>
+    <rect x="116" y="118" width="12" height="12" fill="#111827"/>
+    <rect x="116" y="150" width="12" height="12" fill="#111827"/>
+    <rect x="148" y="118" width="12" height="12" fill="#111827"/>
+    <rect x="148" y="150" width="12" height="12" fill="#111827"/>
+    <rect x="124" y="38" width="18" height="18" fill="#111827"/>
+    <rect x="124" y="74" width="18" height="18" fill="#111827"/>
+    <rect x="194" y="124" width="18" height="18" fill="#111827"/>
+    <rect x="184" y="194" width="18" height="18" fill="#111827"/>
+  </g>
+
+  <g transform="translate(726,738) rotate(8 110 110)" opacity="0.96" filter="url(#glowShadow)">
+    <rect x="0" y="0" width="220" height="220" rx="30" fill="#FFFFFF" opacity="0.94"/>
+    <rect x="14" y="14" width="192" height="192" rx="24" fill="none" stroke="url(#greenBorder)" stroke-width="6"/>
+    <rect x="30" y="30" width="58" height="58" rx="12" fill="none" stroke="#111827" stroke-width="15"/>
+    <rect x="132" y="30" width="58" height="58" rx="12" fill="none" stroke="#111827" stroke-width="15"/>
+    <rect x="30" y="132" width="58" height="58" rx="12" fill="none" stroke="#111827" stroke-width="15"/>
+    <circle cx="110" cy="110" r="34" fill="#2BBC77"/>
+    <path d="M92 98 C 100 90, 116 90, 124 98 C 130 104, 130 116, 124 122 C 116 130, 100 130, 92 122 C 84 114, 84 104, 92 98 Z" fill="#FFFFFF" opacity="0.9"/>
+  </g>
+
+  <g transform="translate(154,1086)">
+    <rect x="0" y="0" width="772" height="80" rx="24" fill="#FFFFFF" opacity="0.66"/>
+    <text x="32" y="34" class="label">AUTO-SLIDE GALLERY</text>
+    <text x="32" y="60" class="body" fill="#4F5C70">Start with a plain QR, then glide into branded, colorful variants.</text>
+    <g transform="translate(620,20)">
+      <rect x="0" y="0" width="102" height="40" rx="20" fill="#101722"/>
+      <text x="51" y="25" text-anchor="middle" class="chip">Looping</text>
+    </g>
+  </g>
+
+  <g transform="translate(166,1320)">
+    <text x="0" y="0" class="h1" font-size="34">A simple reveal,</text>
+    <text x="0" y="48" class="h1" font-size="34">not a crowded demo.</text>
+    <text x="0" y="102" class="h2">This keeps the page mobile-first and lets the motion carry the “AI art” story.</text>
+  </g>
+
+  <rect x="148" y="1512" width="784" height="114" rx="34" fill="#FFFFFF" opacity="0.96" filter="url(#softShadow)"/>
+  <text x="184" y="1560" class="label">WHAT THE USER SEES</text>
+  <text x="184" y="1596" class="body" fill="#425065">Plain QR on entry, then more decorative versions appear in a smooth auto-swiping loop.</text>
+
+  <rect x="148" y="1654" width="784" height="88" rx="28" fill="#7B5AF7"/>
+  <text x="540" y="1708" text-anchor="middle" class="cta">Use this direction for page 3</text>
+
+  <circle cx="430" cy="1810" r="9" class="dot"/>
+  <circle cx="500" cy="1810" r="9" class="dot"/>
+  <circle cx="570" cy="1810" r="9" fill="#FFFFFF" opacity="0.55"/>
+</svg>
