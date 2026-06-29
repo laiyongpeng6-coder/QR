@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
@@ -215,9 +216,9 @@ private fun CameraPreviewContent(
         }
     }
 
-    // 相册选择器
+    // 相册选择器（使用系统照片选择器，无需 READ_MEDIA_IMAGES 权限）
     val albumLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         uri?.let {
             // 先恢复扫描状态，确保 onBarcodeDetected 不会被 isPaused 拦截
@@ -311,7 +312,7 @@ private fun CameraPreviewContent(
         ) {
             // 左侧相册导入
             IconButton(
-                onClick = { albumLauncher.launch("image/*") }
+                onClick = { albumLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
             ) {
                 Icon(
                     imageVector = Icons.Default.PhotoLibrary,

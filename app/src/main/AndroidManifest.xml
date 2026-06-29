@@ -17,8 +17,8 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
 
-    <!-- Media permission for API 33+ (scoped storage) -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- Media permission removed: using PickVisualMedia system photo picker instead -->
+    <!-- <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> -->
 
     <!-- WiFi permissions for WiFi QR code connect action -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

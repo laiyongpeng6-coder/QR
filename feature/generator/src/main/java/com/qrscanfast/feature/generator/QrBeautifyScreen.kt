@@ -10,6 +10,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -96,9 +97,9 @@ fun QrBeautifyScreen(
     var selectedSocialLogo by remember { mutableStateOf<SocialLogo?>(null) }
     var logoSizeRatio by remember { mutableFloatStateOf(0.2f) } // Logo 占比，默认 20%
 
-    // 自定义图片选择器
+    // 自定义图片选择器（使用系统照片选择器，无需 READ_MEDIA_IMAGES 权限）
     val logoLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         uri?.let {
             try {
@@ -223,7 +224,7 @@ fun QrBeautifyScreen(
                         item {
                             LogoOption(
                                 isSelected = logoBitmap != null,
-                                onClick = { logoLauncher.launch("image/*") }
+                                onClick = { logoLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
                             ) {
                                 Icon(Icons.Default.AddPhotoAlternate, contentDescription = stringResource(R.string.beautify_logo_upload), modifier = Modifier.size(20.dp))
                             }
